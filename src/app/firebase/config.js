@@ -5,6 +5,6 @@ module.exports = {
     databaseURL: "https://adwebsite-928a9.firebaseio.com",
     projectId: "adwebsite-928a9",
     storageBucket: "adwebsite-928a9.appspot.com",
-    messagingSenderId: "72060758788"
-    },
+    messagingSenderId: "72060758788"  
+  },
 };
