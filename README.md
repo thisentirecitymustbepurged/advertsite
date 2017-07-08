@@ -1,0 +1,1 @@
+Chrome bug: https://github.com/firebase/firebase-js-sdk/issues/63

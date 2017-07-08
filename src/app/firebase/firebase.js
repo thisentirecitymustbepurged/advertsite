@@ -17,14 +17,19 @@ const Firebase = {
   },
 
   loginWithProvider: function (providerName) {    
-    const provider = this.getProvider(providerName);
-    return auth.signInWithPopup(provider).then(
-      auth.currentUser
-    ).catch(error => ({
-      errorCode: error.code,
-      errorMessage: error.message,
-    }))  
+    const provider = this.getProvider(providerName);    
+    return auth.signInWithPopup(provider)       
   },
+
+  fetchUser: () => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        console.log(user)
+      } else {
+        // No user is signed in.
+      }
+    });
+  }
 
 };
 
