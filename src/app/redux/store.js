@@ -1,23 +1,15 @@
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
+import firebaseUserAuthReducer from './firebaseUserAuth/firebaseUserAuthReducer'
 
-function counter(state = 0, action) {
-  switch(action.type) {
-    case 'inc':
-      return state + 1;
-    case 'dec':
-      return state - 1;
-    default:
-      return state;  
-  }
-}
+const reducersCombined = combineReducers({
+  currentFirebaseUser: firebaseUserAuthReducer,
+})
 
-store.subscribe(() =>
-  console.log(store.getState())
-)
 
-const store = createStore(counter)
+const store = createStore(
+  reducersCombined, 
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'INCREMENT' })
-store.dispatch({ type: 'DECREMENT' })
+export default store;
 

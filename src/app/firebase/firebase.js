@@ -18,18 +18,18 @@ const Firebase = {
 
   loginWithProvider: function (providerName) {    
     const provider = this.getProvider(providerName);    
-    return auth.signInWithPopup(provider)       
+    return auth.signInWithPopup(provider);
   },
 
-  fetchUser: () => {
-    auth.onAuthStateChanged(function(user) {
-      if (user) {
-        console.log(user)
-      } else {
-        // No user is signed in.
-      }
+  fetchUser: () => new Promise((resolve, reject) => {
+    auth.onAuthStateChanged(
+      user => {              
+        resolve(user);
+      },
+      error => {
+       reject(error);
     });
-  }
+  }),
 
 };
 

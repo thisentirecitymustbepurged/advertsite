@@ -1,7 +1,7 @@
 import React from 'react'
 import {Field, reduxForm} from 'redux-form'
 
-const SimpleForm = props => {
+const newItemForm = props => {
   const {handleSubmit, pristine, reset, submitting} = props
   return (
     <form onSubmit={handleSubmit}>
@@ -92,5 +92,5 @@ const SimpleForm = props => {
 }
 
 export default reduxForm({
-  form: 'simple' // a unique identifier for this form
-})(SimpleForm)
+  form: 'newItemForm' // a unique identifier for this form
+})(newItemForm)
