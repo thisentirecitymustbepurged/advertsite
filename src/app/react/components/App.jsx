@@ -21,20 +21,21 @@ import firebaseUtils from '../../firebase/firebaseUtils'
 
 class App extends Component {
   constructor(props) {
-    super(props);
+    super(props);    
     this.fetchUser();   
     this.firebaseLoginWithFacebook = this.firebaseLoginWithFacebook.bind(this);
     this.logoutFirebaseUser = this.logoutFirebaseUser.bind(this);    
     window.fetchUser = this.fetchUser.bind(this);
     window.reduxState = this.props.reduxState;
-  }  
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log('omg an update')
+  }
 
   fetchUser() {
     firebaseUtils.fetchUser().then(      
-      user => {
-        user === null ? user = {}:'';
-        this.props.fetchFirebaseUserSuccess(user)
-      },
+      user => this.props.fetchFirebaseUserSuccess(user),      
       () => this.props.fetchFirebaseUserFailure()
     )
   }
