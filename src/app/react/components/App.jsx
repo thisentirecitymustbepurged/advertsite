@@ -46,7 +46,7 @@ class App extends Component {
       () => this.props.loginFirebaseUserFailure()
     )
   }
-
+// ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooh, the object that login returns to the state is one level deeper than the one that fetch brings, hence there this misudnerstanding.
   logoutFirebaseUser() {   
     firebaseUtils.logoutUser().then(
       () => this.props.logoutFirebaseUserSuccess(),
@@ -57,10 +57,14 @@ class App extends Component {
   renderComponent(Component) {
     switch (Component) {
       case Navigation:
-        return () => {
+        return () => {       
           if (this.props.reduxState.currentFirebaseUser === null) {
+            console.log('renderComponent-Navigation-if-true ')
+            console.log(this.props.reduxState)
             return <Component />
           } else {
+            console.log('renderComponent-Navigation-if-false ')
+            console.log(this.props.reduxState)
             return <Component
               username={this.props.reduxState.currentFirebaseUser.displayName}
               logOut={this.logoutFirebaseUser}
@@ -69,11 +73,16 @@ class App extends Component {
         };
       case User:
         return () => {
-          if (this.props.reduxState.currentFirebaseUser === null) {            
+          // console.log('user')
+          if (this.props.reduxState.currentFirebaseUser === null) {
+            console.log('renderComponent-User-if-true ')
+            console.log(this.props.reduxState)    
             return <Component
               loginWithFacebook={this.firebaseLoginWithFacebook}
             />
           } else {
+            console.log('renderComponent-User-if-false ')
+            console.log(this.props.reduxState)
             return <Component
               username={this.props.reduxState.currentFirebaseUser.displayName}
             />
