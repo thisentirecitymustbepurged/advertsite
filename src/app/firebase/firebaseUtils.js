@@ -5,7 +5,7 @@ const app = firebase.initializeApp(FIREBASE_CONFIG);
 const auth = app.auth();
 const db = app.database();
 
-const Firebase = {
+const FirebaseUtils = {
   getProvider: (providerName) => {
     switch (providerName) {
       case 'facebook':
@@ -21,6 +21,8 @@ const Firebase = {
     return auth.signInWithPopup(provider);
   },
 
+  logoutUser: () => auth.signOut(),
+
   fetchUser: () => new Promise((resolve, reject) => {
     auth.onAuthStateChanged(
       user => {              
@@ -33,4 +35,4 @@ const Firebase = {
 
 };
 
-export default Firebase;
+export default FirebaseUtils;
