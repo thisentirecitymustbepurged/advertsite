@@ -19,7 +19,7 @@ export function logoutFirebaseUserSuccess() {
 }
 export function logoutFirebaseUserFailure() {
   return {
-    type: actionTypes.LOGOUT_FIREBASE_USER_FAILURE,    
+    type: actionTypes.LOGOUT_FIREBASE_USER_FAILURE
   }
 }
 

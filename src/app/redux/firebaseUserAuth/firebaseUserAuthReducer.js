@@ -1,7 +1,8 @@
 import * as actionTypes from './firebaseUserAuthTypes'
 
 export default function (state = null, action) {
-  switch (action.type) {    
+  switch (action.type) {
+    
     case actionTypes.FETCH_FIREBASE_USER_SUCCESS:
       return action.user;
     case actionTypes.FETCH_FIREBASE_USER_FAILURE:

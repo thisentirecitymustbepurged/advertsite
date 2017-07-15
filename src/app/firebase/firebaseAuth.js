@@ -1,11 +1,11 @@
-import firebase from 'firebase';
-import { FIREBASE_CONFIG } from './config';
+import firebase from 'firebase'
 
-const app = firebase.initializeApp(FIREBASE_CONFIG);
-const auth = app.auth();
-const db = app.database();
+import firebaseApp from './firebaseApp'
 
-const FirebaseUtils = {
+const auth = firebaseApp.auth();
+
+
+const firebaseAuth = {
   getProvider: (providerName) => {
     switch (providerName) {
       case 'facebook':
@@ -35,4 +35,4 @@ const FirebaseUtils = {
 
 };
 
-export default FirebaseUtils;
+export default firebaseAuth;

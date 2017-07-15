@@ -1,8 +1,11 @@
 import { createStore, combineReducers } from 'redux'
+
 import firebaseUserAuthReducer from './firebaseUserAuth/firebaseUserAuthReducer'
+import { reducer as formReducer } from 'redux-form'
 
 const reducersCombined = combineReducers({
   currentFirebaseUser: firebaseUserAuthReducer,
+  form: formReducer
 })
 
 const store = createStore(

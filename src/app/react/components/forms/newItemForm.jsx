@@ -1,86 +1,43 @@
 import React from 'react'
 import {Field, reduxForm} from 'redux-form'
 
-const newItemForm = props => {
+const NewItemForm = props => {
   const {handleSubmit, pristine, reset, submitting} = props
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>First Name</label>
+        <label>Item Name</label>
         <div>
           <Field
-            name="firstName"
+            name="itemName"
             component="input"
             type="text"
-            placeholder="First Name"
+            placeholder="Item Name"
           />
         </div>
       </div>
       <div>
-        <label>Last Name</label>
+        <label>Attribute 1</label>
         <div>
           <Field
-            name="lastName"
+            name="attribute1"
             component="input"
             type="text"
-            placeholder="Last Name"
+            placeholder="Attribute 1"
           />
         </div>
       </div>
       <div>
-        <label>Email</label>
+        <label>Attribute 2</label>
         <div>
           <Field
-            name="email"
+            name="attribute2"
             component="input"
-            type="email"
-            placeholder="Email"
+            type="text"
+            placeholder="Attribute 2"
           />
         </div>
-      </div>
-      <div>
-        <label>Sex</label>
-        <div>
-          <label>
-            <Field name="sex" component="input" type="radio" value="male" />
-            {' '}
-            Male
-          </label>
-          <label>
-            <Field name="sex" component="input" type="radio" value="female" />
-            {' '}
-            Female
-          </label>
-        </div>
-      </div>
-      <div>
-        <label>Favorite Color</label>
-        <div>
-          <Field name="favoriteColor" component="select">
-            <option />
-            <option value="ff0000">Red</option>
-            <option value="00ff00">Green</option>
-            <option value="0000ff">Blue</option>
-          </Field>
-        </div>
-      </div>
-      <div>
-        <label htmlFor="employed">Employed</label>
-        <div>
-          <Field
-            name="employed"
-            id="employed"
-            component="input"
-            type="checkbox"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Notes</label>
-        <div>
-          <Field name="notes" component="textarea" />
-        </div>
-      </div>
+      </div>      
       <div>
         <button type="submit" disabled={pristine || submitting}>Submit</button>
         <button type="button" disabled={pristine || submitting} onClick={reset}>
@@ -92,5 +49,5 @@ const newItemForm = props => {
 }
 
 export default reduxForm({
-  form: 'newItemForm' // a unique identifier for this form
-})(newItemForm)
+  form: 'NewItemForm' // a unique identifier for this form
+})(NewItemForm)

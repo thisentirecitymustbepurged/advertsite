@@ -3,10 +3,7 @@ import { bindActionCreators } from 'redux'
 import React, { Component } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 
-import Navigation from './containers/Navigation'
-import Home from './pages/Home'
-import About from './pages/About'
-import User from './pages/User'
+import firebaseAuth from '../../firebase/firebaseAuth'
 
 import { 
   fetchFirebaseUserSuccess,
@@ -17,34 +14,35 @@ import {
   loginFirebaseUserFailure
 } from '../../redux/firebaseUserAuth/firebaseUserAuthActionCreators'
 
-import firebaseUtils from '../../firebase/firebaseUtils'
+import Navigation from './containers/Navigation'
+import Home from './pages/Home'
+import About from './pages/About'
+import User from './pages/User'
 
 class App extends Component {
   constructor(props) {
     super(props);    
-    this.fetchUser();   
+    this.fetchUser();
     this.firebaseLoginWithFacebook = this.firebaseLoginWithFacebook.bind(this);
-    this.logoutFirebaseUser = this.logoutFirebaseUser.bind(this);    
-    window.fetchUser = this.fetchUser.bind(this);
-    window.reduxState = this.props.reduxState;
+    this.logoutFirebaseUser = this.logoutFirebaseUser.bind(this);
   }
 
   fetchUser() {
-    firebaseUtils.fetchUser().then(      
+    firebaseAuth.fetchUser().then(      
       user => this.props.fetchFirebaseUserSuccess(user),      
       () => this.props.fetchFirebaseUserFailure()
     )
   }
 
   firebaseLoginWithFacebook() {
-    firebaseUtils.loginWithProvider('facebook').then(
+    firebaseAuth.loginWithProvider('facebook').then(
       result => this.props.loginFirebaseUserSuccess(result.user),
       () => this.props.loginFirebaseUserFailure()
     )
   }
 
   logoutFirebaseUser() {   
-    firebaseUtils.logoutUser().then(
+    firebaseAuth.logoutUser().then(
       () => this.props.logoutFirebaseUserSuccess(),
       () => this.props.logoutFirebaseUserFailure()
     )
@@ -65,27 +63,24 @@ class App extends Component {
         };
       case User:
         return () => {
-          // console.log('user')
           if (this.props.reduxState.currentFirebaseUser === null) {
             return <Component
               loginWithFacebook={this.firebaseLoginWithFacebook}
             />
           } else {
             return <Component
-              username={this.props.reduxState.currentFirebaseUser.displayName}
+              uid = {this.props.reduxState.currentFirebaseUser.uid}
             />
           }
         };
       default:
         throw new Error('Provided component name is not used.')
-    }
-          
+    }  
   }
 
   render() {
     return (
       <div>
-        <div>{JSON.stringify(this.props.reduxState)}</div>  
         <Route path="/" render={this.renderComponent(Navigation)}/>
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />

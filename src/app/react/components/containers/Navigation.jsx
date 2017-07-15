@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
 export default class Navigation extends Component {
-  userExists() {
-    // console.log("userExistsNav")
+  userExists() {    
     if (this.props.username === undefined) {
       return <Link to="/user">Login</Link>;           
     } else {
       return (
         <span>
-          <Link to="/user">{this.props.username}</Link>
+          <Link to="/user"> Logged in as {this.props.username} </Link>
           <button onClick={this.props.logOut}>Logout</button>
         </span>
       ); 
@@ -19,8 +18,8 @@ export default class Navigation extends Component {
   render() {
     return (
       <div>
-        <Link to="/"> Home </Link>
-        <Link to="/about"> About </Link>
+        <Link to="/"> Home || </Link>
+        <Link to="/about"> About || </Link>
         { this.userExists() }
       </div>
     );
