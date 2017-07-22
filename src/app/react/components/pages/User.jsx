@@ -98,7 +98,7 @@ class User extends Component {
     if (this.props.firebaseUserItems !== null) {
       const items = this.props.firebaseUserItems;
       return Object.keys(items).map(key => {
-        return <div>items[key].name, items[key].a, items[key].b </div>
+        return <div key={key}>{items[key].name}, {items[key].a}, {items[key].b}</div>
       })    
     } else {
       return <div>No items</div>;
