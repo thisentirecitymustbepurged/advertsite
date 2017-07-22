@@ -24,38 +24,35 @@ export function fetchFirebaseUserItemsFailure() {
   }
 }
 
-export function createFirebaseUserItemSuccess(items) {  
+export function createFirebaseUserItemSuccess() {  
   return {
-    type: actionTypes.CREATE_FIREBASE_USER_ITEMS_SUCCESS,
-    items
+    type: actionTypes.CREATE_FIREBASE_USER_ITEM_SUCCESS,    
   }
 }
 export function createFirebaseUserItemFailure() {
   return {
-    type: actionTypes.CREATE_FIREBASE_USER_ITEMS_FAILURE,   
+    type: actionTypes.CREATE_FIREBASE_USER_ITEM_FAILURE,   
   }
 }
 
-export function updateFirebaseUserItemSuccess(items) {  
+export function updateFirebaseUserItemSuccess() {  
   return {
-    type: actionTypes.UPDATE_FIREBASE_USER_ITEMS_SUCCESS,
-    items
+    type: actionTypes.UPDATE_FIREBASE_USER_ITEM_SUCCESS,    
   }
 }
 export function updateFirebaseUserItemFailure() {
   return {
-    type: actionTypes.UPDATE_FIREBASE_USER_ITEMS_FAILURE,   
+    type: actionTypes.UPDATE_FIREBASE_USER_ITEM_FAILURE,   
   }
 }
 
-export function deleteFirebaseUserItemSuccess(items) {  
+export function deleteFirebaseUserItemSuccess() {  
   return {
-    type: actionTypes.DELETE_FIREBASE_USER_ITEMS_SUCCESS,
-    items
+    type: actionTypes.DELETE_FIREBASE_USER_ITEM_SUCCESS,   
   }
 }
 export function deleteFirebaseUserItemFailure() {
   return {
-    type: actionTypes.DELETE_FIREBASE_USER_ITEMS_FAILURE,   
+    type: actionTypes.DELETE_FIREBASE_USER_ITEM_FAILURE,   
   }
 }

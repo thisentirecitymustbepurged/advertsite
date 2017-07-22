@@ -4,7 +4,6 @@ import firebaseApp from './firebaseApp'
 
 const auth = firebaseApp.auth();
 
-
 const firebaseAuth = {
   getProvider: (providerName) => {
     switch (providerName) {

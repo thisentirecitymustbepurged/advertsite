@@ -9,7 +9,7 @@ const NewItemForm = props => {
         <label>Item Name</label>
         <div>
           <Field
-            name="itemName"
+            name="name"
             component="input"
             type="text"
             placeholder="Item Name"
@@ -17,24 +17,24 @@ const NewItemForm = props => {
         </div>
       </div>
       <div>
-        <label>Attribute 1</label>
+        <label>Attribute A</label>
         <div>
           <Field
-            name="attribute1"
+            name="a"
             component="input"
             type="text"
-            placeholder="Attribute 1"
+            placeholder="Attribute A"
           />
         </div>
       </div>
       <div>
-        <label>Attribute 2</label>
+        <label>Attribute B</label>
         <div>
           <Field
-            name="attribute2"
+            name="b"
             component="input"
             type="text"
-            placeholder="Attribute 2"
+            placeholder="Attribute B"
           />
         </div>
       </div>      

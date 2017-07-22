@@ -52,24 +52,24 @@ class App extends Component {
     switch (Component) {
       case Navigation:
         return () => {       
-          if (this.props.reduxState.currentFirebaseUser === null) {
+          if (this.props.reduxState.firebaseUser === null) {
             return <Component />
           } else {
             return <Component
-              username={this.props.reduxState.currentFirebaseUser.displayName}
+              username={this.props.reduxState.firebaseUser.displayName}
               logOut={this.logoutFirebaseUser}
             />
           }
         };
       case User:
         return () => {
-          if (this.props.reduxState.currentFirebaseUser === null) {
+          if (this.props.reduxState.firebaseUser === null) {
             return <Component
               loginWithFacebook={this.firebaseLoginWithFacebook}
             />
           } else {
             return <Component
-              uid = {this.props.reduxState.currentFirebaseUser.uid}
+              uid = {this.props.reduxState.firebaseUser.uid}
             />
           }
         };
