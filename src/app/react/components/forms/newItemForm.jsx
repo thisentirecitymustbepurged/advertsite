@@ -1,21 +1,48 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
+const adaptFileEventToValue = delegate => {debugger;
+  return e => delegate(e.target.files[0]);
+}
+
+const FileInput = ({
+  input: {
+    value: omitValue,
+    onChange,
+    onBlur,
+    ...inputProps
+  },
+  meta: omitMeta,
+  ...props
+}) => {
+  return <input
+    onChange={adaptFileEventToValue(onChange)}
+    onBlur={adaptFileEventToValue(onBlur)}
+    type="file"
+    {...inputProps}
+    {...props}
+  />
+};
+
 const NewItemForm = (props) => {
   const { handleSubmit, pristine, reset, submitting } = props;
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>Item Name</label>
-        <div>
-          <Field
-            name="name"
-            component="input"
-            type="text"
-            placeholder="Item Name"
-          />
-        </div>
+        <Field
+          name="name"
+          component="input"
+          type="text"
+          placeholder="Item Name"
+        />
       </div>
+      <div>
+        <Field
+          name="image"
+          component={FileInput}
+        />
+      </div>
+      <img alt="" id="previewImg" />
       <div>
         <button type="submit" disabled={pristine || submitting}>Submit</button>
         <button type="button" disabled={pristine || submitting} onClick={reset}>

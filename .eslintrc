@@ -4,5 +4,6 @@
     "func-names": ["error", "never"],
     "linebreak-style": 0,
     "no-fallthrough": 0,
+    "react/prop-types": 0,
   }
 }

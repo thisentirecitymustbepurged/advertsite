@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import firebaseDb from '../../../firebase/firebaseDb';
-import firebaseStor from '../../../firebase/firebaseStor';
+// import firebaseStor from '../../../firebase/firebaseStor';
 
 import {
   fetchUserItemsSuccess,
@@ -22,11 +21,10 @@ import NewItemForm from '../forms/NewItemForm';
 class User extends Component {
   constructor(props) {
     super(props);
-    this.userItemsRef = '';
+    // this.userItemsRef = '';
     this.userItemsListenerWasCalled = false;
     this.createNewItem = this.createNewItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
-    this.handleSubmit = this.handleSubmit;
   }
 
   componentDidUpdate() {
@@ -49,11 +47,20 @@ class User extends Component {
   }
 
   createNewItem(values) {
-    const newItemKey = firebaseDb.getDbRef('/').child('ads').push().key;
+    const image = values.image;
+    delete values.image;
+    // const newItemKey = firebaseDb.dbRef('/').child('ads').push().key;
+    // console.log(newItemKey);
+    // firebaseStor.storRef().child(`images/${newItemKey}`).put(e.files[0]).then(function(snapshot) {
+    //   console.log('Uploaded a blob or file!');
+    // });
+    const newItemKey = firebaseDb.dbRef('ads').push().key;
+    const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}`).push.key;
     const updates = {};
     updates[`/ads/${newItemKey}`] = { ...values, uid: this.props.uid };
-    updates[`/user_ads/${this.props.uid}/${newItemKey}`] = values;
-    firebaseDb.getDbRef('/').update(updates).then(
+    updates[`/ads/${newItemKey}/${newImageKey}`] = '';
+    updates[`/user_ads/${this.props.uid}/${newItemKey}`] = '';
+    firebaseDb.dbRef('/').update(updates).then(
       () => this.props.createUserItemSuccess(),
       () => this.props.createUserItemFailure(),
     );
@@ -63,7 +70,7 @@ class User extends Component {
     const updates = {};
     updates[`/ads/${key}`] = null;
     updates[`/user_ads/${this.props.uid}/${key}`] = null;
-    firebaseDb.getDbRef('/').update(updates).then(
+    firebaseDb.dbRef('/').update(updates).then(
       () => this.props.deleteUserItemSuccess(),
       () => this.props.deleteUserItemFailure(),
     );
@@ -95,19 +102,9 @@ class User extends Component {
           <button onClick={() => this.deleteItem(key)}>Delete</button>
           <button onClick={() => this.updateItem(key)}>Update</button>
         </div>
-        ),
-      );
+      ));
     }
     return <div>No items</div>;
-  }
-
-  handleSubmit(e) {
-    console.log(e)
-    const newItemKey = firebaseDb.dbRef('/').child('ads').push().key;
-    console.log(newItemKey);
-    firebaseStor.storRef().child(`images/${newItemKey}`).put(e.files[0]).then(function(snapshot) {
-      console.log('Uploaded a blob or file!');
-    });
   }
 
   render() {
@@ -115,30 +112,10 @@ class User extends Component {
       <div>
         {this.userExists()}
         {this.renderItems()}
-        <input
-          name="file"
-          type="file"
-          onChange={() => this.handleSubmit(this.myDiv)}
-          ref={el => this.myDiv = el}
-        />
       </div>
     );
   }
 }
-
-User.propTypes = {
-  // userItems: PropTypes.shape({}),
-  // loginWithFacebook: PropTypes.func,
-  // uid: PropTypes.string,
-  // fetchUserItemsSuccess: PropTypes.func,
-  // fetchUserItemsFailure: PropTypes.func,
-  // createUserItemSuccess: PropTypes.func,
-  // createUserItemFailure: PropTypes.func,
-  // // updateUserItemSuccess: PropTypes.func,
-  // // updateUserItemFailure: PropTypes.func,
-  // deleteUserItemSuccess: PropTypes.func,
-  // deleteUserItemFailure: PropTypes.func,
-};
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
