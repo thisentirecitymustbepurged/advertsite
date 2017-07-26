@@ -1,23 +1,22 @@
-import { createStore, combineReducers } from 'redux'
-import { reducer as formReducer } from 'redux-form'
+import { createStore, combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 
 import {
-  firebaseUserReadWriteReducer,
-  firebaseReadWriteReducer
-} from './firebaseReadWrite/firebaseReadWriteReducer'
-import firebaseUserAuthReducer from './firebaseUserAuth/firebaseUserAuthReducer'
+  userReadWriteReducer,
+  readWriteReducer,
+} from './readWrite/readWriteReducer';
+import userAuthReducer from './userAuth/userAuthReducer';
 
 const reducersCombined = combineReducers({
-  firebaseItems: firebaseReadWriteReducer,
-  firebaseUser: firebaseUserAuthReducer,
-  firebaseUserItems: firebaseUserReadWriteReducer,
+  items: readWriteReducer,
+  user: userAuthReducer,
+  userItems: userReadWriteReducer,
   form: formReducer,
-})
+});
 
 const store = createStore(
-  reducersCombined, 
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  reducersCombined,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
 export default store;
-

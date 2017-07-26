@@ -1,109 +1,113 @@
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import React, { Component } from 'react'
-import { Route, withRouter } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import React, { Component } from 'react';
+import { Route, withRouter } from 'react-router-dom';
 
-import firebaseAuth from '../../firebase/firebaseAuth'
+import firebaseAuth from '../../firebase/firebaseAuth';
 
-import { 
-  fetchFirebaseUserSuccess,
-  fetchFirebaseUserFailure,
-  logoutFirebaseUserSuccess,
-  logoutFirebaseUserFailure,
-  loginFirebaseUserSuccess,
-  loginFirebaseUserFailure
-} from '../../redux/firebaseUserAuth/firebaseUserAuthActionCreators'
+import {
+  fetchUserSuccess,
+  fetchUserFailure,
+  loginUserFailure,
+  logoutUserSuccess,
+  logoutUserFailure,
+  loginUserSuccess,
+} from '../../redux/userAuth/userAuthActionCreators';
 
-import Navigation from './containers/Navigation'
-import Home from './pages/Home'
-import About from './pages/About'
-import User from './pages/User'
+import Navigation from './containers/Navigation';
+import Home from './pages/Home';
+import About from './pages/About';
+import User from './pages/User';
 
 class App extends Component {
   constructor(props) {
-    super(props);    
+    super(props);
     this.fetchUser();
-    this.firebaseLoginWithFacebook = this.firebaseLoginWithFacebook.bind(this);
-    this.logoutFirebaseUser = this.logoutFirebaseUser.bind(this);
+    this.loginWithFacebook = this.loginWithFacebook.bind(this);
+    this.logoutUser = this.logoutUser.bind(this);
   }
 
   fetchUser() {
-    firebaseAuth.fetchUser().then(      
-      user => this.props.fetchFirebaseUserSuccess(user),      
-      () => this.props.fetchFirebaseUserFailure()
+    firebaseAuth.fetchUser().then(
+      user => this.props.fetchUserSuccess(user),
+      () => this.props.fetchUserFailure(),
     )
   }
 
-  firebaseLoginWithFacebook() {
+  loginWithFacebook() {
     firebaseAuth.loginWithProvider('facebook').then(
-      result => this.props.loginFirebaseUserSuccess(result.user),
-      () => this.props.loginFirebaseUserFailure()
+      result => this.props.loginUserSuccess(result.user),
+      () => this.props.loginUserFailure(),
     )
   }
 
-  logoutFirebaseUser() {   
-    firebaseAuth.logoutUser().then(
-      () => this.props.logoutFirebaseUserSuccess(),
-      () => this.props.logoutFirebaseUserFailure()
-    )
+  logoutUser() {
+    return firebaseAuth.logoutUser().then(
+      () => this.props.logoutUserSuccess(),
+      () => this.props.logoutUserFailure(),
+    );
   }
 
   renderComponent(Component) {
     switch (Component) {
       case Navigation:
-        return () => {       
-          if (this.props.reduxState.firebaseUser === null) {
-            return <Component />
-          } else {
-            return <Component
-              username={this.props.reduxState.firebaseUser.displayName}
-              logOut={this.logoutFirebaseUser}
-            />
+        return () => {
+          if (this.props.reduxState.user === null) {
+            return <Component />;
           }
+          return (
+            <Component
+              username={this.props.reduxState.user.displayName}
+              logOut={this.logoutUser}
+            />
+          );
         };
       case User:
         return () => {
-          if (this.props.reduxState.firebaseUser === null) {
-            return <Component
-              loginWithFacebook={this.firebaseLoginWithFacebook}
-            />
-          } else {
-            return <Component
-              uid = {this.props.reduxState.firebaseUser.uid}
-            />
+          if (this.props.reduxState.user === null) {
+            return (
+              <Component
+                loginWithFacebook={this.loginWithFacebook}
+              />
+            );
           }
+          return (
+            <Component
+              uid={this.props.reduxState.user.uid}
+            />
+          );
         };
       default:
-        throw new Error('Provided component name is not used.')
-    }  
+        throw new Error('Provided component name is not used.');
+    }
   }
 
   render() {
     return (
       <div>
-        <Route path="/" render={this.renderComponent(Navigation)}/>
+        <Route path="/" render={this.renderComponent(Navigation)} />
         <Route exact path="/" component={Home} />
         <Route path="/about" component={About} />
-        <Route path="/user" render={this.renderComponent(User)} /> 
+        <Route path="/user" render={this.renderComponent(User)} />
       </div>
     );
-  }  
+  }
 }
 
-function mapDispatchToProps(dispatch) {  
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchFirebaseUserSuccess,
-    fetchFirebaseUserFailure,
-    logoutFirebaseUserSuccess,
-    logoutFirebaseUserFailure,
-    loginFirebaseUserSuccess,
-    loginFirebaseUserFailure,
+    fetchUserSuccess,
+    fetchUserFailure,
+    logoutUserSuccess,
+    logoutUserFailure,
+    loginUserSuccess,
+    loginUserFailure,
   }, dispatch);
 }
 
 function mapStateToProps(state) {
-  return { 
-    reduxState: state
+  return {
+    reduxState: state,
   };
 }
 

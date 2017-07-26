@@ -1,6 +1,6 @@
-import firebase from 'firebase'
+import firebase from 'firebase';
 
-import firebaseApp from './firebaseApp'
+import firebaseApp from './firebaseApp';
 
 const auth = firebaseApp.auth();
 
@@ -15,8 +15,8 @@ const firebaseAuth = {
     }
   },
 
-  loginWithProvider: function (providerName) {    
-    const provider = this.getProvider(providerName);    
+  loginWithProvider(providerName) {
+    const provider = this.getProvider(providerName);
     return auth.signInWithPopup(provider);
   },
 
@@ -24,14 +24,14 @@ const firebaseAuth = {
 
   fetchUser: () => new Promise((resolve, reject) => {
     auth.onAuthStateChanged(
-      user => {              
+      (user) => {
         resolve(user);
       },
-      error => {
-       reject(error);
-    });
+      (error) => {
+        reject(error);
+      },
+    );
   }),
-
 };
 
 export default firebaseAuth;
