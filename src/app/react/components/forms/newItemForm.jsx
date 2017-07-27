@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-const adaptFileEventToValue = delegate => {debugger;
+const adaptFileEventToValue = delegate => {
   return e => delegate(e.target.files[0]);
 }
 

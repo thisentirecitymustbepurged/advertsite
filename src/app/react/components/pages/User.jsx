@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 
 import firebaseDb from '../../../firebase/firebaseDb';
-// import firebaseStor from '../../../firebase/firebaseStor';
+import firebaseStor from '../../../firebase/firebaseStor';
 
 import {
   fetchUserItemsSuccess,
@@ -49,19 +49,25 @@ class User extends Component {
   createNewItem(values) {
     const image = values.image;
     delete values.image;
-    // const newItemKey = firebaseDb.dbRef('/').child('ads').push().key;
-    // console.log(newItemKey);
-    // firebaseStor.storRef().child(`images/${newItemKey}`).put(e.files[0]).then(function(snapshot) {
-    //   console.log('Uploaded a blob or file!');
-    // });
     const newItemKey = firebaseDb.dbRef('ads').push().key;
-    const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}`).push.key;
     const updates = {};
     updates[`/ads/${newItemKey}`] = { ...values, uid: this.props.uid };
-    updates[`/ads/${newItemKey}/${newImageKey}`] = '';
     updates[`/user_ads/${this.props.uid}/${newItemKey}`] = '';
-    firebaseDb.dbRef('/').update(updates).then(
-      () => this.props.createUserItemSuccess(),
+    firebaseDb.dbRef().update(updates).then(
+      () => {
+        const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
+        const update = {};
+        update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
+        firebaseDb.dbRef().update(update).then(
+          () => {
+            firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
+              () => this.props.createUserItemSuccess(),
+              () => this.props.createUserItemFailure(),
+            );
+          },
+          () => this.props.createUserItemFailure(),
+        );
+      },
       () => this.props.createUserItemFailure(),
     );
   }

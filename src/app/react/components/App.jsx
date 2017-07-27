@@ -57,7 +57,7 @@ class App extends Component {
           }
           return (
             <Component
-              username={this.props.reduxState.user.displayName}
+              user={this.props.reduxState.user}
               logOut={this.logoutUser}
             />
           );
