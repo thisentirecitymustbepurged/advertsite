@@ -3,24 +3,24 @@ import * as actionTypes from './readWriteTypes';
 export function userReadWriteReducer (state = null, action) {
   switch (action.type) {
 
-    case actionTypes.FETCH_USER_ITEMS_SUCCESS:
-      return action.items;
-    case actionTypes.FETCH_USER_ITEMS_FAILURE:
+    case actionTypes.FETCH_USER_ADS_SUCCESS:
+      return action.Ads;
+    case actionTypes.FETCH_USER_ADS_FAILURE:
       return state;
 
-    case actionTypes.CREATE_USER_ITEM_SUCCESS:
+    case actionTypes.CREATE_USER_AD_SUCCESS:
       return state;
-    case actionTypes.CREATE_USER_ITEM_FAILURE:
-      return state;
-
-    case actionTypes.UPDATE_USER_ITEM_SUCCESS:
-      return state;
-    case actionTypes.UPDATE_USER_ITEM_FAILURE:
+    case actionTypes.CREATE_USER_AD_FAILURE:
       return state;
 
-    case actionTypes.DELETE_USER_ITEM_SUCCESS:
+    case actionTypes.UPDATE_USER_AD_SUCCESS:
       return state;
-    case actionTypes.DELETE_USER_ITEM_FAILURE:
+    case actionTypes.UPDATE_USER_AD_FAILURE:
+      return state;
+
+    case actionTypes.DELETE_USER_AD_SUCCESS:
+      return state;
+    case actionTypes.DELETE_USER_AD_FAILURE:
       return state;
 
     default:
@@ -31,9 +31,9 @@ export function userReadWriteReducer (state = null, action) {
 export function readWriteReducer (state = null, action) {
   switch (action.type) {
 
-    case actionTypes.FETCH_ITEMS_SUCCESS:
-      return action.items;
-    case actionTypes.FETCH_ITEMS_FAILURE:
+    case actionTypes.FETCH_ADS_SUCCESS:
+      return action.Ads;
+    case actionTypes.FETCH_ADS_FAILURE:
       return state;
 
     default:

@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 
 
-export default class Item extends Component {
+export default class Ad extends Component {
   constructor() {
     super();
     this.state = {
-      showItemForm: 'something',
+      showAdForm: 'something',
     };
   }
 
   render() {
     return (
       <div key={this.props.key}>
-        {items[key].name}, {items[key].a}, {items[key].b}
-        <button onClick={() => this.deleteItem(key)}>Delete</button>
-        <button onClick={() => this.updateItem(key)}>Update</button>
+        {Ads[key].name}, {Ads[key].a}, {Ads[key].b}
+        <button onClick={() => this.deleteAd(key)}>Delete</button>
+        <button onClick={() => this.updateAd(key)}>Update</button>
       </div>
     );
   }

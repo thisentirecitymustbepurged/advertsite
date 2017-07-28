@@ -8,9 +8,9 @@ import {
 import userAuthReducer from './userAuth/userAuthReducer';
 
 const reducersCombined = combineReducers({
-  items: readWriteReducer,
+  ads: readWriteReducer,
   user: userAuthReducer,
-  userItems: userReadWriteReducer,
+  userAds: userReadWriteReducer,
   form: formReducer,
 });
 

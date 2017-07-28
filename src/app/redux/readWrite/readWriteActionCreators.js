@@ -1,58 +1,58 @@
 import * as actionTypes from './readWriteTypes';
 
-export function fetchItemsSuccess(items) {
+export function fetchAdsSuccess(Ads) {
   return {
-    type: actionTypes.FETCH_ITEMS_SUCCESS,
-    items,
+    type: actionTypes.FETCH_ADS_SUCCESS,
+    Ads,
   };
 }
-export function fetchItemsFailure() {
+export function fetchAdsFailure() {
   return {
-    type: actionTypes.FETCH_ITEMS_FAILURE,
-  };
-}
-
-export function fetchUserItemsSuccess(items) {
-  return {
-    type: actionTypes.FETCH_USER_ITEMS_SUCCESS,
-    items,
-  };
-}
-export function fetchUserItemsFailure() {
-  return {
-    type: actionTypes.FETCH_USER_ITEMS_FAILURE,
+    type: actionTypes.FETCH_ADS_FAILURE,
   };
 }
 
-export function createUserItemSuccess() {
+export function fetchUserAdsSuccess(Ads) {
   return {
-    type: actionTypes.CREATE_USER_ITEM_SUCCESS,
+    type: actionTypes.FETCH_USER_ADS_SUCCESS,
+    Ads,
   };
 }
-export function createUserItemFailure() {
+export function fetchUserAdsFailure() {
   return {
-    type: actionTypes.CREATE_USER_ITEM_FAILURE,
-  };
-}
-
-export function updateUserItemSuccess() {
-  return {
-    type: actionTypes.UPDATE_USER_ITEM_SUCCESS,
-  };
-}
-export function updateUserItemFailure() {
-  return {
-    type: actionTypes.UPDATE_USER_ITEM_FAILURE,
+    type: actionTypes.FETCH_USER_ADS_FAILURE,
   };
 }
 
-export function deleteUserItemSuccess() {
+export function createUserAdSuccess() {
   return {
-    type: actionTypes.DELETE_USER_ITEM_SUCCESS,
+    type: actionTypes.CREATE_USER_AD_SUCCESS,
   };
 }
-export function deleteUserItemFailure() {
+export function createUserAdFailure() {
   return {
-    type: actionTypes.DELETE_USER_ITEM_FAILURE,
+    type: actionTypes.CREATE_USER_AD_FAILURE,
+  };
+}
+
+export function updateUserAdSuccess() {
+  return {
+    type: actionTypes.UPDATE_USER_AD_SUCCESS,
+  };
+}
+export function updateUserAdFailure() {
+  return {
+    type: actionTypes.UPDATE_USER_AD_FAILURE,
+  };
+}
+
+export function deleteUserAdSuccess() {
+  return {
+    type: actionTypes.DELETE_USER_AD_SUCCESS,
+  };
+}
+export function deleteUserAdFailure() {
+  return {
+    type: actionTypes.DELETE_USER_AD_FAILURE,
   };
 }

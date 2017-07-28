@@ -24,7 +24,7 @@ const FileInput = ({
   />
 };
 
-const NewItemForm = (props) => {
+const NewAdForm = (props) => {
   const { handleSubmit, pristine, reset, submitting } = props;
   return (
     <form onSubmit={handleSubmit}>
@@ -33,7 +33,7 @@ const NewItemForm = (props) => {
           name="name"
           component="input"
           type="text"
-          placeholder="Item Name"
+          placeholder="Ad Name"
         />
       </div>
       <div>
@@ -54,5 +54,5 @@ const NewItemForm = (props) => {
 };
 
 export default reduxForm({
-  form: 'NewItemForm', // a unique identifier for this form
-})(NewItemForm);
+  form: 'NewAdForm', // a unique identifier for this form
+})(NewAdForm);

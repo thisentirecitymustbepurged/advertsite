@@ -6,80 +6,63 @@ import firebaseDb from '../../../firebase/firebaseDb';
 import firebaseStor from '../../../firebase/firebaseStor';
 
 import {
-  fetchUserItemsSuccess,
-  fetchUserItemsFailure,
-  createUserItemSuccess,
-  createUserItemFailure,
-  // updateUserItemSuccess,
-  // updateUserItemFailure,
-  deleteUserItemSuccess,
-  deleteUserItemFailure,
+  fetchUserAdsSuccess,
+  fetchUserAdsFailure,
+  createUserAdSuccess,
+  createUserAdFailure,
+  // updateUserAdSuccess,
+  // updateUserAdFailure,
+  deleteUserAdSuccess,
+  deleteUserAdFailure,
 } from '../../../redux/readWrite/readWriteActionCreators';
 
-import NewItemForm from '../forms/NewItemForm';
+import createNewAd from '../api/createNewAd';
+
+import NewAdForm from '../forms/NewAdForm';
 
 class User extends Component {
   constructor(props) {
     super(props);
-    this.userItemsRef = '';
-    this.userItemsListenerWasCalled = false;
-    this.userItemsListener();
-    this.createNewItem = this.createNewItem.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
+    this.userAdsRef = '';
+    this.userAdsListenerWasCalled = false;
+    this.userAdsListener();
+    this.createNewAd = this.createNewAd.bind(this);
+    this.deleteAd = this.deleteAd.bind(this);
   }
 
   componentDidUpdate() {
-    this.userItemsListener();
+    this.userAdsListener();
   }
 
   componentWillUnmount() {
-    this.userItemsRef === '' ? '':this.userItemsRef.off();
+    this.userAdsRef === '' ? '':this.userAdsRef.off();
   }
 
-  userItemsListener() {
-    if (this.props.uid !== undefined && !this.userItemsListenerWasCalled) {
-      this.userItemsListenerWasCalled = true;
-      this.userItemsRef = firebaseDb.dbRef(`/user_ads/${this.props.uid}`);
-      this.userItemsRef.on('value',
-        snapshot => this.props.fetchUserItemsSuccess(snapshot.val()),
-        () => this.props.fetchUserItemsFailure(),
+  userAdsListener() {
+    if (this.props.uid !== undefined && !this.userAdsListenerWasCalled) {
+      this.userAdsListenerWasCalled = true;
+      this.userAdsRef = firebaseDb.dbRef(`/user_ads/${this.props.uid}`);
+      this.userAdsRef.on('value',
+        snapshot => this.props.fetchUserAdsSuccess(snapshot.val()),
+        () => this.props.fetchUserAdsFailure(),
       );
     }
   }
 
-  createNewItem(values) {
-    const image = values.image;
-    delete values.image;
-    const newItemKey = firebaseDb.dbRef('ads').push().key;
-    const updates = {};
-    updates[`/ads/${newItemKey}`] = { ...values, uid: this.props.uid };
-    updates[`/user_ads/${this.props.uid}/${newItemKey}`] = '';
-    firebaseDb.dbRef().update(updates).then(
-      () => {
-        const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
-        const update = {};
-        update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
-        firebaseDb.dbRef().update(update).then(
-          () => {
-            firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
-              () => this.props.createUserItemSuccess(),
-              () => this.props.createUserItemFailure(),
-            );
-          },
-          () => this.props.createUserItemFailure(),
-        );
-      },
-      () => this.props.createUserItemFailure(),
-    );
+  createNewAd(values) {
+    createNewAd(values, this.props.uid).then(
+      () => this.props.createUserAdSuccess(),
+      () => this.props.createUserAdFailure(),
+    )
   }
 
-  deleteItem(key) {
+  deleteAd(key) {
     const updates = {};
     updates[`/ads/${key}`] = null;
     updates[`/user_ads/${this.props.uid}/${key}`] = null;
     firebaseDb.dbRef('/').update(updates).then(
-      () => this.props.deleteUserItemSuccess(),
-      () => this.props.deleteUserItemFailure(),
+      () => this.props.deleteUserAdSuccess(),
+      () => this.props.deleteUserAdFailure(),
     );
   }
 
@@ -87,8 +70,8 @@ class User extends Component {
     if (this.props.uid !== undefined) {
       return (
         <div>
-          <div>Submit new item:</div>
-          <NewItemForm onSubmit={this.createNewItem} />
+          <div>Submit new Ad:</div>
+          <NewAdForm onSubmit={this.createNewAd} />
         </div>
       );
     }
@@ -100,25 +83,25 @@ class User extends Component {
     );
   }
 
-  renderItems() {
-    if (this.props.userItems !== null) {
-      const items = this.props.userItems;
-      return Object.keys(items).map(key => (
+  renderAds() {
+    if (this.props.userAds !== null) {
+      const Ads = this.props.userAds;
+      return Object.keys(Ads).map(key => (
         <div key={key}>
-          {items[key].name}
-          <button onClick={() => this.deleteItem(key)}>Delete</button>
-          <button onClick={() => this.updateItem(key)}>Update</button>
+          {Ads[key].name}
+          <button onClick={() => this.deleteAd(key)}>Delete</button>
+          <button onClick={() => this.updateAd(key)}>Update</button>
         </div>
       ));
     }
-    return <div>No items</div>;
+    return <div>No Ads</div>;
   }
 
   render() {
     return (
       <div>
         {this.userExists()}
-        {this.renderItems()}
+        {this.renderAds()}
       </div>
     );
   }
@@ -126,18 +109,18 @@ class User extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchUserItemsSuccess,
-    fetchUserItemsFailure,
-    createUserItemSuccess,
-    createUserItemFailure,
-    deleteUserItemSuccess,
-    deleteUserItemFailure,
+    fetchUserAdsSuccess,
+    fetchUserAdsFailure,
+    createUserAdSuccess,
+    createUserAdFailure,
+    deleteUserAdSuccess,
+    deleteUserAdFailure,
   }, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    userItems: state.userItems,
+    userAds: state.userAds,
   };
 }
 
