@@ -22,7 +22,7 @@ class User extends Component {
   constructor(props) {
     super(props);
     console.log('constructor')
-    this.userItemsRef = '';
+    this.userItemsRef = function () {};
     this.userItemsListenerWasCalled = false;
     this.userItemsListener();
     this.createNewItem = this.createNewItem.bind(this);
