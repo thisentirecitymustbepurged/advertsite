@@ -1,20 +1,64 @@
-import React, { Component } from 'react'
-import { Grid, Row, Col, Clearfix } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import React, { Component } from 'react';
+import { Grid, Row, Col, Thumbnail } from 'react-bootstrap';
 
-export default class Home extends Component {
+import firebaseDb from '../../../firebase/firebaseDb';
+// import firebaseStor from '../../../firebase/firebaseStor';
+
+import {
+  fetchItemsSuccess,
+  fetchItemsFailure,
+} from '../../../redux/readWrite/readWriteActionCreators';
+
+class Home extends Component {
+  constructor() {
+    super();
+    this.fetchItems();
+  }
+
+  fetchItems() {
+    firebaseDb.dbRef('/ads').once('value').then(
+      snapshot => this.props.fetchItemsSuccess(snapshot.val()),
+      () => this.props.fetchItemsFailure(),
+    );
+  }
+
+  renderItems() {
+    if (this.props.items !== null) {
+      const items = this.props.items;
+      return Object.keys(items).map(key => (
+        <Col key={key} sm={6} md={3}>
+          {items[key].name}
+          <Thumbnail href="#" alt="171x180" />
+        </Col>
+      ));
+    }
+    return <div>No items</div>;
+  }
+
   render() {
-    const dummySentences = ['Lorem ipsum dolor sit amet, consectetuer adipiscing elit.', 'Donec hendrerit tempor tellus.', 'Donec pretium posuere tellus.', 'Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.', 'Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 'Nulla posuere.', 'Donec vitae dolor.', 'Nullam tristique diam non turpis.', 'Cras placerat accumsan nulla.', 'Nullam rutrum.', 'Nam vestibulum accumsan nisl.'
-    ];
     return (
       <Grid>
         <Row className="show-grid">
-          <Col sm={6} md={3}>{dummySentences.slice(0, 6).join(' ')}</Col>
-          <Col sm={6} md={3}>{dummySentences.slice(0, 4).join(' ')}</Col>
-          <Clearfix visibleSmBlock></Clearfix>
-          <Col sm={6} md={3}>{dummySentences.slice(0, 6).join(' ')}</Col>
-          <Col sm={6} md={3}>{dummySentences.slice(0, 2).join(' ')}</Col>
+          {this.renderItems()}
         </Row>
       </Grid>
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    fetchItemsSuccess,
+    fetchItemsFailure,
+  }, dispatch);
+}
+
+function mapStateToProps(state) {
+  return {
+    items: state.items,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

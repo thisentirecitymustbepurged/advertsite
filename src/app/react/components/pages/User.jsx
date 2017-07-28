@@ -55,21 +55,20 @@ class User extends Component {
     updates[`/ads/${newItemKey}`] = { ...values, uid: this.props.uid };
     updates[`/user_ads/${this.props.uid}/${newItemKey}`] = '';
     firebaseDb.dbRef().update(updates).then(
-      () => this.props.createUserItemSuccess(),
-      // {
-      //   const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
-      //   const update = {};
-      //   update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
-      //   firebaseDb.dbRef().update(update).then(
-      //     () => {
-      //       firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
-      //         () => this.props.createUserItemSuccess(),
-      //         () => this.props.createUserItemFailure(),
-      //       );
-      //     },
-      //     () => this.props.createUserItemFailure(),
-      //   );
-      // },
+      () => {
+        const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
+        const update = {};
+        update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
+        firebaseDb.dbRef().update(update).then(
+          () => {
+            firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
+              () => this.props.createUserItemSuccess(),
+              () => this.props.createUserItemFailure(),
+            );
+          },
+          () => this.props.createUserItemFailure(),
+        );
+      },
       () => this.props.createUserItemFailure(),
     );
   }
@@ -106,7 +105,7 @@ class User extends Component {
       const items = this.props.userItems;
       return Object.keys(items).map(key => (
         <div key={key}>
-          {items[key].name}, {items[key].a}, {items[key].b}
+          {items[key].name}
           <button onClick={() => this.deleteItem(key)}>Delete</button>
           <button onClick={() => this.updateItem(key)}>Update</button>
         </div>
