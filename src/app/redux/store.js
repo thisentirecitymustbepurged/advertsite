@@ -4,13 +4,13 @@ import { reducer as formReducer } from 'redux-form';
 import {
   userReadWriteReducer,
   readWriteReducer,
-} from './readWrite/readWriteReducer';
-import userAuthReducer from './userAuth/userAuthReducer';
+} from './readWrite/reducer';
+import userAuthReducer from './userAuth/reducer';
 
 const reducersCombined = combineReducers({
-  ads: readWriteReducer,
   user: userAuthReducer,
   userAds: userReadWriteReducer,
+  ads: readWriteReducer,
   form: formReducer,
 });
 

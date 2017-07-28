@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 
-import firebaseAuth from '../../firebase/firebaseAuth';
+import auth from '../../firebase/auth';
 
 import {
   fetchUserSuccess,
@@ -12,7 +12,7 @@ import {
   logoutUserSuccess,
   logoutUserFailure,
   loginUserSuccess,
-} from '../../redux/userAuth/userAuthActionCreators';
+} from '../../redux/userAuth/actionCreators';
 
 import Navigation from './containers/Navigation';
 import Home from './pages/Home';
@@ -28,21 +28,21 @@ class App extends Component {
   }
 
   fetchUser() {
-    firebaseAuth.fetchUser().then(
+    auth.fetchUser().then(
       user => this.props.fetchUserSuccess(user),
       () => this.props.fetchUserFailure(),
     )
   }
 
   loginWithFacebook() {
-    firebaseAuth.loginWithProvider('facebook').then(
+    auth.loginWithProvider('facebook').then(
       snapshot => this.props.loginUserSuccess(snapshot.user),
       () => this.props.loginUserFailure(),
     )
   }
 
   logoutUser() {
-    return firebaseAuth.logoutUser().then(
+    return auth.logoutUser().then(
       () => this.props.logoutUserSuccess(),
       () => this.props.logoutUserFailure(),
     );

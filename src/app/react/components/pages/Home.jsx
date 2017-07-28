@@ -3,13 +3,12 @@ import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 import { Grid, Row, Col, Thumbnail } from 'react-bootstrap';
 
-import firebaseDb from '../../../firebase/firebaseDb';
-// import firebaseStor from '../../../firebase/firebaseStor';
+import db from '../../../firebase/db';
 
 import {
   fetchAdsSuccess,
   fetchAdsFailure,
-} from '../../../redux/readWrite/readWriteActionCreators';
+} from '../../../redux/readWrite/actionCreators';
 
 class Home extends Component {
   constructor() {
@@ -18,7 +17,7 @@ class Home extends Component {
   }
 
   fetchAds() {
-    firebaseDb.dbRef('/ads').once('value').then(
+    db.dbRef('/ads').once('value').then(
       snapshot => this.props.fetchAdsSuccess(snapshot.val()),
       () => this.props.fetchAdsFailure(),
     );

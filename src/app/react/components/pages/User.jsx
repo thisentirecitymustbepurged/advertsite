@@ -2,8 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 
-import firebaseDb from '../../../firebase/firebaseDb';
-import firebaseStor from '../../../firebase/firebaseStor';
+import db from '../../../firebase/db';
 
 import {
   fetchUserAdsSuccess,
@@ -14,9 +13,9 @@ import {
   // updateUserAdFailure,
   deleteUserAdSuccess,
   deleteUserAdFailure,
-} from '../../../redux/readWrite/readWriteActionCreators';
+} from '../../../redux/readWrite/actionCreators';
 
-import createNewAd from '../api/createNewAd';
+import { createNewAd } from '../../api';
 
 import NewAdForm from '../forms/NewAdForm';
 
@@ -41,7 +40,7 @@ class User extends Component {
   userAdsListener() {
     if (this.props.uid !== undefined && !this.userAdsListenerWasCalled) {
       this.userAdsListenerWasCalled = true;
-      this.userAdsRef = firebaseDb.dbRef(`/user_ads/${this.props.uid}`);
+      this.userAdsRef = db.dbRef(`/user_ads/${this.props.uid}`);
       this.userAdsRef.on('value',
         snapshot => this.props.fetchUserAdsSuccess(snapshot.val()),
         () => this.props.fetchUserAdsFailure(),
@@ -60,7 +59,7 @@ class User extends Component {
     const updates = {};
     updates[`/ads/${key}`] = null;
     updates[`/user_ads/${this.props.uid}/${key}`] = null;
-    firebaseDb.dbRef('/').update(updates).then(
+    db.dbRef('/').update(updates).then(
       () => this.props.deleteUserAdSuccess(),
       () => this.props.deleteUserAdFailure(),
     );
@@ -85,10 +84,10 @@ class User extends Component {
 
   renderAds() {
     if (this.props.userAds !== null) {
-      const Ads = this.props.userAds;
-      return Object.keys(Ads).map(key => (
+      const ads = this.props.userAds;
+      return Object.keys(ads).map(key => (
         <div key={key}>
-          {Ads[key].name}
+          {ads[key].name}
           <button onClick={() => this.deleteAd(key)}>Delete</button>
           <button onClick={() => this.updateAd(key)}>Update</button>
         </div>

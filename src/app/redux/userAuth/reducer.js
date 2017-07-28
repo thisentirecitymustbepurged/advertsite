@@ -1,4 +1,4 @@
-import * as actionTypes from './userAuthTypes';
+import * as actionTypes from './types';
 
 export default function (state = null, action) {
   switch (action.type) {
