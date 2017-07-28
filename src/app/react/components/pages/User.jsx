@@ -21,8 +21,10 @@ import NewItemForm from '../forms/NewItemForm';
 class User extends Component {
   constructor(props) {
     super(props);
-    // this.userItemsRef = '';
+    console.log('constructor')
+    this.userItemsRef = '';
     this.userItemsListenerWasCalled = false;
+    this.userItemsListener();
     this.createNewItem = this.createNewItem.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
   }
@@ -37,6 +39,7 @@ class User extends Component {
 
   userItemsListener() {
     if (this.props.uid !== undefined && !this.userItemsListenerWasCalled) {
+      console.log('userItemsListener')
       this.userItemsListenerWasCalled = true;
       this.userItemsRef = firebaseDb.dbRef(`/user_ads/${this.props.uid}`);
       this.userItemsRef.on('value',
@@ -54,20 +57,21 @@ class User extends Component {
     updates[`/ads/${newItemKey}`] = { ...values, uid: this.props.uid };
     updates[`/user_ads/${this.props.uid}/${newItemKey}`] = '';
     firebaseDb.dbRef().update(updates).then(
-      () => {
-        const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
-        const update = {};
-        update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
-        firebaseDb.dbRef().update(update).then(
-          () => {
-            firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
-              () => this.props.createUserItemSuccess(),
-              () => this.props.createUserItemFailure(),
-            );
-          },
-          () => this.props.createUserItemFailure(),
-        );
-      },
+      () => this.props.createUserItemSuccess(),
+      // {
+      //   const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
+      //   const update = {};
+      //   update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
+      //   firebaseDb.dbRef().update(update).then(
+      //     () => {
+      //       firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
+      //         () => this.props.createUserItemSuccess(),
+      //         () => this.props.createUserItemFailure(),
+      //       );
+      //     },
+      //     () => this.props.createUserItemFailure(),
+      //   );
+      // },
       () => this.props.createUserItemFailure(),
     );
   }
