@@ -16,6 +16,8 @@ import {
   deleteUserItemFailure,
 } from '../../../redux/readWrite/readWriteActionCreators';
 
+import createNewAd from '../api/createNewAd';
+
 import NewItemForm from '../forms/NewItemForm';
 
 class User extends Component {
@@ -24,7 +26,7 @@ class User extends Component {
     this.userItemsRef = '';
     this.userItemsListenerWasCalled = false;
     this.userItemsListener();
-    this.createNewItem = this.createNewItem.bind(this);
+    this.createNewAd = this.createNewAd.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
   }
 
@@ -47,30 +49,11 @@ class User extends Component {
     }
   }
 
-  createNewItem(values) {
-    const image = values.image;
-    delete values.image;
-    const newItemKey = firebaseDb.dbRef('ads').push().key;
-    const updates = {};
-    updates[`/ads/${newItemKey}`] = { ...values, uid: this.props.uid };
-    updates[`/user_ads/${this.props.uid}/${newItemKey}`] = '';
-    firebaseDb.dbRef().update(updates).then(
-      () => {
-        const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
-        const update = {};
-        update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
-        firebaseDb.dbRef().update(update).then(
-          () => {
-            firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
-              () => this.props.createUserItemSuccess(),
-              () => this.props.createUserItemFailure(),
-            );
-          },
-          () => this.props.createUserItemFailure(),
-        );
-      },
+  createNewAd(values) {
+    createNewAd(values, this.props.uid).then(
+      () => this.props.createUserItemSuccess(),
       () => this.props.createUserItemFailure(),
-    );
+    )
   }
 
   deleteItem(key) {
@@ -88,7 +71,7 @@ class User extends Component {
       return (
         <div>
           <div>Submit new item:</div>
-          <NewItemForm onSubmit={this.createNewItem} />
+          <NewItemForm onSubmit={this.createNewAd} />
         </div>
       );
     }
