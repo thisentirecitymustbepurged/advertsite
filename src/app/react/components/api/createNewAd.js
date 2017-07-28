@@ -5,15 +5,15 @@ export default function createNewAd(values, uid) {
   return new Promise ((resolve, reject) => {
     const image = values.image;
     delete values.image;
-    const newItemKey = firebaseDb.dbRef('ads').push().key;
+    const newAdKey = firebaseDb.dbRef('ads').push().key;
     const updates = {};
-    updates[`/ads/${newItemKey}`] = { ...values, uid: uid };
-    updates[`/user_ads/${uid}/${newItemKey}`] = '';
+    updates[`/ads/${newAdKey}`] = { ...values, uid: uid };
+    updates[`/user_ads/${uid}/${newAdKey}`] = '';
     firebaseDb.dbRef().update(updates).then(
       () => {
-        const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
+        const newImageKey = firebaseDb.dbRef(`ads/${newAdKey}/images`).push().key;
         const update = {};
-        update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
+        update[`/ads/${newAdKey}/images/${newImageKey}`] = '';
         firebaseDb.dbRef().update(update).then(
           () => {
             firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(

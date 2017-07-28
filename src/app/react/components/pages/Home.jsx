@@ -7,41 +7,41 @@ import firebaseDb from '../../../firebase/firebaseDb';
 // import firebaseStor from '../../../firebase/firebaseStor';
 
 import {
-  fetchItemsSuccess,
-  fetchItemsFailure,
+  fetchAdsSuccess,
+  fetchAdsFailure,
 } from '../../../redux/readWrite/readWriteActionCreators';
 
 class Home extends Component {
   constructor() {
     super();
-    this.fetchItems();
+    this.fetchAds();
   }
 
-  fetchItems() {
+  fetchAds() {
     firebaseDb.dbRef('/ads').once('value').then(
-      snapshot => this.props.fetchItemsSuccess(snapshot.val()),
-      () => this.props.fetchItemsFailure(),
+      snapshot => this.props.fetchAdsSuccess(snapshot.val()),
+      () => this.props.fetchAdsFailure(),
     );
   }
 
-  renderItems() {
-    if (this.props.items !== null) {
-      const items = this.props.items;
-      return Object.keys(items).map(key => (
+  renderAds() {
+    if (this.props.ads !== null) {
+      const ads = this.props.ads;
+      return Object.keys(ads).map(key => (
         <Col key={key} sm={6} md={3}>
-          {items[key].name}
+          {ads[key].name}
           <Thumbnail href="#" alt="171x180" />
         </Col>
       ));
     }
-    return <div>No items</div>;
+    return <div>No Ads</div>;
   }
 
   render() {
     return (
       <Grid>
         <Row className="show-grid">
-          {this.renderItems()}
+          {this.renderAds()}
         </Row>
       </Grid>
     );
@@ -50,14 +50,14 @@ class Home extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchItemsSuccess,
-    fetchItemsFailure,
+    fetchAdsSuccess,
+    fetchAdsFailure,
   }, dispatch);
 }
 
 function mapStateToProps(state) {
   return {
-    items: state.items,
+    ads: state.ads,
   };
 }
 
