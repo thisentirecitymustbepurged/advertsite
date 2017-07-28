@@ -21,8 +21,7 @@ import NewItemForm from '../forms/NewItemForm';
 class User extends Component {
   constructor(props) {
     super(props);
-    console.log('constructor')
-    this.userItemsRef = function () {};
+    this.userItemsRef = '';
     this.userItemsListenerWasCalled = false;
     this.userItemsListener();
     this.createNewItem = this.createNewItem.bind(this);
@@ -34,12 +33,11 @@ class User extends Component {
   }
 
   componentWillUnmount() {
-    this.userItemsRef.off();
+    this.userItemsRef === '' ? '':this.userItemsRef.off();
   }
 
   userItemsListener() {
     if (this.props.uid !== undefined && !this.userItemsListenerWasCalled) {
-      console.log('userItemsListener')
       this.userItemsListenerWasCalled = true;
       this.userItemsRef = firebaseDb.dbRef(`/user_ads/${this.props.uid}`);
       this.userItemsRef.on('value',
@@ -57,21 +55,20 @@ class User extends Component {
     updates[`/ads/${newItemKey}`] = { ...values, uid: this.props.uid };
     updates[`/user_ads/${this.props.uid}/${newItemKey}`] = '';
     firebaseDb.dbRef().update(updates).then(
-      () => this.props.createUserItemSuccess(),
-      // {
-      //   const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
-      //   const update = {};
-      //   update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
-      //   firebaseDb.dbRef().update(update).then(
-      //     () => {
-      //       firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
-      //         () => this.props.createUserItemSuccess(),
-      //         () => this.props.createUserItemFailure(),
-      //       );
-      //     },
-      //     () => this.props.createUserItemFailure(),
-      //   );
-      // },
+      () => {
+        const newImageKey = firebaseDb.dbRef(`ads/${newItemKey}/images`).push().key;
+        const update = {};
+        update[`/ads/${newItemKey}/images/${newImageKey}`] = '';
+        firebaseDb.dbRef().update(update).then(
+          () => {
+            firebaseStor.storRef().child(`images/${newImageKey}`).put(image).then(
+              () => this.props.createUserItemSuccess(),
+              () => this.props.createUserItemFailure(),
+            );
+          },
+          () => this.props.createUserItemFailure(),
+        );
+      },
       () => this.props.createUserItemFailure(),
     );
   }
@@ -108,7 +105,7 @@ class User extends Component {
       const items = this.props.userItems;
       return Object.keys(items).map(key => (
         <div key={key}>
-          {items[key].name}, {items[key].a}, {items[key].b}
+          {items[key].name}
           <button onClick={() => this.deleteItem(key)}>Delete</button>
           <button onClick={() => this.updateItem(key)}>Update</button>
         </div>

@@ -36,7 +36,7 @@ class App extends Component {
 
   loginWithFacebook() {
     firebaseAuth.loginWithProvider('facebook').then(
-      result => this.props.loginUserSuccess(result.user),
+      snapshot => this.props.loginUserSuccess(snapshot.user),
       () => this.props.loginUserFailure(),
     )
   }
