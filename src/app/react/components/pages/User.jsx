@@ -21,8 +21,7 @@ import NewItemForm from '../forms/NewItemForm';
 class User extends Component {
   constructor(props) {
     super(props);
-    console.log('constructor')
-    this.userItemsRef = function () {};
+    this.userItemsRef = '';
     this.userItemsListenerWasCalled = false;
     this.userItemsListener();
     this.createNewItem = this.createNewItem.bind(this);
@@ -34,12 +33,11 @@ class User extends Component {
   }
 
   componentWillUnmount() {
-    this.userItemsRef.off();
+    this.userItemsRef === '' ? '':this.userItemsRef.off();
   }
 
   userItemsListener() {
     if (this.props.uid !== undefined && !this.userItemsListenerWasCalled) {
-      console.log('userItemsListener')
       this.userItemsListenerWasCalled = true;
       this.userItemsRef = firebaseDb.dbRef(`/user_ads/${this.props.uid}`);
       this.userItemsRef.on('value',
