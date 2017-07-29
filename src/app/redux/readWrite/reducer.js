@@ -1,10 +1,10 @@
-import * as actionTypes from './readWriteTypes';
+import * as actionTypes from './types';
 
-export function userReadWriteReducer (state = null, action) {
-  switch (action.type) {
+export function userReadWriteReducer (state = null, {type, ads}) {
+  switch (type) {
 
     case actionTypes.FETCH_USER_ADS_SUCCESS:
-      return action.Ads;
+      return ads;
     case actionTypes.FETCH_USER_ADS_FAILURE:
       return state;
 
@@ -28,11 +28,11 @@ export function userReadWriteReducer (state = null, action) {
   }
 }
 
-export function readWriteReducer (state = null, action) {
-  switch (action.type) {
+export function readWriteReducer (state = null, {type, ads}) {
+  switch (type) {
 
     case actionTypes.FETCH_ADS_SUCCESS:
-      return action.Ads;
+      return ads;
     case actionTypes.FETCH_ADS_FAILURE:
       return state;
 

@@ -1,8 +1,8 @@
 import firebase from 'firebase';
 
-import firebaseApp from './firebaseApp';
+import app from './app';
 
-const auth = firebaseApp.auth();
+const auth = app.auth();
 
 const firebaseAuth = {
   getProvider: (providerName) => {

@@ -1,9 +1,9 @@
-import * as actionTypes from './readWriteTypes';
+import * as actionTypes from './types';
 
-export function fetchAdsSuccess(Ads) {
+export function fetchAdsSuccess(ads) {
   return {
     type: actionTypes.FETCH_ADS_SUCCESS,
-    Ads,
+    ads,
   };
 }
 export function fetchAdsFailure() {
@@ -12,10 +12,10 @@ export function fetchAdsFailure() {
   };
 }
 
-export function fetchUserAdsSuccess(Ads) {
+export function fetchUserAdsSuccess(ads) {
   return {
     type: actionTypes.FETCH_USER_ADS_SUCCESS,
-    Ads,
+    ads,
   };
 }
 export function fetchUserAdsFailure() {

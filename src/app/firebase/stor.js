@@ -1,6 +1,6 @@
-import firebaseApp from './firebaseApp';
+import app from './app';
 
-const stor = firebaseApp.storage();
+const stor = app.storage();
 
 const firebaseStor = {
   storRef: path => stor.ref(path),
