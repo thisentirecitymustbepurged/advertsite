@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 
-export default class Navigation extends Component {
-  userExists() {
-    if (this.props.username === undefined) {
-      return <Link to="/user">Login</Link>;
-    }
-    return (
-      <span>
-        <Link to="/user"> Logged in as {this.props.username} </Link>
+import {
+  logoutUserSuccess,
+  logoutUserFailure,
+} from '../../../redux/userAuth/actionCreators';
 
-      </span>
-    );
-  }
+class Navigation extends Component {
 
   renderUserMenu(user) {
     if (user) {
@@ -73,3 +69,18 @@ export default class Navigation extends Component {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    logoutUserSuccess,
+    logoutUserFailure,
+  }, dispatch);
+}
+
+function mapStateToProps({ user }) {
+  return {
+    user,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);

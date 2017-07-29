@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
 
 import auth from '../../firebase/auth';
 
@@ -9,15 +8,12 @@ import {
   fetchUserSuccess,
   fetchUserFailure,
   loginUserFailure,
+  loginUserSuccess,
   logoutUserSuccess,
   logoutUserFailure,
-  loginUserSuccess,
 } from '../../redux/userAuth/actionCreators';
 
 import Navigation from './containers/Navigation';
-import Home from './pages/Home';
-import About from './pages/About';
-import User from './pages/User';
 
 class App extends Component {
   constructor(props) {
@@ -52,19 +48,19 @@ class App extends Component {
     switch (Component) {
       case Navigation:
         return () => {
-          if (this.props.reduxState.user === null) {
+          if (this.props.user === null) {
             return <Component />;
           }
           return (
             <Component
-              user={this.props.reduxState.user}
+              user={this.props.user}
               logOut={this.logoutUser}
             />
           );
         };
       case User:
         return () => {
-          if (this.props.reduxState.user === null) {
+          if (this.props.user === null) {
             return (
               <Component
                 loginWithFacebook={this.loginWithFacebook}
@@ -73,7 +69,7 @@ class App extends Component {
           }
           return (
             <Component
-              uid={this.props.reduxState.user.uid}
+              uid={this.props.user.uid}
             />
           );
         };
@@ -84,11 +80,9 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <Route path="/" render={this.renderComponent(Navigation)} />
-        <Route exact path="/" component={Home} />
-        <Route path="/about" component={About} />
-        <Route path="/user" render={this.renderComponent(User)} />
+      <div className="app">
+        <Navigation />
+          { this.props.children }
       </div>
     );
   }
@@ -105,10 +99,10 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ user }) {
   return {
-    reduxState: state,
+    user,
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default connect(mapStateToProps, mapDispatchToProps)(App);
