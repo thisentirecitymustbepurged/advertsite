@@ -57,9 +57,9 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ ads }) {
   return {
-    ads: state.ads,
+    ads,
   };
 }
 

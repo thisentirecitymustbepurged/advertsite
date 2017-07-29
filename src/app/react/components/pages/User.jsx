@@ -17,6 +17,8 @@ import {
 
 import { createNewAd } from '../../api';
 
+const { dbRef } = db;
+
 import NewAdForm from '../forms/NewAdForm';
 
 class User extends Component {
@@ -38,9 +40,9 @@ class User extends Component {
   }
 
   userAdsListener() {
-    if (this.props.uid !== undefined && !this.userAdsListenerWasCalled) {
+    if (this.props.user && this.props.user.uid !==undefined && !this.userAdsListenerWasCalled) {
       this.userAdsListenerWasCalled = true;
-      this.userAdsRef = db.dbRef(`/user_ads/${this.props.uid}`);
+      this.userAdsRef = dbRef(`/user_ads/${this.props.user.uid}`);
       this.userAdsRef.on('value',
         snapshot => this.props.fetchUserAdsSuccess(snapshot.val()),
         () => this.props.fetchUserAdsFailure(),
@@ -49,7 +51,7 @@ class User extends Component {
   }
 
   createNewAd(values) {
-    createNewAd(values, this.props.uid).then(
+    createNewAd(values, this.props.user.uid).then(
       () => this.props.createUserAdSuccess(),
       () => this.props.createUserAdFailure(),
     )
@@ -58,15 +60,15 @@ class User extends Component {
   deleteAd(key) {
     const updates = {};
     updates[`/ads/${key}`] = null;
-    updates[`/user_ads/${this.props.uid}/${key}`] = null;
-    db.dbRef('/').update(updates).then(
+    updates[`/user_ads/${this.props.user.uid}/${key}`] = null;
+    dbRef('/').update(updates).then(
       () => this.props.deleteUserAdSuccess(),
       () => this.props.deleteUserAdFailure(),
     );
   }
 
   userExists() {
-    if (this.props.uid !== undefined) {
+    if (this.props.user !== undefined) {
       return (
         <div>
           <div>Submit new Ad:</div>
@@ -117,9 +119,10 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-function mapStateToProps(state) {
+function mapStateToProps({ user, userAds}) {
   return {
-    userAds: state.userAds,
+    user,
+    userAds,
   };
 }
 
