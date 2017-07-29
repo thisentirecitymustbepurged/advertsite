@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
-import { Grid, Row, Col, Thumbnail } from 'react-bootstrap';
+import { Grid, Row, Col, Image} from 'react-bootstrap';
 
 import db from '../../../firebase/db';
 
@@ -26,12 +26,16 @@ class Home extends Component {
   renderAds() {
     if (this.props.ads !== null) {
       const ads = this.props.ads;
-      return Object.keys(ads).map(key => (
-        <Col key={key} sm={6} md={3}>
-          {ads[key].name}
-          <Thumbnail href="#" alt="171x180" />
-        </Col>
-      ));
+      return Object.keys(ads).map(key => {
+        const imgUrl = ads[key].images[Object.keys(ads[key].images)[0]]
+        console.log(imgUrl)
+        return (
+          <Col key={key} sm={6} md={3}>
+            <Image src={imgUrl} width="171" height="180" thumbnail />
+            <div>{ads[key].name}</div>
+          </Col>
+        )
+      });
     }
     return <div>No Ads</div>;
   }
