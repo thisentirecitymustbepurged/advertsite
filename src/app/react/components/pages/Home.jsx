@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
-import { Grid, Row, Col, Image} from 'react-bootstrap';
+import { Grid, Row, Col, Image } from 'react-bootstrap';
 
 import db from '../../../firebase/db';
 
@@ -27,14 +27,13 @@ class Home extends Component {
     if (this.props.ads !== null) {
       const ads = this.props.ads;
       return Object.keys(ads).map(key => {
-        const imgUrl = ads[key].images[Object.keys(ads[key].images)[0]]
-        console.log(imgUrl)
+        const imgUrl = ads[key].images[Object.keys(ads[key].images)[0]];
         return (
-          <Col key={key} sm={6} md={3}>
-            <Image src={imgUrl} width="171" height="180" thumbnail />
+          <Col key={key} xs={6} sm={4} md={3} lg={2}>
+            <Image src={imgUrl} width="100%" thumbnail />
             <div>{ads[key].name}</div>
           </Col>
-        )
+        );z
       });
     }
     return <div>No Ads</div>;

@@ -18,8 +18,7 @@ export function createNewAd(values, uid) {
         storRef(`/images/${newImageKey}`).put(image).then(
           snapshot => {
             const path = `/ads/${newAdKey}/images/${newImageKey}`;
-            const url = snapshot.downloadURL;
-            dbRef(path).set(url).then(
+            dbRef(path).set(snapshot.downloadURL).then(
               () => resolve(),
               error => reject(),
             );
