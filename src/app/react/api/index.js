@@ -2,8 +2,7 @@ import db from '../../firebase/db';
 import stor from '../../firebase/stor';
 
 const { dbRef } = db;
-
-console.log(dbRef);
+const { storRef } = stor;
 
 export function createNewAd(values, uid) {
   return new Promise ((resolve, reject) => {
@@ -15,13 +14,13 @@ export function createNewAd(values, uid) {
     updates[`/user_ads/${uid}/${newAdKey}`] = '';
     dbRef().update(updates).then(
       () => {
-        stor.storRef().child(`images/${newImageKey}`).put(image).then(
-          () => {
-            const newImageKey = dbRef(`ads/${newAdKey}/images`).push().key;
+        const newImageKey = dbRef(`ads/${newAdKey}/images`).push().key
+        storRef(`/images/${newImageKey}`).put(image).then(
+          snapshot => {
             const path = `/ads/${newAdKey}/images/${newImageKey}`;
             const url = snapshot.downloadURL;
-            dbRef(path).set().then(
-              snapshot => resolve(),
+            dbRef(path).set(url).then(
+              () => resolve(),
               error => reject(),
             );
           },
