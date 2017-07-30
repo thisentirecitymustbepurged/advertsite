@@ -22,15 +22,21 @@ import {
   // updateUserAdFailure,
   deleteUserAdSuccess,
   deleteUserAdFailure,
+  fetchAdsSuccess,
+  fetchAdsFailure,
   clearUserAds,
 } from '../redux/readWrite/actionCreators';
 
+const {
+  loginWithProvider,
+  logoutUser,
+} = auth;
 const { dbRef } = db;
 const { storRef } = stor;
 
 // userAuth
 export function loginWithFacebook() {
-  auth.loginWithProvider('facebook').then(
+  loginWithProvider('facebook').then(
     snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
     () => store.dispatch(loginUserFailure()),
   )
@@ -44,7 +50,7 @@ export function fetchUser() {
 }
 
 export function logOut() {
-  auth.logoutUser().then(
+  logoutUser().then(
     () => {
       store.dispatch(clearUserAds());
       store.dispatch(logoutUserSuccess());
@@ -77,6 +83,13 @@ export function createNewAd(values, uid) {
     },
     () => this.props.createUserAdFailure(),
   )
+}
+
+export function fetchAds() {
+  dbRef('/ads').once('value').then(
+    snapshot => store.dispatch(fetchAdsSuccess(snapshot.val())),
+    () => store.dispatch(fetchAdsFailure()),
+  );
 }
 
 export function userAdsListener(uid) {

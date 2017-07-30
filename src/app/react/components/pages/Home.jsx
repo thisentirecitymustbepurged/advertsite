@@ -6,21 +6,12 @@ import { Grid, Row, Col, Image } from 'react-bootstrap';
 import db from '../../../firebase/db';
 
 import {
-  fetchAdsSuccess,
-  fetchAdsFailure,
-} from '../../../redux/readWrite/actionCreators';
+  fetchAds,
+} from '../../../api';
 
 class Home extends Component {
-  constructor() {
-    super();
-    this.fetchAds();
-  }
-
-  fetchAds() {
-    db.dbRef('/ads').once('value').then(
-      snapshot => this.props.fetchAdsSuccess(snapshot.val()),
-      () => this.props.fetchAdsFailure(),
-    );
+  componentDidMount() {
+    fetchAds();
   }
 
   renderAds() {
@@ -50,17 +41,10 @@ class Home extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    fetchAdsSuccess,
-    fetchAdsFailure,
-  }, dispatch);
-}
-
 function mapStateToProps({ ads }) {
   return {
     ads,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);

@@ -14,19 +14,20 @@ import {
   deleteAd,
 } from '../../../api';
 
-const { dbRef } = db;
-
 class User extends Component {
   constructor(props) {
     super(props);
     this.userAdsRef = '';
     this.userAdsListenerWasCalled = false;
-    this.userAdsListener();
     this.createNewAd = this.createNewAd.bind(this);
     this.deleteAd = this.deleteAd.bind(this);
   }
 
   componentDidUpdate() {
+    this.userAdsListener();
+  }
+
+  componentDidMount() {
     this.userAdsListener();
   }
 
@@ -37,7 +38,7 @@ class User extends Component {
   userAdsListener() {
     if (
     this.props.user
-    && this.props.user.uid !==undefined
+    && this.props.user.uid !== undefined
     && !this.userAdsListenerWasCalled
     ) {
       this.userAdsListenerWasCalled = true;
