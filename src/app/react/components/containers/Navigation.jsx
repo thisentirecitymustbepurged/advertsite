@@ -9,6 +9,12 @@ import {
 } from '../../../redux/userAuth/actionCreators';
 
 class Navigation extends Component {
+  logOut() {
+    return auth.logoutUser().then(
+      () => this.props.logoutUserSuccess(),
+      () => this.props.logoutUserFailure(),
+    );
+  }
 
   renderUserMenu(user) {
     if (user) {
@@ -26,7 +32,7 @@ class Navigation extends Component {
           <ul className="dropdown-menu">
             <li><Link to="/user">Profile</Link></li>
             <li role="separator" className="divider" />
-            <li><a href="" onClick={this.props.logOut}>Logout</a></li>
+            <li><a href="" onClick={this.logOut}>Logout</a></li>
           </ul>
         </li>
       );

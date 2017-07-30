@@ -1,6 +1,7 @@
 import * as actionTypes from './types';
 
 export function fetchUserSuccess(user) {
+  debugger;
   return {
     type: actionTypes.FETCH_USER_SUCCESS,
     user,

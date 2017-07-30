@@ -2,7 +2,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 
+import auth from '../../../firebase/auth';
 import db from '../../../firebase/db';
+const { dbRef } = db;
 
 import {
   fetchUserAdsSuccess,
@@ -14,12 +16,16 @@ import {
   deleteUserAdSuccess,
   deleteUserAdFailure,
 } from '../../../redux/readWrite/actionCreators';
-
-import { createNewAd } from '../../api';
-
-const { dbRef } = db;
+import {
+  loginUserFailure,
+  loginUserSuccess,
+} from '../../../redux/userAuth/actionCreators';
 
 import NewAdForm from '../forms/NewAdForm';
+
+import { createNewAd } from '../../../api';
+
+console.log(loginUserFailure)
 
 class User extends Component {
   constructor(props) {
@@ -29,6 +35,7 @@ class User extends Component {
     this.userAdsListener();
     this.createNewAd = this.createNewAd.bind(this);
     this.deleteAd = this.deleteAd.bind(this);
+    this.loginWithFacebook = this.loginWithFacebook.bind(this);
   }
 
   componentDidUpdate() {
@@ -37,6 +44,13 @@ class User extends Component {
 
   componentWillUnmount() {
     this.userAdsRef === '' ? '':this.userAdsRef.off();
+  }
+
+  loginWithFacebook() {
+    auth.loginWithProvider('facebook').then(
+      snapshot => this.props.loginUserSuccess(snapshot.user),
+      () => this.props.loginUserFailure(),
+    )
   }
 
   userAdsListener() {
@@ -68,7 +82,7 @@ class User extends Component {
   }
 
   userExists() {
-    if (this.props.user !== undefined) {
+    if (this.props.user) {
       return (
         <div>
           <div>Submit new Ad:</div>
@@ -79,13 +93,13 @@ class User extends Component {
     return (
       <div>
         <div>Please login:</div>
-        <button onClick={this.props.loginWithFacebook}>Facebook</button>
+        <button onClick={this.loginWithFacebook}>Facebook</button>
       </div>
     );
   }
 
   renderAds() {
-    if (this.props.userAds !== null) {
+    if (this.props.userAds) {
       const ads = this.props.userAds;
       return Object.keys(ads).map(key => (
         <div key={key}>
@@ -95,7 +109,6 @@ class User extends Component {
         </div>
       ));
     }
-    return <div>No Ads</div>;
   }
 
   render() {
@@ -110,6 +123,8 @@ class User extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    loginUserFailure,
+    loginUserSuccess,
     fetchUserAdsSuccess,
     fetchUserAdsFailure,
     createUserAdSuccess,
