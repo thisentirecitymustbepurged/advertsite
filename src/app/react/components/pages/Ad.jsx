@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  } '../../../api'
+// import {  } '../../../api'
 
 export default class Ad extends Component {
   render() {

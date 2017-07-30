@@ -4,39 +4,30 @@ import React, { Component } from 'react';
 
 import auth from '../../../firebase/auth';
 import db from '../../../firebase/db';
-const { dbRef } = db;
-
-import {
-  fetchUserAdsSuccess,
-  fetchUserAdsFailure,
-  createUserAdSuccess,
-  createUserAdFailure,
-  // updateUserAdSuccess,
-  // updateUserAdFailure,
-  deleteUserAdSuccess,
-  deleteUserAdFailure,
-} from '../../../redux/readWrite/actionCreators';
-import {
-  loginUserFailure,
-  loginUserSuccess,
-} from '../../../redux/userAuth/actionCreators';
 
 import NewAdForm from '../forms/NewAdForm';
 
-import { createNewAd } from '../../../api';
+import {
+  createNewAd,
+  loginWithFacebook,
+  userAdsListener,
+  deleteAd,
+} from '../../../api';
 
 class User extends Component {
   constructor(props) {
     super(props);
     this.userAdsRef = '';
     this.userAdsListenerWasCalled = false;
-    this.userAdsListener();
     this.createNewAd = this.createNewAd.bind(this);
     this.deleteAd = this.deleteAd.bind(this);
-    this.loginWithFacebook = this.loginWithFacebook.bind(this);
   }
 
   componentDidUpdate() {
+    this.userAdsListener();
+  }
+
+  componentDidMount() {
     this.userAdsListener();
   }
 
@@ -44,21 +35,14 @@ class User extends Component {
     this.userAdsRef === '' ? '':this.userAdsRef.off();
   }
 
-  loginWithFacebook() {
-    auth.loginWithProvider('facebook').then(
-      snapshot => this.props.loginUserSuccess(snapshot.user),
-      () => this.props.loginUserFailure(),
-    )
-  }
-
   userAdsListener() {
-    if (this.props.user && this.props.user.uid !==undefined && !this.userAdsListenerWasCalled) {
+    if (
+    this.props.user
+    && this.props.user.uid !== undefined
+    && !this.userAdsListenerWasCalled
+    ) {
       this.userAdsListenerWasCalled = true;
-      this.userAdsRef = dbRef(`/user_ads/${this.props.user.uid}`);
-      this.userAdsRef.on('value',
-        snapshot => this.props.fetchUserAdsSuccess(snapshot.val()),
-        () => this.props.fetchUserAdsFailure(),
-      );
+      this.userAdsRef = userAdsListener(this.props.user.uid);
     }
   }
 
@@ -68,20 +52,11 @@ class User extends Component {
     !values.phone ? values.phone = '0000000000':'';
     !values.price ? values.price = '99999':'';
     !values.desc ? values.desc = 'description':'';
-    createNewAd(values, this.props.user.uid).then(
-      () => this.props.createUserAdSuccess(),
-      () => this.props.createUserAdFailure(),
-    )
+    createNewAd(values, this.props.user.uid);
   }
 
   deleteAd(key) {
-    const updates = {};
-    updates[`/ads/${key}`] = null;
-    updates[`/user_ads/${this.props.user.uid}/${key}`] = null;
-    dbRef('/').update(updates).then(
-      () => this.props.deleteUserAdSuccess(),
-      () => this.props.deleteUserAdFailure(),
-    );
+    deleteAd(this.props.user.uid, key);
   }
 
   userExists() {
@@ -96,7 +71,7 @@ class User extends Component {
     return (
       <div>
         <div>Please login:</div>
-        <button onClick={this.loginWithFacebook}>Facebook</button>
+        <button onClick={loginWithFacebook}>Facebook</button>
       </div>
     );
   }
@@ -124,19 +99,6 @@ class User extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    loginUserFailure,
-    loginUserSuccess,
-    fetchUserAdsSuccess,
-    fetchUserAdsFailure,
-    createUserAdSuccess,
-    createUserAdFailure,
-    deleteUserAdSuccess,
-    deleteUserAdFailure,
-  }, dispatch);
-}
-
 function mapStateToProps({ user, userAds}) {
   return {
     user,
@@ -144,4 +106,4 @@ function mapStateToProps({ user, userAds}) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default connect(mapStateToProps)(User);
