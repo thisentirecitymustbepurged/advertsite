@@ -14,13 +14,40 @@ import {
 } from '../redux/userAuth/actionCreators';
 
 import {
+  fetchUserAdsSuccess,
+  fetchUserAdsFailure,
   clearUserAds,
 } from '../redux/readWrite/actionCreators';
-
 
 const { dbRef } = db;
 const { storRef } = stor;
 
+// userAuth
+export function loginWithFacebook() {
+  auth.loginWithProvider('facebook').then(
+    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
+    () => store.dispatch(loginUserFailure()),
+  )
+}
+
+export function fetchUser() {
+  auth.fetchUser().then(
+    user => store.dispatch(fetchUserSuccess(user)),
+    () => store.dispatch(fetchUserFailure()),
+  )
+}
+
+export function logOut() {
+  auth.logoutUser().then(
+    () => {
+      store.dispatch(clearUserAds());
+      store.dispatch(logoutUserSuccess());
+    },
+    () => store.dispatch(logoutUserFailure()),
+  );
+}
+
+// readWrite
 export function createNewAd(values, uid) {
   return new Promise ((resolve, reject) => {
     const image = values.image;
@@ -48,26 +75,11 @@ export function createNewAd(values, uid) {
   });
 }
 
-export function loginWithFacebook() {
-  auth.loginWithProvider('facebook').then(
-    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
-    () => store.dispatch(loginUserFailure()),
-  )
-}
-
-export function fetchUser() {
-  auth.fetchUser().then(
-    user => store.dispatch(fetchUserSuccess(user)),
-    () => store.dispatch(fetchUserFailure()),
-  )
-}
-
-export function logOut() {
-  auth.logoutUser().then(
-    () => {
-      store.dispatch(clearUserAds());
-      store.dispatch(logoutUserSuccess());
-    },
-    () => store.dispatch(logoutUserFailure()),
+export function userAdsListener(uid) {
+  const userAdsRef = dbRef(`/user_ads/${uid}`);
+  userAdsRef.on('value',
+    snapshot => store.dispatch(fetchUserAdsSuccess(snapshot.val())),
+    () => store.dispatch(fetchUserAdsFailure()),
   );
+  return userAdsRef;
 }

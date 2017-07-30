@@ -19,7 +19,11 @@ import {
 
 import NewAdForm from '../forms/NewAdForm';
 
-import { createNewAd, loginWithFacebook } from '../../../api';
+import {
+  createNewAd,
+  loginWithFacebook,
+  userAdsListener,
+} from '../../../api';
 
 class User extends Component {
   constructor(props) {
@@ -40,13 +44,13 @@ class User extends Component {
   }
 
   userAdsListener() {
-    if (this.props.user && this.props.user.uid !==undefined && !this.userAdsListenerWasCalled) {
+    if (
+    this.props.user
+    && this.props.user.uid !==undefined
+    && !this.userAdsListenerWasCalled
+    ) {
       this.userAdsListenerWasCalled = true;
-      this.userAdsRef = dbRef(`/user_ads/${this.props.user.uid}`);
-      this.userAdsRef.on('value',
-        snapshot => this.props.fetchUserAdsSuccess(snapshot.val()),
-        () => this.props.fetchUserAdsFailure(),
-      );
+      this.userAdsRef = userAdsListener(this.props.user.uid);
     }
   }
 
