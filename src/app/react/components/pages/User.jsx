@@ -7,8 +7,6 @@ import db from '../../../firebase/db';
 const { dbRef } = db;
 
 import {
-  fetchUserAdsSuccess,
-  fetchUserAdsFailure,
   createUserAdSuccess,
   createUserAdFailure,
   // updateUserAdSuccess,
@@ -23,6 +21,7 @@ import {
   createNewAd,
   loginWithFacebook,
   userAdsListener,
+  deleteAd,
 } from '../../../api';
 
 class User extends Component {
@@ -67,13 +66,7 @@ class User extends Component {
   }
 
   deleteAd(key) {
-    const updates = {};
-    updates[`/ads/${key}`] = null;
-    updates[`/user_ads/${this.props.user.uid}/${key}`] = null;
-    dbRef('/').update(updates).then(
-      () => this.props.deleteUserAdSuccess(),
-      () => this.props.deleteUserAdFailure(),
-    );
+    deleteAd(this.props.user.uid, key);
   }
 
   userExists() {
@@ -118,8 +111,6 @@ class User extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchUserAdsSuccess,
-    fetchUserAdsFailure,
     createUserAdSuccess,
     createUserAdFailure,
     deleteUserAdSuccess,

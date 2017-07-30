@@ -16,6 +16,8 @@ import {
 import {
   fetchUserAdsSuccess,
   fetchUserAdsFailure,
+  deleteUserAdSuccess,
+  deleteUserAdFailure,
   clearUserAds,
 } from '../redux/readWrite/actionCreators';
 
@@ -82,4 +84,14 @@ export function userAdsListener(uid) {
     () => store.dispatch(fetchUserAdsFailure()),
   );
   return userAdsRef;
+}
+
+export function deleteAd(uid, key) {
+  const updates = {};
+  updates[`/ads/${key}`] = null;
+  updates[`/user_ads/${uid}/${key}`] = null;
+  dbRef('/').update(updates).then(
+    () => store.dispatch(deleteUserAdSuccess()),
+    () => store.dispatch(deleteUserAdFailure()),
+  );
 }
