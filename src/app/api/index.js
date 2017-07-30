@@ -1,5 +1,13 @@
-import db from '../../firebase/db';
-import stor from '../../firebase/stor';
+import store from '../redux/store';
+
+import auth from '../firebase/auth';
+import db from '../firebase/db';
+import stor from '../firebase/stor';
+
+import {
+  fetchUserSuccess,
+  fetchUserFailure,
+} from '../redux/userAuth/actionCreators';
 
 const { dbRef } = db;
 const { storRef } = stor;
@@ -29,4 +37,12 @@ export function createNewAd(values, uid) {
       error => reject(),
     )
   });
+}
+
+export function fetchUser() {
+  debugger;
+  auth.fetchUser().then(
+    user => store.dispatch(fetchUserSuccess(user)),
+    () => store.dispatch(fetchUserFailure()),
+  )
 }
