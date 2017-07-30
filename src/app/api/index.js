@@ -5,6 +5,8 @@ import db from '../firebase/db';
 import stor from '../firebase/stor';
 
 import {
+  loginUserFailure,
+  loginUserSuccess,
   fetchUserSuccess,
   fetchUserFailure,
   logoutUserSuccess,
@@ -44,6 +46,13 @@ export function createNewAd(values, uid) {
       error => reject(),
     )
   });
+}
+
+export function loginWithFacebook() {
+  auth.loginWithProvider('facebook').then(
+    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
+    () => store.dispatch(loginUserFailure()),
+  )
 }
 
 export function fetchUser() {

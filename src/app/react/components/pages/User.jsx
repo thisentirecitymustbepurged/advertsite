@@ -16,14 +16,10 @@ import {
   deleteUserAdSuccess,
   deleteUserAdFailure,
 } from '../../../redux/readWrite/actionCreators';
-import {
-  loginUserFailure,
-  loginUserSuccess,
-} from '../../../redux/userAuth/actionCreators';
 
 import NewAdForm from '../forms/NewAdForm';
 
-import { createNewAd } from '../../../api';
+import { createNewAd, loginWithFacebook } from '../../../api';
 
 class User extends Component {
   constructor(props) {
@@ -33,7 +29,6 @@ class User extends Component {
     this.userAdsListener();
     this.createNewAd = this.createNewAd.bind(this);
     this.deleteAd = this.deleteAd.bind(this);
-    this.loginWithFacebook = this.loginWithFacebook.bind(this);
   }
 
   componentDidUpdate() {
@@ -42,13 +37,6 @@ class User extends Component {
 
   componentWillUnmount() {
     this.userAdsRef === '' ? '':this.userAdsRef.off();
-  }
-
-  loginWithFacebook() {
-    auth.loginWithProvider('facebook').then(
-      snapshot => this.props.loginUserSuccess(snapshot.user),
-      () => this.props.loginUserFailure(),
-    )
   }
 
   userAdsListener() {
@@ -96,7 +84,7 @@ class User extends Component {
     return (
       <div>
         <div>Please login:</div>
-        <button onClick={this.loginWithFacebook}>Facebook</button>
+        <button onClick={loginWithFacebook}>Facebook</button>
       </div>
     );
   }
@@ -126,8 +114,6 @@ class User extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    loginUserFailure,
-    loginUserSuccess,
     fetchUserAdsSuccess,
     fetchUserAdsFailure,
     createUserAdSuccess,
