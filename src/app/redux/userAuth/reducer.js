@@ -1,6 +1,6 @@
 import * as actionTypes from './types';
 
-export default function (state = null, action) {
+export default function (state = {}, action) {
   switch (action.type) {
 
     case actionTypes.FETCH_USER_SUCCESS:
@@ -9,6 +9,7 @@ export default function (state = null, action) {
       return state;
 
     case actionTypes.LOGOUT_USER_SUCCESS:
+      debugger;
       return null;
     case actionTypes.LOGOUT_USER_FAILURE:
       return state;

@@ -7,7 +7,14 @@ import stor from '../firebase/stor';
 import {
   fetchUserSuccess,
   fetchUserFailure,
+  logoutUserSuccess,
+  logoutUserFailure,
 } from '../redux/userAuth/actionCreators';
+
+import {
+  clearUserAds,
+} from '../redux/readWrite/actionCreators';
+
 
 const { dbRef } = db;
 const { storRef } = stor;
@@ -40,9 +47,18 @@ export function createNewAd(values, uid) {
 }
 
 export function fetchUser() {
-  debugger;
   auth.fetchUser().then(
     user => store.dispatch(fetchUserSuccess(user)),
     () => store.dispatch(fetchUserFailure()),
   )
+}
+
+export function logOut() {
+  auth.logoutUser().then(
+    () => {
+      store.dispatch(clearUserAds());
+      store.dispatch(logoutUserSuccess());
+    },
+    () => store.dispatch(logoutUserFailure()),
+  );
 }
