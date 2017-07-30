@@ -4,6 +4,7 @@ import Navigation from './containers/Navigation';
 
 class App extends Component {
   render() {
+    debugger;
     return (
       <div className="app">
         <Navigation />

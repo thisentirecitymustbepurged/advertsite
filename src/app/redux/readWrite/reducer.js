@@ -23,6 +23,9 @@ export function userReadWriteReducer (state = null, {type, ads}) {
     case actionTypes.DELETE_USER_AD_FAILURE:
       return state;
 
+    case actionTypes.CLEAR_USER_ADS:
+      return null;
+
     default:
       return state;
   }

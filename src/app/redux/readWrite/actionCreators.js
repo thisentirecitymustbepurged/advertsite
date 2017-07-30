@@ -56,3 +56,10 @@ export function deleteUserAdFailure() {
     type: actionTypes.DELETE_USER_AD_FAILURE,
   };
 }
+
+export function clearUserAds() {
+  return {
+    type: actionTypes.CLEAR_USER_ADS,
+  };
+}
+

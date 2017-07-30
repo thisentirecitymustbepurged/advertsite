@@ -3,17 +3,21 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 
+import { fetchUser, logOut } from '../../../api';
+
 import {
   logoutUserSuccess,
   logoutUserFailure,
 } from '../../../redux/userAuth/actionCreators';
 
 class Navigation extends Component {
-  logOut() {
-    return auth.logoutUser().then(
-      () => this.props.logoutUserSuccess(),
-      () => this.props.logoutUserFailure(),
-    );
+  logOut(e) {
+    e.preventDefault();
+    logOut();
+  }
+
+  componentDidMount() {
+    fetchUser();
   }
 
   renderUserMenu(user) {
@@ -32,7 +36,7 @@ class Navigation extends Component {
           <ul className="dropdown-menu">
             <li><Link to="/user">Profile</Link></li>
             <li role="separator" className="divider" />
-            <li><a href="" onClick={this.logOut}>Logout</a></li>
+            <li><a href="" onClick={this.logOut.bind(this)}>Logout</a></li>
           </ul>
         </li>
       );
