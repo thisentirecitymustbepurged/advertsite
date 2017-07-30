@@ -25,8 +25,6 @@ import NewAdForm from '../forms/NewAdForm';
 
 import { createNewAd } from '../../../api';
 
-console.log(loginUserFailure)
-
 class User extends Component {
   constructor(props) {
     super(props);
@@ -65,6 +63,11 @@ class User extends Component {
   }
 
   createNewAd(values) {
+    !values.title ? values.title = 'title':'';
+    !values.address ? values.address = 'address':'';
+    !values.phone ? values.phone = '0000000000':'';
+    !values.price ? values.price = '99999':'';
+    !values.desc ? values.desc = 'description':'';
     createNewAd(values, this.props.user.uid).then(
       () => this.props.createUserAdSuccess(),
       () => this.props.createUserAdFailure(),
