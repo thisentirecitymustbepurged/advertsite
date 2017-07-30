@@ -11,8 +11,6 @@ import {
   createUserAdFailure,
   // updateUserAdSuccess,
   // updateUserAdFailure,
-  deleteUserAdSuccess,
-  deleteUserAdFailure,
 } from '../../../redux/readWrite/actionCreators';
 
 import NewAdForm from '../forms/NewAdForm';
@@ -59,10 +57,7 @@ class User extends Component {
     !values.phone ? values.phone = '0000000000':'';
     !values.price ? values.price = '99999':'';
     !values.desc ? values.desc = 'description':'';
-    createNewAd(values, this.props.user.uid).then(
-      () => this.props.createUserAdSuccess(),
-      () => this.props.createUserAdFailure(),
-    )
+    createNewAd(values, this.props.user.uid);
   }
 
   deleteAd(key) {
@@ -113,8 +108,6 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     createUserAdSuccess,
     createUserAdFailure,
-    deleteUserAdSuccess,
-    deleteUserAdFailure,
   }, dispatch);
 }
 
