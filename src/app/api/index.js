@@ -14,8 +14,12 @@ import {
 } from '../redux/userAuth/actionCreators';
 
 import {
+  createUserAdSuccess,
+  createUserAdFailure,
   fetchUserAdsSuccess,
   fetchUserAdsFailure,
+  // updateUserAdSuccess,
+  // updateUserAdFailure,
   deleteUserAdSuccess,
   deleteUserAdFailure,
   clearUserAds,
@@ -64,8 +68,8 @@ export function createNewAd(values, uid) {
         snapshot => {
           const path = `/ads/${newAdKey}/images/${newImageKey}`;
           dbRef(path).set(snapshot.downloadURL).then(
-            () => this.props.createUserAdSuccess(),
-            () => this.props.createUserAdFailure(),
+            () => store.dispatch(createUserAdSuccess()),
+            () => store.dispatch(createUserAdFailure()),
           );
         },
         () => this.props.createUserAdFailure(),

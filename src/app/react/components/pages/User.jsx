@@ -4,14 +4,6 @@ import React, { Component } from 'react';
 
 import auth from '../../../firebase/auth';
 import db from '../../../firebase/db';
-const { dbRef } = db;
-
-import {
-  createUserAdSuccess,
-  createUserAdFailure,
-  // updateUserAdSuccess,
-  // updateUserAdFailure,
-} from '../../../redux/readWrite/actionCreators';
 
 import NewAdForm from '../forms/NewAdForm';
 
@@ -21,6 +13,8 @@ import {
   userAdsListener,
   deleteAd,
 } from '../../../api';
+
+const { dbRef } = db;
 
 class User extends Component {
   constructor(props) {
@@ -104,13 +98,6 @@ class User extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    createUserAdSuccess,
-    createUserAdFailure,
-  }, dispatch);
-}
-
 function mapStateToProps({ user, userAds}) {
   return {
     user,
@@ -118,4 +105,4 @@ function mapStateToProps({ user, userAds}) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default connect(mapStateToProps)(User);
