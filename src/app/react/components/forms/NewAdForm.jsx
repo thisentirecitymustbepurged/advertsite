@@ -30,10 +30,42 @@ const NewAdForm = (props) => {
     <form onSubmit={handleSubmit}>
       <div>
         <Field
-          name="name"
+          name="title"
           component="input"
           type="text"
-          placeholder="Ad Name"
+          placeholder="title"
+        />
+      </div>
+      <div>
+        <Field
+          name="address"
+          component="input"
+          type="text"
+          placeholder="address"
+        />
+      </div>
+      <div>
+        <Field
+          name="phone"
+          component="input"
+          type="text"
+          placeholder="phone"
+        />
+      </div>
+      <div>
+        <Field
+          name="price"
+          component="input"
+          type="text"
+          placeholder="price"
+        />
+      </div>
+      <div>
+        <Field
+          name="desc"
+          component="textarea"
+          type="text"
+          placeholder="desc"
         />
       </div>
       <div>
@@ -42,7 +74,6 @@ const NewAdForm = (props) => {
           component={FileInput}
         />
       </div>
-      <img alt="" id="previewImg" />
       <div>
         <button type="submit" disabled={pristine || submitting}>Submit</button>
         <button type="button" disabled={pristine || submitting} onClick={reset}>

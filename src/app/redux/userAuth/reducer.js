@@ -9,7 +9,6 @@ export default function (state = {}, action) {
       return state;
 
     case actionTypes.LOGOUT_USER_SUCCESS:
-      debugger;
       return null;
     case actionTypes.LOGOUT_USER_FAILURE:
       return state;
