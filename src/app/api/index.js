@@ -36,7 +36,7 @@ const { storRef } = stor;
 
 // userAuth
 export function loginWithFacebook() {
-  loginWithProvider('facebook').then(
+  auth.loginWithProvider('facebook').then(
     snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
     () => store.dispatch(loginUserFailure()),
   )
