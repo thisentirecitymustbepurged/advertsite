@@ -12,6 +12,8 @@ import Ad from './react/components/pages/Ad';
 import { fetchUser } from './api';
 import store from './redux/store';
 
+import '../styles.scss';
+
 ReactDOM.render((
   <Provider store={store}>
     <Router history={browserHistory}>

@@ -15,7 +15,7 @@ class Home extends Component {
   }
 
   renderAds() {
-    if (this.props.ads !== null) {
+    if (this.props.ads) {
       const ads = this.props.ads;
       return Object.keys(ads).map(key => {
         const imgUrl = ads[key].images[Object.keys(ads[key].images)[0]];
@@ -24,7 +24,7 @@ class Home extends Component {
             <Image src={imgUrl} width="100%" thumbnail />
             <div>{ads[key].name}</div>
           </Col>
-        );z
+        );
       });
     }
     return <div>No Ads</div>;

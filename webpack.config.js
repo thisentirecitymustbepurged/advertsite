@@ -9,9 +9,9 @@ module.exports = {
   output: {
     path: __dirname + "./public",
     filename: "bundle.js"
-  },  
+  },
   resolve: {
-     extensions: [ '.js', '.jsx']
+     extensions: ['.js', '.jsx']
   },
   module: {
     loaders: [
@@ -20,9 +20,11 @@ module.exports = {
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
-          presets: ['react', 'es2015','stage-2'],          
+          presets: ['react', 'es2015','stage-2'],
         }
-      }
+      },
+      {test: /\.css$/, loader: 'style-loader!css-loader'},
+      {test: /\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader']},
     ]
   },
   devServer: {
@@ -31,9 +33,10 @@ module.exports = {
       index: 'index.html'
     }
   },
-  plugins: debug ? 
+  plugins: debug ?
     []:
     [
+      new Webpack.HotModuleReplacementPlugin(),
       new webpack.optimize.DedupePlugin(),
       new webpack.optimize.OccurrenceOrderPlugin(),
       new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
