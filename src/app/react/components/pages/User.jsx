@@ -9,7 +9,7 @@ import NewAdForm from '../forms/NewAdForm';
 
 import {
   createNewAd,
-  loginWithFacebook,
+  loginWithProvider,
   userAdsListener,
   deleteAd,
 } from '../../../api';
@@ -71,7 +71,7 @@ class User extends Component {
     return (
       <div>
         <div>Please login:</div>
-        <button onClick={loginWithFacebook}>Facebook</button>
+        <button onClick={() => loginWithProvider('facebook')}>Facebook</button>
       </div>
     );
   }
@@ -81,7 +81,7 @@ class User extends Component {
       const ads = this.props.userAds;
       return Object.keys(ads).map(key => (
         <div key={key}>
-          {ads[key].name}
+          {ads[key].title}
           <button onClick={() => this.deleteAd(key)}>Delete</button>
           <button onClick={() => this.updateAd(key)}>Update</button>
         </div>

@@ -1,6 +1,6 @@
 import * as actionTypes from './types';
 
-export function userReadWriteReducer (state = null, {type, ads}) {
+export function userReadWrite (state = {}, {type, ads}) {
   switch (type) {
 
     case actionTypes.FETCH_USER_ADS_SUCCESS:
@@ -31,12 +31,25 @@ export function userReadWriteReducer (state = null, {type, ads}) {
   }
 }
 
-export function readWriteReducer (state = null, {type, ads}) {
+export function fetchAllAds (state = {}, {type, ads}) {
   switch (type) {
 
     case actionTypes.FETCH_ADS_SUCCESS:
-      return ads;
+      return ads ? ads:{};
     case actionTypes.FETCH_ADS_FAILURE:
+      return state;
+
+    default:
+      return state;
+  }
+}
+
+export function fetchAd (state = {}, {type, ad}) {
+  switch (type) {
+
+    case actionTypes.FETCH_AD_SUCCESS:
+      return ad;
+    case actionTypes.FETCH_AD_FAILURE:
       return state;
 
     default:
