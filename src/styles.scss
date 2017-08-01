@@ -1,3 +1,29 @@
+$gray: #ddd;
+
 body {
   font-size: 20px;
+}
+
+.ad {
+  padding: 0;
+}
+.ad_info_col {
+  h1 {
+    margin: 0;
+    padding: 0 0 15px 0;
+    border-bottom: 1px solid $gray;
+    line-height: 1;
+  }
+  .row {
+    margin: 0;
+    padding: 10px 0;
+    border-bottom: 1px solid $gray;
+    [class^="col"] {
+      padding: 0;
+    }
+  }
+}
+.ad_image_col {
+  img {
+  }
 }

@@ -15,25 +15,41 @@ class Ad extends Component {
   }
 
   renderAd() {
-    // const ad = this.props.ad;
-    // return Object.getOwnPropertyNames(ad).map(key => {
-    //   const imgUrl = ad[key].images[Object.keys(ads[key].images)[0]];
-    //   return (
-    //     <Row>
-    //       <Col>
-    //         <Image src={imgUrl} width="100%" thumbnail />
-    //       </Col>
-    //       <Col>
-
-    //       </Col>
-    //     </Row>
-    //   );
-    // });
+    if (Object.keys(this.props.ad).length !== 0) {
+      const ad = this.props.ad;
+      const imgUrl = ad.images[Object.keys(ad.images)[0]];
+      return (
+        <Row>
+          <Col className="ad_info_col" sm={12} md={6}>
+            <h1>{ad.title}</h1>
+            <Row>
+              <Col md={4}>Description</Col>
+              <Col md={8}>{ad.desc}</Col>
+            </Row>
+            <Row>
+              <Col md={4}>Pricing</Col>
+              <Col md={8}>{ad.price}</Col>
+            </Row>
+            <Row>
+              <Col md={4}>Location</Col>
+              <Col md={8}>{ad.address}</Col>
+            </Row>
+            <Row>
+              <Col md={4}>Contact</Col>
+              <Col md={8}>{ad.phone}</Col>
+            </Row>
+          </Col>
+          <Col sm={12} md={6} className="ad_image_col">
+            <Image src={imgUrl} width="100%" />
+          </Col>
+        </Row>
+      );
+    }
   }
 
   render() {
     return (
-      <Grid>
+      <Grid className="ad">
         {this.renderAd()}
       </Grid>
     );

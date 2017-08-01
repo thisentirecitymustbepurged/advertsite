@@ -47,11 +47,11 @@ class User extends Component {
   }
 
   createNewAd(values) {
-    !values.title ? values.title = 'title':'';
-    !values.address ? values.address = 'address':'';
-    !values.phone ? values.phone = '0000000000':'';
-    !values.price ? values.price = '99999':'';
-    !values.desc ? values.desc = 'description':'';
+    !values.title ? values.title = 'Amazing Title':'';
+    !values.address ? values.address = 'Meme St. 32, London':'';
+    !values.phone ? values.phone = '01123581321':'';
+    !values.price ? values.price = '42£':'';
+    !values.desc ? values.desc = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, dolores delectus voluptates impedit assumenda, adipisci hic commodi excepturi ipsam soluta pariatur dolorum magni odio nihil. Hic nemo, omnis voluptas nihil, aspernatur reiciendis. Ullam nemo itaque accusantium voluptatum fugiat sequi dolorem at dolorum, omnis eligendi earum, accusamus aut sed praesentium dolores?':'';
     createNewAd(values, this.props.user.uid);
   }
 
