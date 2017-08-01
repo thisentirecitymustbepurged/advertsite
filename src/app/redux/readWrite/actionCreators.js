@@ -1,5 +1,17 @@
 import * as actionTypes from './types';
 
+export function fetchAdSuccess(ad) {
+  return {
+    type: actionTypes.FETCH_AD_SUCCESS,
+    ad,
+  };
+}
+export function fetchAdFailure() {
+  return {
+    type: actionTypes.FETCH_AD_FAILURE,
+  };
+}
+
 export function fetchAdsSuccess(ads) {
   return {
     type: actionTypes.FETCH_ADS_SUCCESS,
