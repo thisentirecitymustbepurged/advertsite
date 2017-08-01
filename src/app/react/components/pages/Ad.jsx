@@ -20,7 +20,7 @@ class Ad extends Component {
       const imgUrl = ad.images[Object.keys(ad.images)[0]];
       return (
         <Row>
-          <Col className="info_col" sm={12} md={6}>
+          <Col className="ad_info_col" sm={12} md={6}>
             <h1>{ad.title}</h1>
             <Row>
               <Col md={4}>Description</Col>
@@ -39,7 +39,7 @@ class Ad extends Component {
               <Col md={8}>{ad.phone}</Col>
             </Row>
           </Col>
-          <Col sm={12} md={6}>
+          <Col sm={12} md={6} className="ad_image_col">
             <Image src={imgUrl} width="100%" />
           </Col>
         </Row>
@@ -49,7 +49,7 @@ class Ad extends Component {
 
   render() {
     return (
-      <Grid>
+      <Grid className="ad">
         {this.renderAd()}
       </Grid>
     );
