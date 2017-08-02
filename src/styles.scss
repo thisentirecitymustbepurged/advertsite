@@ -36,15 +36,20 @@ body {
     padding: 10px 0;
     [class^="col"] {
       padding: 0;
+      button {
+        float: right;
+        font-size: 20px;
+        margin: 0 0 0 5px;
+      }
+    }
+    .selected_image {
+      padding: 0;
+      float: right;
     }
   }
   h1 {
     padding: 0 0 15px 0;
     border-bottom: 1px solid $gray;
     line-height: 1;
-  }
-  button {
-    float: right;
-    margin: 0 0 0 5px;
   }
 }

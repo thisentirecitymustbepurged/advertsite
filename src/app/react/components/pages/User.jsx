@@ -1,6 +1,6 @@
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import React, { Component } from 'react';
 
 import {
   createNewAd,
@@ -18,11 +18,11 @@ class User extends Component {
     this.deleteAd = this.deleteAd.bind(this);
   }
 
-  componentDidUpdate() {
+  componentDidMount() {
     this.userAdsListener();
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     this.userAdsListener();
   }
 
