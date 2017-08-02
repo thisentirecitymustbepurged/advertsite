@@ -1,6 +1,8 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
+import {Row, Col} from 'react-bootstrap';
+
 const adaptFileEventToValue = delegate => {
   return e => delegate(e.target.files[0]);
 }
@@ -28,58 +30,88 @@ const NewAdForm = (props) => {
   const { handleSubmit, pristine, reset, submitting } = props;
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <Field
-          name="title"
-          component="input"
-          type="text"
-          placeholder="title"
-        />
-      </div>
-      <div>
-        <Field
-          name="address"
-          component="input"
-          type="text"
-          placeholder="address"
-        />
-      </div>
-      <div>
-        <Field
-          name="phone"
-          component="input"
-          type="text"
-          placeholder="phone"
-        />
-      </div>
-      <div>
-        <Field
-          name="price"
-          component="input"
-          type="text"
-          placeholder="price"
-        />
-      </div>
-      <div>
-        <Field
-          name="desc"
-          component="textarea"
-          type="text"
-          placeholder="desc"
-        />
-      </div>
-      <div>
-        <Field
-          name="image"
-          component={FileInput}
-        />
-      </div>
-      <div>
-        <button type="submit" disabled={pristine || submitting}>Submit</button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
-        </button>
-      </div>
+      <h1>New Ad</h1>
+      <Row>
+        <Col md={3}>Title</Col>
+        <Col md={9}>
+          <Field
+            className="form-control"
+            name="title"
+            component="input"
+            type="text"
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col md={3}>Location</Col>
+        <Col md={9}>
+          <Field
+            className="form-control"
+            name="address"
+            component="input"
+            type="text"
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col md={3}>Contact</Col>
+        <Col md={9}>
+          <Field
+            className="form-control"
+            name="phone"
+            component="input"
+            type="text"
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col md={3}>Pricing</Col>
+        <Col md={9}>
+          <Field
+            className="form-control"
+            name="price"
+            component="input"
+            type="text"
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col md={3}>Description</Col>
+        <Col md={9}>
+          <Field
+            className="form-control"
+            name="desc"
+            component="textarea"
+            type="text"          />
+        </Col>
+      </Row>
+      <Row>
+        <Col md={3}>Picture</Col>
+        <Col md={9}>
+          <Field
+            name="image"
+            component={FileInput}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col md={12} >
+          <button
+            className="btn btn-primary"
+            type="submit"
+            disabled={pristine || submitting}>
+            Submit
+          </button>
+          <button
+            className="btn btn-primary"
+            type="button"
+            disabled={pristine || submitting}
+            onClick={reset}>
+            Clear Values
+          </button>
+        </Col>
+      </Row>
+
     </form>
   );
 };

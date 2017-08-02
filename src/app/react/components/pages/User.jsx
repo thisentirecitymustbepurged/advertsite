@@ -2,11 +2,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import React, { Component } from 'react';
 
-import auth from '../../../firebase/auth';
-import db from '../../../firebase/db';
-
-import NewAdForm from '../forms/NewAdForm';
-
 import {
   createNewAd,
   loginWithProvider,
@@ -59,23 +54,6 @@ class User extends Component {
     deleteAd(this.props.user.uid, key);
   }
 
-  userExists() {
-    if (this.props.user) {
-      return (
-        <div>
-          <div>Submit new Ad:</div>
-          <NewAdForm onSubmit={this.createNewAd} />
-        </div>
-      );
-    }
-    return (
-      <div>
-        <div>Please login:</div>
-        <button onClick={() => loginWithProvider('facebook')}>Facebook</button>
-      </div>
-    );
-  }
-
   renderAds() {
     if (this.props.userAds) {
       const ads = this.props.userAds;
@@ -92,7 +70,6 @@ class User extends Component {
   render() {
     return (
       <div>
-        {this.userExists()}
         {this.renderAds()}
       </div>
     );
