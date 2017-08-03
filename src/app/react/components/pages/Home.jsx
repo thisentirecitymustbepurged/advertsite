@@ -21,7 +21,7 @@ class Home extends Component {
       return Object.keys(ads).map(key => {
         const imgUrl = ads[key].images[Object.keys(ads[key].images)[0]];
         return (
-          <Col key={key} xs={6} sm={4} md={3} lg={2}>
+          <Col key={key} sm={12} md={4}>
             <Link to={`ad/${key}`}>
               <Image src={imgUrl} width="100%" thumbnail />
               <div>{ads[key].title}</div>

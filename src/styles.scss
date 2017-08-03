@@ -53,3 +53,14 @@ body {
     line-height: 1;
   }
 }
+.user_profile {
+  .user_ads {
+    [class^="col"] {
+      padding-bottom: 10px;
+    }
+  }
+  button {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+}
