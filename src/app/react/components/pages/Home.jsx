@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-
-import db from '../../../firebase/db';
+import { Grid, Row, Col, Image } from 'react-bootstrap';
 
 import {
   fetchAds,
 } from '../../../api';
-
-import { Grid, Row, Col, Image } from 'react-bootstrap';
 
 class Home extends Component {
   componentDidMount() {
@@ -35,8 +32,8 @@ class Home extends Component {
 
   render() {
     return (
-      <Grid>
-        <Row>
+      <Grid className="ads">
+        <Row >
           {this.renderAds()}
         </Row>
       </Grid>
