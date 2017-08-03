@@ -3,10 +3,12 @@ $gray: #ddd;
 body {
   font-size: 20px;
 }
+
 .navbar-brand {
   font-size: 23px;
   font-style: italic;
 }
+
 .ad {
   padding: 0;
   .ad_info_col {
@@ -30,6 +32,15 @@ body {
     }
   }
 }
+
+.ads {
+  .row {
+    [class^="col"] {
+      padding-bottom: 10px;
+    }
+  }
+}
+
 .new_ad_form {
   .row {
     margin: 0;
@@ -44,7 +55,6 @@ body {
     }
     .selected_image {
       padding: 0;
-      float: right;
     }
   }
   h1 {
@@ -53,6 +63,7 @@ body {
     line-height: 1;
   }
 }
+
 .user_profile {
   .user_ads {
     [class^="col"] {

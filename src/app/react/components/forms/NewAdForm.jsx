@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { Row, Col, Image } from 'react-bootstrap';
+import { Row, Col, Image, Clearfix } from 'react-bootstrap';
 
-const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
+const adaptFileEventToValue = delegate => e => delegate(e.target.files);
 
 const FileInput = ({
   input: {
@@ -20,6 +20,7 @@ const FileInput = ({
     onChange={adaptFileEventToValue(onChange)}
     onBlur={adaptFileEventToValue(onBlur)}
     type="file"
+    multiple
     {...inputProps}
     {...props}
   />
@@ -29,27 +30,59 @@ class NewAdForm extends Component {
   constructor() {
     super();
     this.state = {
-      imgSrc: undefined,
+      imageUrlList: [],
     };
+    this.imagesAreBeingHandled = false;
+    this.imageUrlList = [];
   }
-  renderSelectedImage() {
+
+  handleImages() {
+    const images = this.props.newAdForm.values.images;
+    let i = 0;
+    const handleImage = () => {
+      const reader = new FileReader(); //eslint-disable-line
+      reader.onload = e => {
+        this.imageUrlList.push(e.target.result);
+        if (images[i + 1]) {
+          i += 1;
+          handleImage();
+        } else {
+          this.imagesAreBeingHandled = false;
+          this.setState({ imageUrlList: this.imageUrlList });
+        }
+      };
+      reader.readAsDataURL(images[i]);
+    };
+    handleImage();
+  }
+
+  renderSelectedImages() {
     if (
       this.props.newAdForm
       && this.props.newAdForm.values
-      && this.props.newAdForm.values.image
+      && this.props.newAdForm.values.images
+      && Object.keys(this.props.newAdForm.values.images).length !== 0
     ) {
-      if (this.state.imgSrc) {
+      if (this.state.imageUrlList.length > 0) {
         return (
           <Row>
-            <Col sm={4} md={3} className="selected_image">
-              <Image src={this.state.imgSrc} width="100%" />
-            </Col>
+            {
+              this.state.imageUrlList.map((imgUrl, i) => (
+                <Col key={i} sm={3} md={3} className="selected_image">
+                  <Image src={imgUrl} width="100%" />
+                </Col>
+              ))
+            }
+            <Clearfix />
           </Row>
         );
       }
-      const fr = new FileReader(); //eslint-disable-line
-      fr.onload = e => this.setState({ imgSrc: e.target.result });
-      fr.readAsDataURL(this.props.newAdForm.values.image);
+    } else {
+      return <div>You can select multiple images...</div>;
+    }
+    if (!this.imagesAreBeingHandled) {
+      this.imagesAreBeingHandled = true;
+      this.handleImages();
     }
   }
 
@@ -114,16 +147,16 @@ class NewAdForm extends Component {
           </Col>
         </Row>
         <Row>
-          <Col md={3}>Picture</Col>
+          <Col md={3}>Pictures</Col>
           <Col md={9}>
             <Field
-              name="image"
+              name="images"
               component={FileInput}
             />
           </Col>
         </Row>
         {
-          this.renderSelectedImage()
+          this.renderSelectedImages()
         }
         <Row>
           <Col md={12} >

@@ -9,5 +9,7 @@
     "arrow-parens": 0,
     "consistent-return": 0,
     "no-func-assign": 0,
+    "no-param-reassign": 0,
+    "react/no-array-index-key": 0,
   }
 }
