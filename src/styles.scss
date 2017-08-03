@@ -3,27 +3,64 @@ $gray: #ddd;
 body {
   font-size: 20px;
 }
-
+.navbar-brand {
+  font-size: 23px;
+  font-style: italic;
+}
 .ad {
   padding: 0;
+  .ad_info_col {
+    h1 {
+      margin: 0;
+      padding: 0 0 15px 0;
+      border-bottom: 1px solid $gray;
+      line-height: 1;
+    }
+    .row {
+      margin: 0;
+      padding: 10px 0;
+      border-bottom: 1px solid $gray;
+      [class^="col"] {
+        padding: 0;
+      }
+    }
+  }
+  .ad_image_col {
+    img {
+    }
+  }
 }
-.ad_info_col {
-  h1 {
+.new_ad_form {
+  .row {
     margin: 0;
+    padding: 10px 0;
+    [class^="col"] {
+      padding: 0;
+      button {
+        float: right;
+        font-size: 20px;
+        margin: 0 0 0 5px;
+      }
+    }
+    .selected_image {
+      padding: 0;
+      float: right;
+    }
+  }
+  h1 {
     padding: 0 0 15px 0;
     border-bottom: 1px solid $gray;
     line-height: 1;
   }
-  .row {
-    margin: 0;
-    padding: 10px 0;
-    border-bottom: 1px solid $gray;
+}
+.user_profile {
+  .user_ads {
     [class^="col"] {
-      padding: 0;
+      padding-bottom: 10px;
     }
   }
-}
-.ad_image_col {
-  img {
+  button {
+    font-size: 20px;
+    margin-bottom: 15px;
   }
 }

@@ -44,7 +44,7 @@ export function loginWithProvider() {
       store.dispatch(loginUserFailure());
       throw new Error(error);
     },
-  )
+  );
 }
 
 export function fetchUser() {
@@ -54,13 +54,12 @@ export function fetchUser() {
       store.dispatch(fetchUserFailure());
       throw new Error(error);
     },
-  )
+  );
 }
 
 export function logOut() {
   logoutUser().then(
     () => {
-
       store.dispatch(logoutUserSuccess());
       store.dispatch(clearUserAds());
     },
@@ -74,18 +73,22 @@ export function logOut() {
 // readWrite
 export function createNewAd(values, uid) {
   const image = values.image;
-  delete values.image;
+  delete values.image; //eslint-disable-line
   const newAdKey = dbRef('ads').push().key;
-  const updates = {};
-  updates[`/ads/${newAdKey}`] = { ...values };
-  updates[`/user_ads/${uid}/${newAdKey}`] = '';
-  dbRef().update(updates).then(
+  const newAd = {};
+  newAd[`/ads/${newAdKey}`] = { ...values };
+  newAd[`/user_ads/${uid}/${newAdKey}`] = { ...values };
+  dbRef().update(newAd).then(
     () => {
-      const newImageKey = dbRef(`ads/${newAdKey}/images`).push().key
+      const newImageKey = dbRef(`ads/${newAdKey}/images`).push().key;
       storRef(`/images/${newImageKey}`).put(image).then(
         snapshot => {
-          const path = `/ads/${newAdKey}/images/${newImageKey}`;
-          dbRef(path).set(snapshot.downloadURL).then(
+          const pathAds = `/ads/${newAdKey}/images/${newImageKey}`;
+          const pathUserAds = `/user_ads/${uid}/${newAdKey}/images/${newImageKey}`;
+          const imgUrl = {};
+          imgUrl[pathAds] = snapshot.downloadURL;
+          imgUrl[pathUserAds] = snapshot.downloadURL;
+          dbRef().update(imgUrl).then(
             () => store.dispatch(createUserAdSuccess()),
             error => {
               store.dispatch(createUserAdFailure());
@@ -103,7 +106,7 @@ export function createNewAd(values, uid) {
       store.dispatch(createUserAdFailure());
       throw new Error(error);
     },
-  )
+  );
 }
 
 export function fetchAd(adKey) {
@@ -113,7 +116,7 @@ export function fetchAd(adKey) {
       store.dispatch(fetchAdFailure());
       throw new Error(error);
     },
-  )
+  );
 }
 
 export function fetchAds() {
@@ -124,6 +127,32 @@ export function fetchAds() {
       throw new Error(error);
     },
   );
+}
+
+export function fetchUserAds(uid) {
+  dbRef(`/user_ads/${uid}`).once('value').then(
+    snapshot => store.dispatch(fetchUserAdsSuccess(snapshot.val())),
+    error => {
+      store.dispatch(fetchUserAdsFailure());
+      throw new Error(error);
+    },
+  );
+  // dbRef('/user_ads').once('value').then(
+  //   snapshot => {
+
+  //     .then(
+  //       snapshot => store.dispatch(fetchAdsSuccess(snapshot.val())),
+  //       error => {
+  //         store.dispatch(fetchAdsFailure());
+  //         throw new Error(error);
+  //       },
+  //     )
+  //   },
+  //   error => {
+  //     store.dispatch(fetchAdsFailure());
+  //     throw new Error(error);
+  //   },
+  // );
 }
 
 export function userAdsListener(uid) {
