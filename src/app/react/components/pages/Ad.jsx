@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Grid, Row, Col, Image } from 'react-bootstrap';
 
-import { fetchAd } from '../../../api'
-
-import { Grid, Row, Col, Image} from 'react-bootstrap';
+import { fetchAd } from '../../../api';
 
 class Ad extends Component {
+  constructor() {
+    super();
+    this.state = {
+      activeImageUrl: '',
+    };
+    this.firstImageWasRendered = false;
+  }
+
   componentDidMount() {
     this.fetchAd();
   }
@@ -17,7 +24,9 @@ class Ad extends Component {
   renderAd() {
     if (Object.keys(this.props.ad).length !== 0) {
       const ad = this.props.ad;
-      const imgUrl = ad.images[Object.keys(ad.images)[0]];
+      const images = ad.images;
+      const firstImageUrl = images[Object.keys(images)[0]];
+      console.log(firstImageUrl)
       return (
         <Row>
           <Col className="ad_info_col" sm={12} md={6}>
@@ -40,7 +49,24 @@ class Ad extends Component {
             </Row>
           </Col>
           <Col sm={12} md={6} className="ad_image_col">
-            <Image src={imgUrl} width="100%" />
+            <Image
+              className="active_image"
+              src={this.state.activeImageUrl || firstImageUrl}
+              width="100%"
+            />
+            <Row>
+              {
+                Object.keys(images).map(key => (
+                  <Col key={key} sm={3} md={2}>
+                    <Image
+                      src={images[key]}
+                      width="100%"
+                      onClick={() => this.setState({ activeImageUrl: images[key] })}
+                    />
+                  </Col>
+                ))
+              }
+            </Row>
           </Col>
         </Row>
       );
