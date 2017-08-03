@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { Row, Col, Image } from 'react-bootstrap';
+import { Row, Col, Image, Clearfix } from 'react-bootstrap';
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files);
 
@@ -43,7 +43,6 @@ class NewAdForm extends Component {
       const reader = new FileReader(); //eslint-disable-line
       reader.onload = e => {
         this.imageUrlList.push(e.target.result);
-        console.log(this.imageUrlList);
         if (images[i + 1]) {
           i += 1;
           handleImage();
@@ -64,12 +63,12 @@ class NewAdForm extends Component {
       && Object.keys(this.props.newAdForm.values.images).length !== 0
     ) {
       if (this.state.imageUrlList.length > 0) {
-        console.log(this.state.imageUrlList);
         return (
           <Row>
+            <Clearfix visibleSmBlock />
             {
               this.state.imageUrlList.map((imgUrl, i) => (
-                <Col key={i} sm={4} md={3} className="selected_images">
+                <Col key={i} sm={3} md={3} className="selected_image">
                   <Image src={imgUrl} width="100%" />
                 </Col>
               ))
