@@ -72,30 +72,42 @@ export function logOut() {
 
 // readWrite
 export function createNewAd(values, uid) {
-  const image = values.image;
-  delete values.image; //eslint-disable-line
+  const images = values.images;
+  delete values.images; //eslint-disable-line
   const newAdKey = dbRef('ads').push().key;
   const newAd = {};
   newAd[`/ads/${newAdKey}`] = { ...values };
   newAd[`/user_ads/${uid}/${newAdKey}`] = { ...values };
   dbRef().update(newAd).then(
     () => {
-      const newImageKey = dbRef(`ads/${newAdKey}/images`).push().key;
-      storRef(`/images/${newImageKey}`).put(image).then(
-        snapshot => {
-          const pathAds = `/ads/${newAdKey}/images/${newImageKey}`;
-          const pathUserAds = `/user_ads/${uid}/${newAdKey}/images/${newImageKey}`;
-          const imgUrl = {};
-          imgUrl[pathAds] = snapshot.downloadURL;
-          imgUrl[pathUserAds] = snapshot.downloadURL;
-          dbRef().update(imgUrl).then(
-            () => store.dispatch(createUserAdSuccess()),
-            error => {
-              store.dispatch(createUserAdFailure());
-              throw new Error(error);
-            },
-          );
-        },
+      const handleImageUpload = (image, resolve, reject) => {
+        const newImageKey = dbRef(`ads/${newAdKey}/images`).push().key;
+        storRef(`/images/${newImageKey}`).put(image).then(
+          snapshot => {
+            const pathAds = `/ads/${newAdKey}/images/${newImageKey}`;
+            const pathUserAds = `/user_ads/${uid}/${newAdKey}/images/${newImageKey}`;
+            const imgUrl = {};
+            imgUrl[pathAds] = snapshot.downloadURL;
+            imgUrl[pathUserAds] = snapshot.downloadURL;
+            dbRef().update(imgUrl).then(
+              () => resolve(),
+              error => reject(error),
+            );
+          },
+          error => reject(error),
+        );
+      };
+
+      const promiseList = Object.keys(images).map(key => {
+        const image = images[key];
+        const promise = new Promise((resolve, reject) => {
+          handleImageUpload(image, resolve, reject);
+        });
+        return promise;
+      });
+
+      Promise.all(promiseList).then(
+        () => store.dispatch(createUserAdSuccess()),
         error => {
           store.dispatch(createUserAdFailure());
           throw new Error(error);

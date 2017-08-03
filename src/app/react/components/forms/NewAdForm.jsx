@@ -60,12 +60,12 @@ class NewAdForm extends Component {
     if (
       this.props.newAdForm
       && this.props.newAdForm.values
+      && this.props.newAdForm.values.images
       && Object.keys(this.props.newAdForm.values.images).length !== 0
     ) {
       if (this.state.imageUrlList.length > 0) {
         return (
           <Row>
-            <Clearfix visibleSmBlock />
             {
               this.state.imageUrlList.map((imgUrl, i) => (
                 <Col key={i} sm={3} md={3} className="selected_image">
@@ -73,6 +73,7 @@ class NewAdForm extends Component {
                 </Col>
               ))
             }
+            <Clearfix />
           </Row>
         );
       }
