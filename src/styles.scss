@@ -28,7 +28,8 @@ body {
     }
   }
   .ad_image_col {
-    img {
+    .active_image {
+      padding: 0 0 10px 0;
     }
   }
 }
