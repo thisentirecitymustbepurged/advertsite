@@ -47,8 +47,9 @@ class NewAdForm extends Component {
           i += 1;
           handleImage();
         } else {
-          this.imagesAreBeingHandled = false;
           this.setState({ imageUrlList: this.imageUrlList });
+          this.imageUrlList = [];
+          this.imagesAreBeingHandled = false;
         }
       };
       reader.readAsDataURL(images[i]);

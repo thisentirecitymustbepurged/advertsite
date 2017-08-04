@@ -11,13 +11,13 @@ import {
 } from '../../../redux/userAuth/actionCreators';
 
 class Navigation extends Component {
+  componentDidMount() {
+    fetchUser();
+  }
+
   logOut(e) {
     e.preventDefault();
     logOut();
-  }
-
-  componentDidMount() {
-    fetchUser();
   }
 
   renderUserMenu(user) {
@@ -43,8 +43,7 @@ class Navigation extends Component {
       );
     }
     return [
-      <li key={1}>Login</li>,
-      <li key={2}><Link to="/user">Register</Link></li>,
+      <li key={1}><Link to="/login">Login</Link></li>,
     ];
   }
 
@@ -59,7 +58,8 @@ class Navigation extends Component {
                 type="button"
                 data-toggle="collapse"
                 data-target=".bs-navbar-collapse"
-              ><span className="sr-only">Toggle navigation</span>
+              >
+                <span className="sr-only">Toggle navigation</span>
                 <span className="icon-bar" />
                 <span className="icon-bar" />
                 <span className="icon-bar" />
@@ -67,8 +67,6 @@ class Navigation extends Component {
               <Link to="/" className="navbar-brand">AdSite</Link>
             </div>
             <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
-              <ul className="nav navbar-nav">
-              </ul>
               <ul className="nav navbar-nav navbar-right">
                 { this.renderUserMenu(this.props.user) }
               </ul>

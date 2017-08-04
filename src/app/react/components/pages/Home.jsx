@@ -16,7 +16,9 @@ class Home extends Component {
     if (Object.keys(this.props.ads).length !== 0) {
       const ads = this.props.ads;
       return Object.keys(ads).map(key => {
-        const imgUrl = ads[key].images[Object.keys(ads[key].images)[0]];
+        const imgUrl = ads[key].images
+          ? ads[key].images[Object.keys(ads[key].images)[0]]
+          : 'http://via.placeholder.com/500x500';
         return (
           <Col key={key} sm={12} md={4}>
             <Link to={`ad/${key}`}>
