@@ -26,7 +26,6 @@ class Ad extends Component {
       const ad = this.props.ad;
       const images = ad.images;
       const firstImageUrl = images[Object.keys(images)[0]];
-      console.log(firstImageUrl)
       return (
         <Row>
           <Col className="ad_info_col" sm={12} md={6}>

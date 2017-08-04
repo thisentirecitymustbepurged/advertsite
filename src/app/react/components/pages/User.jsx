@@ -35,12 +35,17 @@ class User extends Component {
       return Object.keys(ads).map(key => {
         const imgUrl = ads[key].images[Object.keys(ads[key].images)[0]];
         return (
-          <Col key={key} sm={12} md={4}>
-            <Link to={`ad/${key}`}>
-              <Image src={imgUrl} width="100%" thumbnail />
-              <div>{ads[key].title}</div>
-            </Link>
-          </Col>
+          <Row>
+            <Button onClick={this.fetchUserAds}>
+              Fetch My Ads
+            </Button>
+            <Col key={key} sm={12} md={4}>
+              <Link to={`ad/${key}`}>
+                <Image src={imgUrl} width="100%" thumbnail />
+                <div>{ads[key].title}</div>
+              </Link>
+            </Col>
+          </Row>
         );
       });
     }
@@ -52,10 +57,7 @@ class User extends Component {
       <Grid className="user_profile">
         <Row className="user_ads">
           <Col sm={12} md={6}>
-            <Button onClick={this.fetchUserAds}>Fetch My Ads</Button>
-            <Row>
-              {this.renderAds()}
-            </Row>
+            {this.renderAds()}
           </Col>
         </Row>
       </Grid>
