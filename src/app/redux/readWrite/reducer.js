@@ -33,7 +33,7 @@ export function userReadWrite(state = {}, { type, ads }) {
 export function fetchAllAds(state = {}, { type, ads }) {
   switch (type) {
     case actionTypes.FETCH_ADS_SUCCESS:
-      return ads ? ads : {}; //eslint-disable-line
+      return ads || {};
     case actionTypes.FETCH_ADS_FAILURE:
       return state;
 
@@ -45,7 +45,7 @@ export function fetchAllAds(state = {}, { type, ads }) {
 export function fetchAd(state = {}, { type, ad }) {
   switch (type) {
     case actionTypes.FETCH_AD_SUCCESS:
-      return ad ? ad : {}; //eslint-disable-line
+      return ad || {};
     case actionTypes.FETCH_AD_FAILURE:
       return state;
 

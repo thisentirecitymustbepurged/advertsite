@@ -22,29 +22,39 @@ class Ad extends Component {
   }
 
   renderAd() {
+    const {
+      ad,
+      ad: {
+        images,
+        desc,
+        price,
+        address,
+        phone,
+      },
+    } = this.props;
     if (Object.keys(this.props.ad).length !== 0) {
-      const ad = this.props.ad;
-      const images = ad.images;
-      const firstImageUrl = images[Object.keys(images)[0]];
+      const firstImageUrl = images
+        ? images[Object.keys(images)[0]]
+        : 'http://via.placeholder.com/500x500';
       return (
         <Row>
           <Col className="ad_info_col" sm={12} md={6}>
             <h1>{ad.title}</h1>
             <Row>
               <Col md={4}>Description</Col>
-              <Col md={8}>{ad.desc}</Col>
+              <Col md={8}>{desc}</Col>
             </Row>
             <Row>
               <Col md={4}>Pricing</Col>
-              <Col md={8}>{ad.price}</Col>
+              <Col md={8}>{price}</Col>
             </Row>
             <Row>
               <Col md={4}>Location</Col>
-              <Col md={8}>{ad.address}</Col>
+              <Col md={8}>{address}</Col>
             </Row>
             <Row>
               <Col md={4}>Contact</Col>
-              <Col md={8}>{ad.phone}</Col>
+              <Col md={8}>{phone}</Col>
             </Row>
           </Col>
           <Col sm={12} md={6} className="ad_image_col">
@@ -55,7 +65,7 @@ class Ad extends Component {
             />
             <Row>
               {
-                Object.keys(images).map(key => (
+                images && Object.keys(images).map(key => (
                   <Col key={key} sm={3} md={2}>
                     <Image
                       src={images[key]}
