@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { Grid, Row, Col, Image } from 'react-bootstrap';
+import { Grid, Row, Col, Image, Pagination } from 'react-bootstrap';
 
 import {
   fetchAds,
 } from '../../../api';
 
 class Home extends Component {
+  constructor() {
+    super();
+    this.state = {
+      currentPage: 1,
+    };
+  }
+
   componentDidMount() {
     fetchAds();
   }
@@ -34,7 +41,19 @@ class Home extends Component {
 
   render() {
     return (
-      <Grid className="ads">
+      <Grid className="ads text-center">
+        <Pagination
+          prev
+          next
+          first
+          last
+          ellipsis
+          boundaryLinks
+          items={20}
+          maxButtons={5}
+          activePage={this.state.activePage}
+          onSelect={this.handleSelect}
+        />
         <Row >
           {this.renderAds()}
         </Row>
