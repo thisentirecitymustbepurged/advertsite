@@ -20,13 +20,13 @@ const paginationSetActivePage = (state, { activePage }) =>
     activePage,
   });
 
-const paginationSetAdsCount = (state, { adsCount }) =>
+const paginationSetAdsKeys = (state, { adsKeys }) =>
   state.merge({
-    adsCount,
+    adsKeys,
   });
 
 export default createReducer(INITIAL_STATE, {
   [Types.PAGINATION_SET_ITEMS_PER_PAGE]: paginationSetItemsPerPage,
   [Types.PAGINATION_SET_ACTIVE_PAGE]: paginationSetActivePage,
-  [Types.PAGINATION_SET_ADS_COUNT]: paginationSetAdsCount,
+  [Types.PAGINATION_SET_ADS_KEYS]: paginationSetAdsKeys,
 });
