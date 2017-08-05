@@ -1,26 +1,32 @@
-import * as actionTypes from './types';
+import Immutable from 'seamless-immutable';
+import { createReducer } from 'reduxsauce';
 
-export default function (state = {}, action) {
-  switch (action.type) {
+import { Types } from './actions';
 
-    case actionTypes.FETCH_USER_SUCCESS:
-      return action.user;
-    case actionTypes.FETCH_USER_SUCCESS:
-      return action.user;
-    case actionTypes.FETCH_USER_FAILURE:
-      return state;
+export const INITIAL_STATE = Immutable({
+  itemsPerPage: 10,
+  activePage: 1,
+  adsCount: null,
+});
 
-    case actionTypes.LOGOUT_USER_SUCCESS:
-      return null;
-    case actionTypes.LOGOUT_USER_FAILURE:
-      return state;
+// Community users
+const paginationSetItemsPerPage = (state, { itemsPerPage }) =>
+  state.merge({
+    itemsPerPage,
+  });
 
-    case actionTypes.LOGIN_USER_SUCCESS:
-      return action.user;
-    case actionTypes.LOGIN_USER_FAILURE:
-      return state;
+const paginationSetActivePage = (state, { activePage }) =>
+  state.merge({
+    activePage,
+  });
 
-    default:
-      return state;
-  }
-}
+const paginationSetAdsCount = (state, { adsCount }) =>
+  state.merge({
+    adsCount,
+  });
+
+export default createReducer(INITIAL_STATE, {
+  [Types.PAGINATION_SET_ITEMS_PER_PAGE]: paginationSetItemsPerPage,
+  [Types.PAGINATION_SET_ACTIVE_PAGE]: paginationSetActivePage,
+  [Types.PAGINATION_SET_ADS_COUNT]: paginationSetAdsCount,
+});
