@@ -141,30 +141,21 @@ export function fetchAds() {
   );
 }
 
-export function fetchUserAds(uid) {
-  dbRef(`/user_ads/${uid}`).once('value').then(
-    snapshot => store.dispatch(fetchUserAdsSuccess(snapshot.val())),
-    error => {
-      store.dispatch(fetchUserAdsFailure());
-      throw new Error(error);
+export function fetchUserAds() {
+  onAuthStateChanged().then(
+    () => {
+      const uid = store.getState().user.uid;
+      dbRef(`/user_ads/${uid}`).once('value').then(
+        snapshot => {
+          store.dispatch(fetchUserAdsSuccess(snapshot.val()));
+        },
+        error => {
+          store.dispatch(fetchUserAdsFailure());
+          throw new Error(error);
+        },
+      );
     },
   );
-  // dbRef('/user_ads').once('value').then(
-  //   snapshot => {
-
-  //     .then(
-  //       snapshot => store.dispatch(fetchAdsSuccess(snapshot.val())),
-  //       error => {
-  //         store.dispatch(fetchAdsFailure());
-  //         throw new Error(error);
-  //       },
-  //     )
-  //   },
-  //   error => {
-  //     store.dispatch(fetchAdsFailure());
-  //     throw new Error(error);
-  //   },
-  // );
 }
 
 export function userAdsListener(uid) {

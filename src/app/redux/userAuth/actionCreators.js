@@ -1,5 +1,11 @@
 import * as actionTypes from './types';
 
+export function fetchingUser(isFetching) {
+  return {
+    type: actionTypes.FETCHING_USER,
+    isFetching,
+  };
+}
 export function fetchUserSuccess(user) {
   return {
     type: actionTypes.FETCH_USER_SUCCESS,

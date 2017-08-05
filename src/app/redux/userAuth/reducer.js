@@ -5,6 +5,8 @@ export default function (state = {}, action) {
 
     case actionTypes.FETCH_USER_SUCCESS:
       return action.user;
+    case actionTypes.FETCH_USER_SUCCESS:
+      return action.user;
     case actionTypes.FETCH_USER_FAILURE:
       return state;
 

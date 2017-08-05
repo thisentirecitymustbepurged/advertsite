@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { Grid, Row, Col, Image, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Image } from 'react-bootstrap';
 
 import {
-  fetchUserAds,
   deleteAd,
 } from '../../../api';
 
@@ -13,16 +12,6 @@ class User extends Component {
   constructor() {
     super();
     this.deleteAd = this.deleteAd.bind(this);
-    this.fetchUserAds = this.fetchUserAds.bind(this);
-  }
-
-  fetchUserAds() {
-    if (
-      this.props.user
-      && this.props.user.uid !== undefined
-    ) {
-      fetchUserAds(this.props.user.uid);
-    }
   }
 
   deleteAd(key) {
@@ -33,19 +22,18 @@ class User extends Component {
     if (Object.keys(this.props.userAds).length !== 0) {
       const ads = this.props.userAds;
       return Object.keys(ads).map(key => {
-        const imgUrl = ads[key].images[Object.keys(ads[key].images)[0]];
+        const imgUrl = ads[key].images
+          ? ads[key].images[Object.keys(ads[key].images)[0]]
+          : 'http://via.placeholder.com/500x500';
         return (
-          <Row>
-            <Button onClick={this.fetchUserAds}>
-              Fetch My Ads
-            </Button>
-            <Col key={key} sm={12} md={4}>
-              <Link to={`ad/${key}`}>
-                <Image src={imgUrl} width="100%" thumbnail />
-                <div>{ads[key].title}</div>
-              </Link>
-            </Col>
-          </Row>
+
+          <Col key={key} sm={12} md={4}>
+            <Link to={`ad/${key}`}>
+              <Image src={imgUrl} width="100%" thumbnail />
+              <div>{ads[key].title}</div>
+            </Link>
+          </Col>
+
         );
       });
     }
@@ -57,7 +45,9 @@ class User extends Component {
       <Grid className="user_profile">
         <Row className="user_ads">
           <Col sm={12} md={6}>
-            {this.renderAds()}
+            <Row>
+              {this.renderAds()}
+            </Row>
           </Col>
         </Row>
       </Grid>
