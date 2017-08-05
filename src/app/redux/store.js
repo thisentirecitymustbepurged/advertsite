@@ -7,6 +7,7 @@ import {
   fetchAd,
 } from './readWrite/reducer';
 import userAuth from './userAuth/reducer';
+import pagination from './pagination/reducer';
 
 const reducersCombined = combineReducers({
   user: userAuth,
@@ -14,11 +15,12 @@ const reducersCombined = combineReducers({
   ads: fetchAllAds,
   ad: fetchAd,
   form: formReducer,
+  pagination,
 });
 
 const store = createStore(
   reducersCombined,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
 export default store;

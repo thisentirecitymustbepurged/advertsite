@@ -49,7 +49,7 @@ class Navigation extends Component {
 
   render() {
     return (
-      <div>
+      <div className="nav">
         <header className="navbar navbar-static-top navbar-inverse" id="top" role="banner">
           <div className="container">
             <div className="navbar-header">
