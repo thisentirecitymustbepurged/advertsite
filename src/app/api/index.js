@@ -142,10 +142,9 @@ export function fetchAdsShallow() {
     headers: {
       'cross-domain': true,
     },
-  })
-    .then(
-      data => store.dispatch(paginationSetAdsKeys(data)),
-    );
+  }).then(
+    data => store.dispatch(paginationSetAdsKeys(data)),
+  );
 }
 
 export function fetchAds() {
