@@ -164,7 +164,7 @@ class NewAdForm extends Component {
             <button
               className="btn btn-primary"
               type="submit"
-              disabled={pristine || submitting}
+
             >
               Submit
             </button>
