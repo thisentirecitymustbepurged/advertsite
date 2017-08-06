@@ -3,7 +3,7 @@ const admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().firebase);
 
-// // Create and Deploy Yours First Cloud Functions
+// // Create and Deploy Yousdsrs First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 // firebase deploy --only functions
 
