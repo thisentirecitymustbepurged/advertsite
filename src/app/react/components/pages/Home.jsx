@@ -37,12 +37,13 @@ class Home extends Component {
   }
 
   render() {
+    const {
+      itemsPerPage,
+      activePage,
+      adsCount,
+    } = this.props.pagination;
     return (
       <Grid className="ads text-center">
-        <DropdownButton title="Dropdown">
-          <MenuItem eventKey="1">Dropdown link</MenuItem>
-          <MenuItem eventKey="2">Dropdown link</MenuItem>
-        </DropdownButton>
         <Pagination
           prev
           next
@@ -50,10 +51,10 @@ class Home extends Component {
           last
           ellipsis
           boundaryLinks
-          items={20}
+          items={Math.ceil(adsCount / itemsPerPage)}
           maxButtons={5}
-          activePage={this.props.pagination.activePage}
-          onSelect={this.handleSelect}
+          activePage={activePage}
+          onSelect={() => ''}
         />
         <Row >
           {this.renderAds()}

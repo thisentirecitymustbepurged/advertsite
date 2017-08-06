@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import store from '../redux/store';
 
 import auth from '../firebase/auth';
@@ -33,7 +31,7 @@ import {
 
 import { Creators } from '../redux/pagination/actions';
 
-const { paginationSetAdsKeys } = Creators;
+const { paginationSetAdsCount } = Creators;
 
 const {
   logoutUser,
@@ -137,18 +135,18 @@ export function fetchAd(adKey) {
   );
 }
 
-export function fetchAdsShallow() {
-  axios.get('https://adwebsite-928a9.firebaseio.com/ads.json?shallow=true', {
-    headers: {
-      'cross-domain': true,
+export function fetchAdsCount() {
+  dbRef('/ads_count').once('value').then(
+    snapshot => store.dispatch(paginationSetAdsCount(snapshot.val())),
+    error => {
+      store.dispatch(fetchAdsFailure());
+      throw new Error(error);
     },
-  }).then(
-    data => store.dispatch(paginationSetAdsKeys(data)),
   );
 }
 
 export function fetchAds() {
-  fetchAdsShallow();
+  fetchAdsCount();
   dbRef('/ads').once('value').then(
     snapshot => store.dispatch(fetchAdsSuccess(snapshot.val())),
     error => {

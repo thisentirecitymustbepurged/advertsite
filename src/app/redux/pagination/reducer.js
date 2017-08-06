@@ -4,7 +4,7 @@ import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
-  itemsPerPage: 10,
+  itemsPerPage: 5,
   activePage: 1,
   adsCount: null,
 });
@@ -20,13 +20,13 @@ const paginationSetActivePage = (state, { activePage }) =>
     activePage,
   });
 
-const paginationSetAdsKeys = (state, { adsKeys }) =>
+const paginationSetAdsCount = (state, { adsCount }) =>
   state.merge({
-    adsKeys,
+    adsCount,
   });
 
 export default createReducer(INITIAL_STATE, {
   [Types.PAGINATION_SET_ITEMS_PER_PAGE]: paginationSetItemsPerPage,
   [Types.PAGINATION_SET_ACTIVE_PAGE]: paginationSetActivePage,
-  [Types.PAGINATION_SET_ADS_KEYS]: paginationSetAdsKeys,
+  [Types.PAGINATION_SET_ADS_COUNT]: paginationSetAdsCount,
 });
