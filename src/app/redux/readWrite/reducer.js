@@ -30,10 +30,10 @@ export function userReadWrite(state = {}, { type, ads }) {
   }
 }
 
-export function fetchAllAds(state = {}, { type, ads }) {
+export function fetchAllAds(state = [], { type, ads }) {
   switch (type) {
     case actionTypes.FETCH_ADS_SUCCESS:
-      return ads || {};
+      return ads ? state.concat(ads) : state;
     case actionTypes.FETCH_ADS_FAILURE:
       return state;
 
