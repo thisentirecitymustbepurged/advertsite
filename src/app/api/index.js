@@ -161,10 +161,11 @@ export function fetchAds() {
 
   if (endReached) return;
 
+
   if (activePage === 1) {
     return dbRef('/ads')
       .orderByKey()
-      .limitToFirst((itemsPerPage * 5) + 1)
+      .limitToFirst(itemsPerPage * 5)
       .once('value')
       .then(
         snapshot => {
@@ -182,7 +183,7 @@ export function fetchAds() {
             Math.ceil(result.length / itemsPerPage))
           );
 
-          if (result.length < (itemsPerPage * 5) + 1) {
+          if (result.length < itemsPerPage * 5) {
             store.dispatch(paginationSetEndReached(true));
           }
         },
@@ -197,7 +198,8 @@ export function fetchAds() {
   const {
     ads
   } = store.getState();
-  const lastKey = Object.keys(ads[ads.length - 1])[0];
+  const lastKey = ads[ads.length - 1].key;
+
 
   if (pagesNeedToFetch > 0) {
     return dbRef('/ads')
@@ -216,6 +218,8 @@ export function fetchAds() {
                 return obj;
               }
             );
+          result.shift();
+
           store.dispatch(fetchAdsSuccess(result));
           store.dispatch(paginationSetPagesFetched(
             pagesFetched + Math.ceil(result.length / itemsPerPage))
