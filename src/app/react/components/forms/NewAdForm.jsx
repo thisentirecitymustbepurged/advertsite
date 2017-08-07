@@ -104,6 +104,32 @@ class NewAdForm extends Component {
           </Col>
         </Row>
         <Row>
+          <Col md={3}>Category</Col>
+          <Col md={9}>
+            <Field
+              className="form-control"
+              name="category"
+              component="select"
+            >
+              <option value=""></option>
+              <option value="flat">Flat</option>
+              <option value="house">House</option>
+              <option value="cottage">Cottage</option>
+            </Field>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={3}>Pricing</Col>
+          <Col md={9}>
+            <Field
+              className="form-control"
+              name="price"
+              component="input"
+              type="text"
+            />
+          </Col>
+        </Row>
+        <Row>
           <Col md={3}>Location</Col>
           <Col md={9}>
             <Field
@@ -120,17 +146,6 @@ class NewAdForm extends Component {
             <Field
               className="form-control"
               name="phone"
-              component="input"
-              type="text"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3}>Pricing</Col>
-          <Col md={9}>
-            <Field
-              className="form-control"
-              name="price"
               component="input"
               type="text"
             />

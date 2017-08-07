@@ -32,7 +32,6 @@ import {
 import { Creators } from '../redux/pagination/actions';
 
 const {
-  paginationSetAdsCount,
   paginationSetPagesFetched,
   paginationSetEndReached
 } = Creators;
@@ -139,16 +138,6 @@ export function fetchAd(adKey) {
   );
 }
 
-export function fetchAdsCount() {
-  dbRef('/ads_count').once('value').then(
-    snapshot => store.dispatch(paginationSetAdsCount(snapshot.val())),
-    error => {
-      store.dispatch(fetchAdsFailure());
-      throw new Error(error);
-    },
-  );
-}
-
 export function fetchAds() {
   const {
     pagination: {
@@ -161,81 +150,171 @@ export function fetchAds() {
 
   if (endReached) return;
 
-
-  if (activePage === 1) {
+  const adsQuery = (numberToFetch, lastKey) => {
+    if (lastKey) {
+      return dbRef('/ads')
+        .orderByKey()
+        .limitToFirst(numberToFetch)
+        .startAt(lastKey)
+        .once('value');
+    }
     return dbRef('/ads')
       .orderByKey()
-      .limitToFirst(itemsPerPage * 5)
-      .once('value')
-      .then(
-        snapshot => {
-          const ads = snapshot.val();
-          const result = Object.keys(ads)
-            .map(
-              key => {
-                const obj = Object.assign({}, ads[key]);
-                obj.key = key;
-                return obj;
-              }
-            );
-          store.dispatch(fetchAdsSuccess(result));
-          store.dispatch(paginationSetPagesFetched(
-            Math.ceil(result.length / itemsPerPage))
-          );
+      .limitToFirst(numberToFetch)
+      .once('value');
+  };
 
-          if (result.length < itemsPerPage * 5) {
-            store.dispatch(paginationSetEndReached(true));
-          }
-        },
-        error => {
-          store.dispatch(fetchAdsFailure());
-          throw new Error(error);
-        },
+  function handleAds(snapshot, shift) {
+    const ads = snapshot;
+    const result = Object.keys(ads)
+      .map(
+        key => {
+          const obj = Object.assign({}, ads[key]);
+          obj.key = key;
+          return obj;
+        }
       );
+
+    if (!shift) {
+      store.dispatch(fetchAdsSuccess(result));
+      store.dispatch(paginationSetPagesFetched(
+        Math.ceil(result.length / itemsPerPage))
+      );
+
+      if (result.length < itemsPerPage * 5) {
+        store.dispatch(paginationSetEndReached(true));
+      }
+    } else {
+      result.shift();
+      store.dispatch(fetchAdsSuccess(result));
+      debugger;
+      store.dispatch(paginationSetPagesFetched(
+        pagesFetched + Math.ceil(result.length / itemsPerPage))
+      );
+      if (result.length < itemsPerPage * pageCountToFetch) { //eslint-disable-line
+        store.dispatch(paginationSetEndReached(true));
+      }
+    }
   }
 
-  const pagesNeedToFetch = 4 - (pagesFetched - activePage);
-  debugger;
+  // FIRST FETCH
+  if (activePage === 1) {
+    return adsQuery(itemsPerPage * 5).then(
+      snapshot => handleAds(snapshot.val()),
+      error => {
+        store.dispatch(fetchAdsFailure());
+        throw new Error(error);
+      },
+    );
+  }
+
+  // NEXT FETCH
+  const pageCountToFetch = 4 - (pagesFetched - activePage);
   const {
     ads
   } = store.getState();
   const lastKey = ads[ads.length - 1].key;
 
+  if (pageCountToFetch > 0) {
+    debugger;
+    return adsQuery((itemsPerPage * pageCountToFetch) + 1, lastKey).then(
+      snapshot => handleAds(snapshot.val(), true),
+      error => {
+        store.dispatch(fetchAdsFailure());
+        throw new Error(error);
+      },
+    );
+  }
+}
 
-  if (pagesNeedToFetch > 0) {
+export function filterAds(category) {
+  const {
+    pagination: {
+      itemsPerPage,
+      activePage,
+      pagesFetched,
+      endReached
+    }
+  } = store.getState();
+
+  if (endReached) return;
+
+  const adsQueryCat = (numberToFetch, cat, lastKey) => {
+    // NEXT FETCH
+    if (lastKey) {
+      return dbRef('/ads')
+        .orderByChild('category')
+        .equalTo(cat)
+        .limitToFirst(numberToFetch)
+        .startAt(lastKey)
+        .once('value');
+    }
+    // FIRST FETCH
     return dbRef('/ads')
-      .orderByKey()
-      .limitToFirst(pagesNeedToFetch * itemsPerPage + 1)
-      .startAt(lastKey)
-      .once('value')
-      .then(
-        snapshot => {
-          const nextAds = snapshot.val();
-          const result = Object.keys(nextAds)
-            .map(
-              key => {
-                const obj = Object.assign({}, ads[key]);
-                obj.key = key;
-                return obj;
-              }
-            );
-          result.shift();
+      .orderByChild('category')
+      .equalTo(cat)
+      .limitToFirst(numberToFetch)
+      .once('value');
+  };
 
-          store.dispatch(fetchAdsSuccess(result));
-          store.dispatch(paginationSetPagesFetched(
-            pagesFetched + Math.ceil(result.length / itemsPerPage))
-          );
-
-          if (result.length < itemsPerPage * pagesNeedToFetch) {
-            debugger;
-            store.dispatch(paginationSetEndReached(true));
-          }
-        },
-        error => {
-          store.dispatch(fetchAdsFailure());
-          throw new Error(error);
+  function handleAds(snapshot, shift) {
+    const ads = snapshot;
+    const result = Object.keys(ads)
+      .map(
+        key => {
+          const obj = Object.assign({}, ads[key]);
+          obj.key = key;
+          return obj;
         }
       );
+
+    if (!shift) {
+      store.dispatch(fetchAdsSuccess(result));
+      store.dispatch(paginationSetPagesFetched(
+        Math.ceil(result.length / itemsPerPage))
+      );
+
+      if (result.length < itemsPerPage * 5) {
+        store.dispatch(paginationSetEndReached(true));
+      }
+    } else {
+      result.shift();
+      store.dispatch(fetchAdsSuccess(result));
+      store.dispatch(paginationSetPagesFetched(
+        pagesFetched + Math.ceil(result.length / itemsPerPage))
+      );
+      if (result.length < itemsPerPage * pageCountToFetch) { //eslint-disable-line
+        store.dispatch(paginationSetEndReached(true));
+      }
+    }
+  }
+
+  // FIRST FETCH
+  if (activePage === 1) {
+    return adsQueryCat(itemsPerPage * 5, category).then(
+      snapshot => handleAds(snapshot.val()),
+      error => {
+        store.dispatch(fetchAdsFailure());
+        throw new Error(error);
+      },
+    );
+  }
+
+  // NEXT FETCH
+  const pageCountToFetch = 4 - (pagesFetched - activePage);
+  const {
+    ads
+  } = store.getState();
+  const lastKey = ads[ads.length - 1].key;
+
+  if (pageCountToFetch > 0) {
+    return adsQueryCat((itemsPerPage * 5) + 1, category, lastKey).then(
+      snapshot => handleAds(snapshot.val(), true),
+      error => {
+        store.dispatch(fetchAdsFailure());
+        throw new Error(error);
+      },
+    );
   }
 }
 
