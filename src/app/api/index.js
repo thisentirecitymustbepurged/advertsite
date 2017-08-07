@@ -31,7 +31,11 @@ import {
 
 import { Creators } from '../redux/pagination/actions';
 
-const { paginationSetAdsCount } = Creators;
+const {
+  paginationSetAdsCount,
+  paginationSetPagesFetched,
+  paginationSetEndReached
+} = Creators;
 
 const {
   logoutUser,
@@ -146,14 +150,91 @@ export function fetchAdsCount() {
 }
 
 export function fetchAds() {
-  fetchAdsCount();
-  dbRef('/ads').once('value').then(
-    snapshot => store.dispatch(fetchAdsSuccess(snapshot.val())),
-    error => {
-      store.dispatch(fetchAdsFailure());
-      throw new Error(error);
-    },
-  );
+  const {
+    pagination: {
+      itemsPerPage,
+      activePage,
+      pagesFetched,
+      endReached
+    }
+  } = store.getState();
+
+  if (endReached) return;
+
+
+  if (activePage === 1) {
+    return dbRef('/ads')
+      .orderByKey()
+      .limitToFirst(itemsPerPage * 5)
+      .once('value')
+      .then(
+        snapshot => {
+          const ads = snapshot.val();
+          const result = Object.keys(ads)
+            .map(
+              key => {
+                const obj = Object.assign({}, ads[key]);
+                obj.key = key;
+                return obj;
+              }
+            );
+          store.dispatch(fetchAdsSuccess(result));
+          store.dispatch(paginationSetPagesFetched(
+            Math.ceil(result.length / itemsPerPage))
+          );
+
+          if (result.length < itemsPerPage * 5) {
+            store.dispatch(paginationSetEndReached(true));
+          }
+        },
+        error => {
+          store.dispatch(fetchAdsFailure());
+          throw new Error(error);
+        },
+      );
+  }
+
+  const pagesNeedToFetch = 5 - (pagesFetched - activePage);
+  const {
+    ads
+  } = store.getState();
+  const lastKey = ads[ads.length - 1].key;
+
+
+  if (pagesNeedToFetch > 0) {
+    return dbRef('/ads')
+      .orderByKey()
+      .limitToFirst(pagesNeedToFetch * itemsPerPage)
+      .startAt(lastKey)
+      .once('value')
+      .then(
+        snapshot => {
+          const nextAds = snapshot.val();
+          const result = Object.keys(nextAds)
+            .map(
+              key => {
+                const obj = Object.assign({}, ads[key]);
+                obj.key = key;
+                return obj;
+              }
+            );
+          result.shift();
+
+          store.dispatch(fetchAdsSuccess(result));
+          store.dispatch(paginationSetPagesFetched(
+            pagesFetched + Math.ceil(result.length / itemsPerPage))
+          );
+
+          if (result.length < itemsPerPage * pagesNeedToFetch) {
+            store.dispatch(paginationSetEndReached(true));
+          }
+        },
+        error => {
+          store.dispatch(fetchAdsFailure());
+          throw new Error(error);
+        }
+      );
+  }
 }
 
 export function fetchUserAds() {
