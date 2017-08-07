@@ -194,7 +194,8 @@ export function fetchAds() {
       );
   }
 
-  const pagesNeedToFetch = 5 - (pagesFetched - activePage);
+  const pagesNeedToFetch = 4 - (pagesFetched - activePage);
+  debugger;
   const {
     ads
   } = store.getState();
@@ -204,7 +205,7 @@ export function fetchAds() {
   if (pagesNeedToFetch > 0) {
     return dbRef('/ads')
       .orderByKey()
-      .limitToFirst(pagesNeedToFetch * itemsPerPage)
+      .limitToFirst(pagesNeedToFetch * itemsPerPage + 1)
       .startAt(lastKey)
       .once('value')
       .then(
@@ -226,6 +227,7 @@ export function fetchAds() {
           );
 
           if (result.length < itemsPerPage * pagesNeedToFetch) {
+            debugger;
             store.dispatch(paginationSetEndReached(true));
           }
         },

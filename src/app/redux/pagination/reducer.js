@@ -4,7 +4,7 @@ import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
-  itemsPerPage: 2,
+  itemsPerPage: 5,
   activePage: 1,
   pagesFetched: 0,
   endReached: false,
