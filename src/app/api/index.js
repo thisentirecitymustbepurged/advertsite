@@ -128,21 +128,45 @@ export function createNewAd(values, uid) {
   );
 }
 
-export function query(ref, numberToFetch, lastKey) {
-  return function () {
-    let q = dbRef(ref);
-    if (!numberToFetch) {
-      return q.once('value');
-    }
-    return function () {
-      q = q.orderByKey().limitToFirst(numberToFetch);
-      if (!lastKey) {
-        return q.once('value');
-      }
-      q = q.startAt(lastKey);
-      return q.once('value');
-    }();
-  }();
+export function query(ref, filter) {
+  const {
+    orderBy,
+    equalTo,
+    limitToFirst,
+    limitToLast,
+    startAt,
+    endAt
+  } = filter;
+  let q = dbRef(ref);
+  switch (orderBy) {
+    case 'child':
+      q = q.orderByChild();
+      break;
+    case 'value':
+      q = q.orderByValue();
+      break;
+    case 'key':
+      q = q.orderByKey();
+      break;
+    default:
+      q = q.orderByKey();
+  }
+  if (equalTo) {
+    q = q.equalTo(equalTo);
+  }
+  if (limitToFirst) {
+    q = q.limitToFirst(limitToFirst);
+  }
+  if (limitToLast) {
+    q = q.limitToLast(limitToLast);
+  }
+  if (startAt) {
+    q = q.startAt(startAt);
+  }
+  if (endAt) {
+    q = q.endAt(endAt);
+  }
+  return q.once('value');
 }
 
 export function fetchAds() {
@@ -165,7 +189,10 @@ export function fetchAds() {
   // INITIAL CALL
   if (activePage === 1) {
     const numberToFetch = itemsPerPage * initialPageCount;
-    return query('/ads', numberToFetch).then(
+    const filters = {
+      limitToFirst: numberToFetch
+    };
+    return query('/ads', filters).then(
       snapshot => handleAds(snapshot.val(), numberToFetch, true),
       error => {
         store.dispatch(fetchAdsFailure());
@@ -179,7 +206,11 @@ export function fetchAds() {
     const lastKey = ads[ads.length - 1].key;
     const pageCountToFetch = (initialPageCount - 1) - (pagesFetched - activePage);
     const numberToFetch = (itemsPerPage * pageCountToFetch) + 1;
-    return query('/ads', numberToFetch, lastKey).then(
+    const filters = {
+      startAt: lastKey,
+      limitToFirst: numberToFetch
+    };
+    return query('/ads', filters).then(
       snapshot => handleAds(snapshot.val(), numberToFetch),
       error => {
         store.dispatch(fetchAdsFailure());
@@ -217,7 +248,7 @@ export function fetchAds() {
 }
 
 export function fetchAd(adKey) {
-  query(`ads/${adKey}`).then(
+  dbRef(`ads/${adKey}`).once('value').then(
     snapshot => store.dispatch(fetchAdSuccess(snapshot.val())),
     error => {
       store.dispatch(fetchAdFailure());
