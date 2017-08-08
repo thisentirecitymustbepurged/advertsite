@@ -129,42 +129,44 @@ export function createNewAd(values, uid) {
 }
 
 export function query(ref, filter) {
+  let q = dbRef(ref);
   const {
-    orderBy,
+    order,
     equalTo,
     limitToFirst,
     limitToLast,
     startAt,
     endAt
   } = filter;
-  let q = dbRef(ref);
-  switch (orderBy) {
-    case 'child':
-      q = q.orderByChild();
-      break;
-    case 'value':
-      q = q.orderByValue();
-      break;
-    case 'key':
-      q = q.orderByKey();
-      break;
-    default:
-      q = q.orderByKey();
-  }
-  if (equalTo) {
-    q = q.equalTo(equalTo);
-  }
-  if (limitToFirst) {
-    q = q.limitToFirst(limitToFirst);
-  }
-  if (limitToLast) {
-    q = q.limitToLast(limitToLast);
-  }
-  if (startAt) {
-    q = q.startAt(startAt);
-  }
-  if (endAt) {
-    q = q.endAt(endAt);
+  if (Object.keys(filter).length) {
+    switch (order.by) {
+      case 'key':
+        q = q.orderByKey();
+        break;
+      case 'child':
+        q = q.orderByChild(order.value);
+        break;
+      case 'value':
+        q = q.orderByValue(order.value);
+        break;
+      default:
+        throw new Error(`Something's wrong with query order object: ${order}`);
+    }
+    if (equalTo) {
+      q = q.equalTo(equalTo);
+    }
+    if (limitToFirst) {
+      q = q.limitToFirst(limitToFirst);
+    }
+    if (limitToLast) {
+      q = q.limitToLast(limitToLast);
+    }
+    if (startAt) {
+      q = q.startAt(startAt);
+    }
+    if (endAt) {
+      q = q.endAt(endAt);
+    }
   }
   return q.once('value');
 }
@@ -178,9 +180,7 @@ export function fetchAds() {
       pagesFetched,
       endReached
     },
-    // filter: {
-    //   categoryFilter,
-    // },
+    filter,
     ads
   } = store.getState();
 
@@ -189,10 +189,11 @@ export function fetchAds() {
   // INITIAL CALL
   if (activePage === 1) {
     const numberToFetch = itemsPerPage * initialPageCount;
-    const filters = {
-      limitToFirst: numberToFetch
+    const f = {
+      ...filter,
+      limitToFirst: numberToFetch,
     };
-    return query('/ads', filters).then(
+    return query('/ads', f).then(
       snapshot => handleAds(snapshot.val(), numberToFetch, true),
       error => {
         store.dispatch(fetchAdsFailure());
@@ -206,11 +207,12 @@ export function fetchAds() {
     const lastKey = ads[ads.length - 1].key;
     const pageCountToFetch = (initialPageCount - 1) - (pagesFetched - activePage);
     const numberToFetch = (itemsPerPage * pageCountToFetch) + 1;
-    const filters = {
+    const f = {
+      ...filter,
+      limitToFirst: numberToFetch,
       startAt: lastKey,
-      limitToFirst: numberToFetch
     };
-    return query('/ads', filters).then(
+    return query('/ads', f).then(
       snapshot => handleAds(snapshot.val(), numberToFetch),
       error => {
         store.dispatch(fetchAdsFailure());

@@ -4,14 +4,16 @@ import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
-  categoryFilter: null,
+  order: {
+    by: 'key'
+  }
 });
 
-const filterByCategory = (state, { category }) =>
+const setAdsFilter = (state, { filter }) =>
   state.merge({
-    categoryFilter: category
+    ...filter
   });
 
 export default createReducer(INITIAL_STATE, {
-  [Types.FILTER_BY_CATEGORY]: filterByCategory
+  [Types.SET_ADS_FILTER]: setAdsFilter
 });

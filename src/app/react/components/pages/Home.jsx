@@ -16,11 +16,12 @@ import { Creators as paginationCreators } from '../../../redux/pagination/action
 import { Creators as filterCreators } from '../../../redux/filter/actions';
 
 const {
-  paginationSetActivePage
+  paginationSetActivePage,
+  paginationSetEndReached
 } = paginationCreators;
 
 const {
-  filterByCategory
+  setAdsFilter
 } = filterCreators;
 
 class Home extends Component {
@@ -34,7 +35,14 @@ class Home extends Component {
   }
 
   filterByCategory(category) {
-    this.props.filterByCategory(category);
+    const filter = {
+      order: {
+        by: 'child',
+        value: category
+      }
+    };
+    this.props.paginationSetEndReached(false);
+    this.props.setAdsFilter(filter);
     fetchAds();
   }
 
@@ -112,7 +120,8 @@ class Home extends Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     paginationSetActivePage,
-    filterByCategory
+    setAdsFilter,
+    paginationSetEndReached
   }, dispatch);
 }
 
