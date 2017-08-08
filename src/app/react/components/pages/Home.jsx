@@ -9,8 +9,7 @@ import {
 } from 'react-bootstrap';
 
 import {
-  fetchAds,
-  filterAds,
+  fetchAds
 } from '../../../api';
 
 import { Creators as paginationCreators } from '../../../redux/pagination/actions';
@@ -36,7 +35,7 @@ class Home extends Component {
 
   filterByCategory(category) {
     this.props.filterByCategory(category);
-    filterAds(category);
+    fetchAds();
   }
 
   renderAds() {

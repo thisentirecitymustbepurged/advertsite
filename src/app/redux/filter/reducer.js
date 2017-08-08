@@ -4,7 +4,7 @@ import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
-  categoryFilter: ''
+  categoryFilter: null,
 });
 
 const filterByCategory = (state, { category }) =>

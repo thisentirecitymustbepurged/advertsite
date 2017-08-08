@@ -15,5 +15,7 @@
     "react/jsx-no-bind": 0,
     "comma-dangle": 0,
     "react/self-closing-comp": 0,
+    "wrap-iife": 0,
+    "no-use-before-define": 0,
   }
 }
