@@ -13,7 +13,6 @@ export default function (state = {}, action) {
       return state;
 
     case actionTypes.LOGIN_USER_SUCCESS:
-    debugger;
       return action.user;
     case actionTypes.LOGIN_USER_FAILURE:
       return state;

@@ -29,33 +29,14 @@ export default class Login extends Component {
           </div>
           <button type="submit" className="btn btn-default btn-block">Login</button>
           <br />
-          <h5><Link to="/reset">Forgot password?</Link></h5>
-
-          <h4>Login with</h4>
-          <a
-            href="" className="btn btn-block btn-social btn-facebook" onClick={() => {
-              loginWithProvider('facebook');
-            }} data-provider="facebook"
-          >Facebook</a>
-
-          <a
-            href="" className="btn btn-block btn-social btn-twitter" onClick={() => {
-              loginWithProvider('twitter');
-            }} data-provider="twitter"
-          >Twitter</a>
-
-          <a
-            href="" className="btn btn-block btn-social btn-google" onClick={() => {
-              loginWithProvider('google');
-            }} data-provider="google"
-          >Google</a>
-
-          <a
-            href="" className="btn btn-block btn-social btn-github" onClick={() => {
-              loginWithProvider('github');
-            }} data-provider="github"
-          >Github</a>
         </form>
+        <h5><Link to="/reset">Forgot password?</Link></h5>
+        <h4>Login with:</h4>
+        <button
+          className="btn btn-block btn-social btn-facebook"
+          onClick={() => loginWithProvider('facebook')}>
+          Facebook
+        </button>
       </div>
     );
   }
