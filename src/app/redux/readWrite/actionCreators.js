@@ -69,6 +69,12 @@ export function deleteUserAdFailure() {
   };
 }
 
+export function clearAds() {
+  return {
+    type: actionTypes.CLEAR_ADS,
+  };
+}
+
 export function clearUserAds() {
   return {
     type: actionTypes.CLEAR_USER_ADS,

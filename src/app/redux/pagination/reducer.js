@@ -5,7 +5,7 @@ import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
   initialPageCount: 5,
-  itemsPerPage: 3,
+  itemsPerPage: 6,
   activePage: 1,
   pagesFetched: 0,
   endReached: false,

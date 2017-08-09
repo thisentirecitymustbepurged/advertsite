@@ -34,12 +34,13 @@ class Home extends Component {
     fetchAds();
   }
 
-  filterByCategory(category) {
+  filterByCategory(equalTo) {
     const filter = {
       order: {
         by: 'child',
-        value: category
-      }
+        value: 'category'
+      },
+      equalTo
     };
     this.props.paginationSetEndReached(false);
     this.props.setAdsFilter(filter);

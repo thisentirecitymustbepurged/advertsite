@@ -4,9 +4,6 @@ import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
-  order: {
-    by: 'key'
-  }
 });
 
 const setAdsFilter = (state, { filter }) =>

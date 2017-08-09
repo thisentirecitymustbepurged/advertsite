@@ -27,6 +27,7 @@ import {
   fetchAdSuccess,
   fetchAdFailure,
   clearUserAds,
+  clearAds
 } from '../redux/readWrite/actionCreators';
 
 import { Creators } from '../redux/pagination/actions';
@@ -183,17 +184,31 @@ export function fetchAds() {
     filter,
     ads
   } = store.getState();
+  const filterExists = Object.keys(filter).length;
+  console.log(filterExists);
 
   if (endReached) return;
 
   // INITIAL CALL
   if (activePage === 1) {
     const numberToFetch = itemsPerPage * initialPageCount;
-    const f = {
-      ...filter,
-      limitToFirst: numberToFetch,
+    const f = () => {
+      if (!filterExists) {
+        debugger;
+        return {
+          order: {
+            by: 'key'
+          },
+          limitToFirst: numberToFetch
+        };
+      }
+      debugger;
+      return {
+        ...filter,
+        limitToFirst: numberToFetch
+      };
     };
-    return query('/ads', f).then(
+    return query('/ads', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch, true),
       error => {
         store.dispatch(fetchAdsFailure());
@@ -207,12 +222,23 @@ export function fetchAds() {
     const lastKey = ads[ads.length - 1].key;
     const pageCountToFetch = (initialPageCount - 1) - (pagesFetched - activePage);
     const numberToFetch = (itemsPerPage * pageCountToFetch) + 1;
-    const f = {
-      ...filter,
-      limitToFirst: numberToFetch,
-      startAt: lastKey,
+    const f = () => {
+      if (!filterExists) {
+        return {
+          order: {
+            by: 'key'
+          },
+          limitToFirst: numberToFetch,
+          startAt: lastKey
+        };
+      }
+      return {
+        ...filter,
+        limitToFirst: numberToFetch,
+        startAt: lastKey
+      };
     };
-    return query('/ads', f).then(
+    return query('/ads', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch),
       error => {
         store.dispatch(fetchAdsFailure());
@@ -222,6 +248,10 @@ export function fetchAds() {
   }
 
   function handleAds(fetchedAds, numberToFetch, isInitial) {
+    if (filterExists) {
+      debugger;
+      store.dispatch(clearAds());
+    }
     const handledAds = Object.keys(fetchedAds).map(key => {
       const obj = Object.assign({}, fetchedAds[key]);
       obj.key = key;

@@ -36,6 +36,8 @@ export function fetchAllAds(state = [], { type, ads }) {
       return ads ? state.concat(ads) : state;
     case actionTypes.FETCH_ADS_FAILURE:
       return state;
+    case actionTypes.CLEAR_ADS:
+      return [];
 
     default:
       return state;
