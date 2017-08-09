@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import {
   Grid, Row, Col,
-  Image, Pagination,
+  Pagination,
   DropdownButton, MenuItem,
 } from 'react-bootstrap';
 
@@ -34,13 +34,13 @@ class Home extends Component {
     fetchAds();
   }
 
-  filterByCategory(equalTo) {
+  filterByCategory(equalToValue) {
     const filter = {
       order: {
         by: 'child',
         value: 'category'
       },
-      equalTo
+      equalTo: equalToValue
     };
     this.props.paginationSetEndReached(false);
     this.props.setAdsFilter(filter);
@@ -62,10 +62,15 @@ class Home extends Component {
         const imgUrl = images
           ? images[Object.keys(images)[0]]
           : 'http://via.placeholder.com/500x500';
+        const style = {
+          backgroundImage: `url(${imgUrl})`,
+          backgroundSize: 'cover',
+        };
         return (
-          <Col key={key} sm={12} md={4}>
+          <Col
+            key={key} sm={12} md={4} className="item_cont">
             <Link to={`ad/${key}`}>
-              <Image src={imgUrl} width="100%" thumbnail />
+              <div style={style} className="item_img_cont"></div>
               <div>{title}</div>
             </Link>
           </Col>
@@ -80,37 +85,40 @@ class Home extends Component {
       activePage,
       pagesFetched
     } = this.props.pagination;
-    const {
-      categoryFilter
-    } = this.props.filter;
+    const title = this.props.filter.equalTo || 'Select Category';
     return (
-      <Grid className="ads text-center">
-        <Pagination
-          prev
-          next
-          first
-          last
-          ellipsis
-          boundaryLinks
-          items={pagesFetched}
-          maxButtons={5}
-          activePage={activePage}
-          onSelect={this.paginationSelect.bind(this)}
-        />
+      <Grid className="home_cont">
         <Row>
-          <DropdownButton
-            className="filter_category"
-            title="Select Category"
-            onSelect={this.filterByCategory.bind(this)}
-            id="select_category_dropdown"
-          >
-            <MenuItem eventKey="flat">Flat</MenuItem>
-            <MenuItem eventKey="house">House</MenuItem>
-            <MenuItem eventKey="cottage">Cottage</MenuItem>
-          </DropdownButton>
-          { categoryFilter }
+          <Col sm={12} md={2} className="category_filter_cont">
+            <DropdownButton
+              title={title}
+              onSelect={this.filterByCategory.bind(this)}
+              id="select_category_dropdown"
+            >
+              <MenuItem eventKey="none">Select Category</MenuItem>
+              <MenuItem eventKey="flat">Flat</MenuItem>
+              <MenuItem eventKey="house">House</MenuItem>
+              <MenuItem eventKey="cottage">Cottage</MenuItem>
+            </DropdownButton>
+          </Col>
+          <Col sm={12} md={8} className="pagination_cont">
+            <Pagination
+              prev
+              next
+              first
+              last
+              ellipsis
+              boundaryLinks
+              items={pagesFetched}
+              maxButtons={5}
+              activePage={activePage}
+              onSelect={this.paginationSelect.bind(this)}
+            />
+          </Col>
+          <Col sm={12} md={2}>
+          </Col>
         </Row>
-        <Row >
+        <Row className="ads_cont">
           {this.renderAds()}
         </Row>
       </Grid>

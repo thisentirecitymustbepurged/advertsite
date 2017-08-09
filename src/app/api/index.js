@@ -185,7 +185,6 @@ export function fetchAds() {
     ads
   } = store.getState();
   const filterExists = Object.keys(filter).length;
-  console.log(filterExists);
 
   if (endReached) return;
 
@@ -194,7 +193,6 @@ export function fetchAds() {
     const numberToFetch = itemsPerPage * initialPageCount;
     const f = () => {
       if (!filterExists) {
-        debugger;
         return {
           order: {
             by: 'key'
@@ -202,7 +200,6 @@ export function fetchAds() {
           limitToFirst: numberToFetch
         };
       }
-      debugger;
       return {
         ...filter,
         limitToFirst: numberToFetch
@@ -249,7 +246,6 @@ export function fetchAds() {
 
   function handleAds(fetchedAds, numberToFetch, isInitial) {
     if (filterExists) {
-      debugger;
       store.dispatch(clearAds());
     }
     const handledAds = Object.keys(fetchedAds).map(key => {

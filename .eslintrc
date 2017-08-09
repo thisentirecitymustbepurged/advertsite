@@ -17,5 +17,7 @@
     "react/self-closing-comp": 0,
     "wrap-iife": 0,
     "no-use-before-define": 0,
+    "react/jsx-max-props-per-line": 0,
+    "react/jsx-closing-bracket-location": 0,
   }
 }

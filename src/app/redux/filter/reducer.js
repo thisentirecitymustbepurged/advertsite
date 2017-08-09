@@ -3,8 +3,7 @@ import { createReducer } from 'reduxsauce';
 
 import { Types } from './actions';
 
-export const INITIAL_STATE = Immutable({
-});
+export const INITIAL_STATE = Immutable({});
 
 const setAdsFilter = (state, { filter }) =>
   state.merge({
