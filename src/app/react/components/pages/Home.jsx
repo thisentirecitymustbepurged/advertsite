@@ -95,7 +95,6 @@ class Home extends Component {
               onSelect={this.filterByCategory.bind(this)}
               id="select_category_dropdown"
             >
-              <MenuItem eventKey="none">Select Category</MenuItem>
               <MenuItem eventKey="flat">Flat</MenuItem>
               <MenuItem eventKey="house">House</MenuItem>
               <MenuItem eventKey="cottage">Cottage</MenuItem>

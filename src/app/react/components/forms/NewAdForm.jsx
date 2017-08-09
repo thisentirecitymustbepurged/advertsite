@@ -177,14 +177,14 @@ class NewAdForm extends Component {
         <Row>
           <Col md={12} >
             <button
-              className="btn btn-primary"
+              className="btn btn-default"
               type="submit"
 
             >
               Submit
             </button>
             <button
-              className="btn btn-primary"
+              className="btn btn-default"
               type="button"
               disabled={pristine || submitting}
               onClick={reset}

@@ -2,20 +2,43 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { Grid, Row, Col, Image } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import {
   deleteAd,
+  userAdsListener
 } from '../../../api';
 
 class User extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.userAdsRef = null;
+    this.userAdsListenerWasCalled = false;
+    this.userAdsListener();
     this.deleteAd = this.deleteAd.bind(this);
   }
 
+  componentDidUpdate() {
+    this.userAdsListener();
+  }
+
+  componentWillUnmount() {
+    this.userAdsRef ? this.userAdsRef.off() : ''; //eslint-disable-line
+  }
+
+  userAdsListener() {
+    if (
+      this.props.user
+      && this.props.user.uid !== undefined
+      && !this.userAdsListenerWasCalled
+    ) {
+      this.userAdsListenerWasCalled = true;
+      this.userAdsRef = userAdsListener(this.props.user.uid);
+    }
+  }
+
   deleteAd(key) {
-    deleteAd(this.props.user.uid, key);
+    deleteAd(this.props.uid, key);
   }
 
   renderAds() {
@@ -25,15 +48,18 @@ class User extends Component {
         const imgUrl = ads[key].images
           ? ads[key].images[Object.keys(ads[key].images)[0]]
           : 'http://via.placeholder.com/500x500';
+        const style = {
+          backgroundImage: `url(${imgUrl})`,
+          backgroundSize: 'cover',
+        };
         return (
-
-          <Col key={key} sm={12} md={4}>
+          <Col
+            key={key} sm={12} md={4} className="item_cont">
             <Link to={`ad/${key}`}>
-              <Image src={imgUrl} width="100%" thumbnail />
-              <div>{ads[key].title}</div>
+              <div style={style} className="item_img_cont"></div>
+              <div>{ads[key].title}, {ads[key].price}</div>
             </Link>
           </Col>
-
         );
       });
     }
@@ -44,7 +70,8 @@ class User extends Component {
     return (
       <Grid className="user_profile">
         <Row className="user_ads">
-          <Col sm={12} md={6}>
+          <Col sm={12} md={6} className="ads_col">
+            <h1>Your Ads</h1>
             <Row>
               {this.renderAds()}
             </Row>

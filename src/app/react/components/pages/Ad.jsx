@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col, Image } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import { fetchAd } from '../../../api';
 
@@ -8,7 +8,7 @@ class Ad extends Component {
   constructor() {
     super();
     this.state = {
-      activeImageUrl: '',
+      activeImageUrl: undefined,
     };
     this.firstImageWasRendered = false;
   }
@@ -36,6 +36,10 @@ class Ad extends Component {
       const firstImageUrl = images
         ? images[Object.keys(images)[0]]
         : 'http://via.placeholder.com/500x500';
+      const activeImgStyle = {
+        backgroundImage: `url(${this.state.activeImageUrl || firstImageUrl})`,
+        backgroundSize: 'cover',
+      };
       return (
         <Row>
           <Col className="ad_info_col" sm={12} md={6}>
@@ -58,20 +62,23 @@ class Ad extends Component {
             </Row>
           </Col>
           <Col sm={12} md={6} className="ad_image_col">
-            <Image
+            <div
               className="active_image"
-              src={this.state.activeImageUrl || firstImageUrl}
-              width="100%"
-            />
-            <Row>
+              style={activeImgStyle}>
+            </div>
+            <Row className="image_slider">
               {
                 images && Object.keys(images).map(key => (
                   <Col key={key} sm={3} md={2}>
-                    <Image
-                      src={images[key]}
-                      width="100%"
-                      onClick={() => this.setState({ activeImageUrl: images[key] })}
-                    />
+                    <div
+                      className="slider_image"
+                      role="button"
+                      style={{
+                        backgroundImage: `url(${images[key]})`,
+                        backgroundSize: 'cover',
+                      }}
+                      onClick={() => this.setState({ activeImageUrl: images[key] })}>
+                    </div>
                   </Col>
                 ))
               }

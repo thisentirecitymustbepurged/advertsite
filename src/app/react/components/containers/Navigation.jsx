@@ -50,7 +50,7 @@ class Navigation extends Component {
   render() {
     return (
       <div className="nav">
-        <header className="navbar navbar-static-top navbar-inverse" id="top" role="banner">
+        <header className="navbar navbar-default navbar-fixed-top" id="top" role="banner">
           <div className="container">
             <div className="navbar-header">
               <button

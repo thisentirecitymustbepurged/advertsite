@@ -11,7 +11,7 @@ import Ad from './react/components/pages/Ad';
 import NewAd from './react/components/pages/NewAd';
 import Login from './react/components/pages/Login';
 
-import { fetchUser, fetchUserAds } from './api';
+import { fetchUser } from './api';
 import store from './redux/store';
 
 import '../styles.scss';
@@ -22,7 +22,7 @@ ReactDOM.render((
       <Route path="/" onEnter={fetchUser} component={App}>
         <IndexRoute component={Home} />
         <Route path="about" component={About} />
-        <Route path="user" onEnter={fetchUserAds} component={User} />
+        <Route path="user" component={User} />
         <Route path="login" component={Login} />
         <Route path="ad/create" component={NewAd} />
         <Route path="ad/:adKey" component={Ad} />

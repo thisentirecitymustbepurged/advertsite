@@ -30,6 +30,7 @@ export function logoutUserFailure() {
 }
 
 export function loginUserSuccess(user) {
+  debugger;
   return {
     type: actionTypes.LOGIN_USER_SUCCESS,
     user,

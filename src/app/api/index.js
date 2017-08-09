@@ -45,10 +45,12 @@ const { dbRef } = db;
 const { storRef } = stor;
 
 // userAuth
-export function loginWithProvider() {
-  auth.loginWithProvider('facebook').then(
-    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
+export function loginWithProvider(provider) {
+  debugger;
+  auth.loginWithProvider(provider).then(
+    snapshot => {debugger;store.dispatch(loginUserSuccess(snapshot.user))},
     error => {
+      debugger;
       store.dispatch(loginUserFailure());
       throw new Error(error);
     },

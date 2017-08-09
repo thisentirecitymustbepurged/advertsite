@@ -6,7 +6,9 @@ const auth = app.auth();
 
 export default {
   loginWithProvider: (providerName) => {
+    debugger;
     function getAuthProvider() {
+      debugger;
       switch (providerName) {
         case 'facebook':
           return new firebase.auth.FacebookAuthProvider();
@@ -14,7 +16,9 @@ export default {
           throw new Error('Provider is not supported.');
       }
     }
-    return auth.signInWithPopup(getAuthProvider());
+    const authProvider = getAuthProvider();
+    debugger;
+    return auth.signInWithRedirect(authProvider);
   },
 
   logoutUser: () => auth.signOut(),
