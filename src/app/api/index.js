@@ -32,7 +32,6 @@ import {
 import { Creators } from '../redux/pagination/actions';
 
 const {
-  paginationSetAdsCount,
   paginationSetPagesFetched,
   paginationSetEndReached
 } = Creators;
@@ -129,129 +128,133 @@ export function createNewAd(values, uid) {
   );
 }
 
+export function query(ref, filter) {
+  let q = dbRef(ref);
+  const {
+    order,
+    equalTo,
+    limitToFirst,
+    limitToLast,
+    startAt,
+    endAt
+  } = filter;
+  if (Object.keys(filter).length) {
+    switch (order.by) {
+      case 'key':
+        q = q.orderByKey();
+        break;
+      case 'child':
+        q = q.orderByChild(order.value);
+        break;
+      case 'value':
+        q = q.orderByValue(order.value);
+        break;
+      default:
+        throw new Error(`Something's wrong with query order object: ${order}`);
+    }
+    if (equalTo) {
+      q = q.equalTo(equalTo);
+    }
+    if (limitToFirst) {
+      q = q.limitToFirst(limitToFirst);
+    }
+    if (limitToLast) {
+      q = q.limitToLast(limitToLast);
+    }
+    if (startAt) {
+      q = q.startAt(startAt);
+    }
+    if (endAt) {
+      q = q.endAt(endAt);
+    }
+  }
+  return q.once('value');
+}
+
+export function fetchAds() {
+  const {
+    pagination: {
+      initialPageCount,
+      itemsPerPage,
+      activePage,
+      pagesFetched,
+      endReached
+    },
+    filter,
+    ads
+  } = store.getState();
+
+  if (endReached) return;
+
+  // INITIAL CALL
+  if (activePage === 1) {
+    const numberToFetch = itemsPerPage * initialPageCount;
+    const f = {
+      ...filter,
+      limitToFirst: numberToFetch,
+    };
+    return query('/ads', f).then(
+      snapshot => handleAds(snapshot.val(), numberToFetch, true),
+      error => {
+        store.dispatch(fetchAdsFailure());
+        throw new Error(error);
+      }
+    );
+  }
+
+  // NEXT CALL
+  if (pagesFetched) {
+    const lastKey = ads[ads.length - 1].key;
+    const pageCountToFetch = (initialPageCount - 1) - (pagesFetched - activePage);
+    const numberToFetch = (itemsPerPage * pageCountToFetch) + 1;
+    const f = {
+      ...filter,
+      limitToFirst: numberToFetch,
+      startAt: lastKey,
+    };
+    return query('/ads', f).then(
+      snapshot => handleAds(snapshot.val(), numberToFetch),
+      error => {
+        store.dispatch(fetchAdsFailure());
+        throw new Error(error);
+      }
+    );
+  }
+
+  function handleAds(fetchedAds, numberToFetch, isInitial) {
+    const handledAds = Object.keys(fetchedAds).map(key => {
+      const obj = Object.assign({}, fetchedAds[key]);
+      obj.key = key;
+      return obj;
+    });
+
+    if (isInitial) {
+      if (handledAds.length < numberToFetch) {
+        store.dispatch(paginationSetEndReached(true));
+      }
+      store.dispatch(fetchAdsSuccess(handledAds));
+      store.dispatch(paginationSetPagesFetched(
+        Math.ceil(handledAds.length / itemsPerPage)
+      ));
+    } else {
+      if (handledAds.length < numberToFetch) {
+        store.dispatch(paginationSetEndReached(true));
+      }
+      handledAds.shift();
+      store.dispatch(fetchAdsSuccess(handledAds));
+      store.dispatch(paginationSetPagesFetched(
+        pagesFetched + Math.ceil(handledAds.length / itemsPerPage)
+      ));
+    }
+  }
+}
+
 export function fetchAd(adKey) {
   dbRef(`ads/${adKey}`).once('value').then(
     snapshot => store.dispatch(fetchAdSuccess(snapshot.val())),
     error => {
       store.dispatch(fetchAdFailure());
       throw new Error(error);
-    },
-  );
-}
-
-export function fetchAdsCount() {
-  dbRef('/ads_count').once('value').then(
-    snapshot => store.dispatch(paginationSetAdsCount(snapshot.val())),
-    error => {
-      store.dispatch(fetchAdsFailure());
-      throw new Error(error);
-    },
-  );
-}
-
-export function fetchAds() {
-  const {
-    pagination: {
-      itemsPerPage,
-      activePage,
-      pagesFetched,
-      endReached
-    }
-  } = store.getState();
-
-  if (endReached) return;
-
-
-  if (activePage === 1) {
-    return dbRef('/ads')
-      .orderByKey()
-      .limitToFirst(itemsPerPage * 5)
-      .once('value')
-      .then(
-        snapshot => {
-          const ads = snapshot.val();
-          const result = Object.keys(ads)
-            .map(
-              key => {
-                const obj = Object.assign({}, ads[key]);
-                obj.key = key;
-                return obj;
-              }
-            );
-          store.dispatch(fetchAdsSuccess(result));
-          store.dispatch(paginationSetPagesFetched(
-            Math.ceil(result.length / itemsPerPage))
-          );
-
-          if (result.length < itemsPerPage * 5) {
-            store.dispatch(paginationSetEndReached(true));
-          }
-        },
-        error => {
-          store.dispatch(fetchAdsFailure());
-          throw new Error(error);
-        },
-      );
-  }
-
-  const pagesNeedToFetch = 4 - (pagesFetched - activePage);
-  debugger;
-  const {
-    ads
-  } = store.getState();
-  const lastKey = ads[ads.length - 1].key;
-
-
-  if (pagesNeedToFetch > 0) {
-    return dbRef('/ads')
-      .orderByKey()
-      .limitToFirst(pagesNeedToFetch * itemsPerPage + 1)
-      .startAt(lastKey)
-      .once('value')
-      .then(
-        snapshot => {
-          const nextAds = snapshot.val();
-          const result = Object.keys(nextAds)
-            .map(
-              key => {
-                const obj = Object.assign({}, ads[key]);
-                obj.key = key;
-                return obj;
-              }
-            );
-          result.shift();
-
-          store.dispatch(fetchAdsSuccess(result));
-          store.dispatch(paginationSetPagesFetched(
-            pagesFetched + Math.ceil(result.length / itemsPerPage))
-          );
-
-          if (result.length < itemsPerPage * pagesNeedToFetch) {
-            debugger;
-            store.dispatch(paginationSetEndReached(true));
-          }
-        },
-        error => {
-          store.dispatch(fetchAdsFailure());
-          throw new Error(error);
-        }
-      );
-  }
-}
-
-export function fetchUserAds() {
-  onAuthStateChanged().then(
-    () => {
-      const uid = store.getState().user.uid;
-      dbRef(`/user_ads/${uid}`).once('value').then(
-        snapshot => {
-          store.dispatch(fetchUserAdsSuccess(snapshot.val()));
-        },
-        error => {
-          store.dispatch(fetchUserAdsFailure());
-          throw new Error(error);
-        },
-      );
     },
   );
 }

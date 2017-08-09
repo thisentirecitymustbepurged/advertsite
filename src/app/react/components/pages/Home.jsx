@@ -5,26 +5,44 @@ import { Link } from 'react-router';
 import {
   Grid, Row, Col,
   Image, Pagination,
-  // DropdownButton, MenuItem,
+  DropdownButton, MenuItem,
 } from 'react-bootstrap';
 
 import {
-  fetchAds,
+  fetchAds
 } from '../../../api';
 
-import { Creators } from '../../../redux/pagination/actions';
+import { Creators as paginationCreators } from '../../../redux/pagination/actions';
+import { Creators as filterCreators } from '../../../redux/filter/actions';
 
 const {
-  paginationSetActivePage
-} = Creators;
+  paginationSetActivePage,
+  paginationSetEndReached
+} = paginationCreators;
+
+const {
+  setAdsFilter
+} = filterCreators;
 
 class Home extends Component {
   componentDidMount() {
     fetchAds();
   }
 
-  paginationSelect(eventKey) {
-    this.props.paginationSetActivePage(eventKey);
+  paginationSelect(nextPage) {
+    this.props.paginationSetActivePage(nextPage);
+    fetchAds();
+  }
+
+  filterByCategory(category) {
+    const filter = {
+      order: {
+        by: 'child',
+        value: category
+      }
+    };
+    this.props.paginationSetEndReached(false);
+    this.props.setAdsFilter(filter);
     fetchAds();
   }
 
@@ -61,6 +79,9 @@ class Home extends Component {
       activePage,
       pagesFetched
     } = this.props.pagination;
+    const {
+      categoryFilter
+    } = this.props.filter;
     return (
       <Grid className="ads text-center">
         <Pagination
@@ -75,6 +96,19 @@ class Home extends Component {
           activePage={activePage}
           onSelect={this.paginationSelect.bind(this)}
         />
+        <Row>
+          <DropdownButton
+            className="filter_category"
+            title="Select Category"
+            onSelect={this.filterByCategory.bind(this)}
+            id="select_category_dropdown"
+          >
+            <MenuItem eventKey="flat">Flat</MenuItem>
+            <MenuItem eventKey="house">House</MenuItem>
+            <MenuItem eventKey="cottage">Cottage</MenuItem>
+          </DropdownButton>
+          { categoryFilter }
+        </Row>
         <Row >
           {this.renderAds()}
         </Row>
@@ -85,14 +119,17 @@ class Home extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    paginationSetActivePage
+    paginationSetActivePage,
+    setAdsFilter,
+    paginationSetEndReached
   }, dispatch);
 }
 
-function mapStateToProps({ ads, pagination }) {
+function mapStateToProps({ ads, pagination, filter }) {
   return {
     ads,
     pagination,
+    filter
   };
 }
 

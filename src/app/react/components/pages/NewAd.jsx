@@ -15,12 +15,14 @@ class NewAd extends Component {
   }
 
   createNewAd(values) {
+    console.log(values);
     /* eslint-disable */
-    !values.title ? values.title = 'Amazing Title':'';
-    !values.address ? values.address = 'Meme St. 32, London':'';
-    !values.phone ? values.phone = '01123581321':'';
-    !values.price ? values.price = '42£':'';
-    !values.desc ? values.desc = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, dolores delectus voluptates impedit assumenda, adipisci hic commodi excepturi ipsam soluta pariatur dolorum magni odio nihil. Hic nemo, omnis voluptas nihil, aspernatur reiciendis. Ullam nemo itaque accusantium voluptatum fugiat sequi dolorem at dolorum, omnis eligendi earum, accusamus aut sed praesentium dolores?':'';
+    !values.title ? values.title = 'Amazing Title' : '';
+    !values.category ? values.category = 'flat' : '';
+    !values.price ? values.price = '42£' : '';
+    !values.address ? values.address = 'Meme St. 32, London' : '';
+    !values.phone ? values.phone = '01123581321' : '';
+    !values.desc ? values.desc = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, dolores delectus voluptates impedit assumenda, adipisci hic commodi excepturi ipsam soluta pariatur dolorum magni odio nihil. Hic nemo, omnis voluptas nihil, aspernatur reiciendis. Ullam nemo itaque accusantium voluptatum fugiat sequi dolorem at dolorum, omnis eligendi earum, accusamus aut sed praesentium dolores?' : '';
     /* eslint-enable */
     createNewAd(values, this.props.user.uid);
   }

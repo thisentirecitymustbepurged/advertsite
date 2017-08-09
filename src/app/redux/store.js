@@ -8,6 +8,8 @@ import {
 } from './readWrite/reducer';
 import userAuth from './userAuth/reducer';
 import pagination from './pagination/reducer';
+import filter from './filter/reducer';
+
 
 const reducersCombined = combineReducers({
   user: userAuth,
@@ -16,6 +18,7 @@ const reducersCombined = combineReducers({
   ad: fetchAd,
   form: formReducer,
   pagination,
+  filter
 });
 
 const store = createStore(

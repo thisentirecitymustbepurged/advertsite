@@ -4,14 +4,14 @@ import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
-  itemsPerPage: 5,
+  initialPageCount: 5,
+  itemsPerPage: 3,
   activePage: 1,
   pagesFetched: 0,
   endReached: false,
   adsCount: null,
 });
 
-// Community users
 const paginationSetItemsPerPage = (state, { itemsPerPage }) =>
   state.merge({
     itemsPerPage,
