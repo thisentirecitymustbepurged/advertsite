@@ -1,4 +1,5 @@
 import store from '../redux/store';
+import { browserHistory } from 'react-router';
 
 import auth from '../firebase/auth';
 import db from '../firebase/db';
@@ -42,8 +43,11 @@ const { storRef } = stor;
 
 // userAuth
 export function loginWithEmail({ email, password }) {
+  debugger;
   auth.loginWithEmail(email, password).then(
-    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
+    snapshot => {
+      fetchUser();
+    },
     error => {
       store.dispatch(loginUserFailure());
       throw new Error(error);
@@ -53,7 +57,9 @@ export function loginWithEmail({ email, password }) {
 
 export function registerWithEmail({ email, password }) {
   auth.registerWithEmail(email, password).then(
-    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
+    snapshot => {
+      fetchUser();
+    },
     error => {
       store.dispatch(loginUserFailure());
       throw new Error(error);
@@ -73,7 +79,10 @@ export function loginWithProvider(provider) {
 
 export function fetchUser() {
   auth.onAuthStateChanged().then(
-    user => store.dispatch(fetchUserSuccess(user)),
+    user => {
+      store.dispatch(fetchUserSuccess(user));
+      browserHistory.push('/');
+    },
     error => {
       store.dispatch(fetchUserFailure());
       throw new Error(error);
