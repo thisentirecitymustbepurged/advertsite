@@ -11,6 +11,13 @@ export function fetchAdFailure() {
     type: actionTypes.FETCH_AD_FAILURE,
   };
 }
+export function userIsOwner(isOwner) {
+  return {
+    type: actionTypes.USER_IS_OWNER,
+    isOwner
+  }
+}
+
 
 export function fetchAdsSuccess(ads) {
   return {

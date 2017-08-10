@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Button } from 'react-bootstrap';
 
-import { fetchAd } from '../../../api';
+import { fetchAd, updateAd } from '../../../api';
+
+import AdUpdateForm from '../forms/AdUpdateForm';
 
 class Ad extends Component {
   constructor() {
     super();
     this.state = {
       activeImageUrl: undefined,
+      showUpdateForm: false
     };
     this.firstImageWasRendered = false;
   }
@@ -18,7 +21,36 @@ class Ad extends Component {
   }
 
   fetchAd() {
-    fetchAd(this.props.params.adKey);
+    fetchAd(this.props.params.adKey, this.props.user.uid);
+  }
+
+  toggleUpdateForm() {
+    this.setState({ showUpdateForm: !this.state.showUpdateForm });
+  }
+
+  updateAd() {
+
+  }
+
+  renderUpdateForm() {
+    if (this.props.ad.isOwner && this.state.showUpdateForm) {
+      return (
+        <div>
+          <Button
+            className="toggle_update_form"
+            onClick={this.toggleUpdateForm.bind(this)}>
+            Edit Ad
+          </Button>
+          <AdUpdateForm onSumbit />
+        </div>
+      );
+    }
+    return (
+      <Button
+        className="toggle_update_form"
+        onClick={this.toggleUpdateForm.bind(this)}>
+        Edit Ad
+      </Button>);
   }
 
   renderAd() {
@@ -29,7 +61,7 @@ class Ad extends Component {
         desc,
         price,
         address,
-        phone,
+        phone
       },
     } = this.props;
     if (Object.keys(this.props.ad).length !== 0) {
@@ -92,15 +124,21 @@ class Ad extends Component {
   render() {
     return (
       <Grid className="ad">
+        <Row>
+          <Col sm={12} md={6} className="new_ad_form">
+            {this.renderUpdateForm()}
+          </Col>
+        </Row>
         {this.renderAd()}
       </Grid>
     );
   }
 }
 
-function mapStateToProps({ ad }) {
+function mapStateToProps({ ad, user }) {
   return {
     ad,
+    user,
   };
 }
 

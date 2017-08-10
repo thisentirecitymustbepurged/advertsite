@@ -38,7 +38,8 @@ class User extends Component {
   }
 
   deleteAd(key) {
-    deleteAd(this.props.uid, key);
+    console.log(key);
+    deleteAd(this.props.user.uid, key);
   }
 
   renderAds() {
@@ -55,6 +56,7 @@ class User extends Component {
         return (
           <Col
             key={key} sm={12} md={4} className="item_cont">
+            <i className="fa fa-times" onClick={() => this.deleteAd(key)}></i>
             <Link to={`ad/${key}`}>
               <div style={style} className="item_img_cont"></div>
               <div>{ads[key].title}, {ads[key].price}</div>

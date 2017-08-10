@@ -54,6 +54,7 @@ h1 {
 .ad {
   padding: 0;
   .ad_info_col {
+    margin-bottom: 50px;
     .row {
       margin: 0;
       padding: 10px 0;
@@ -81,6 +82,7 @@ h1 {
 }
 
 .new_ad_form {
+  padding-bottom: 50px;
   .row {
     margin: 0;
     padding: 10px 0;
@@ -119,7 +121,22 @@ h1 {
   .ads_col {
     padding: 0;
   }
+  .fa-times {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    font-size: 15px;
+    padding: 3px;
+    border-radius: 2px;
+    color: #fff;
+    background: red;
+    &:hover {
+      font-size: 25px;
+    }
+  }
   .item_cont {
+    position: relative;
     padding: 3px 7px;
     .item_img_cont {
       height: 110px;

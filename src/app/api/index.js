@@ -1,5 +1,5 @@
-import store from '../redux/store';
 import { browserHistory } from 'react-router';
+import store from '../redux/store';
 
 import auth from '../firebase/auth';
 import db from '../firebase/db';
@@ -19,14 +19,15 @@ import {
   createUserAdFailure,
   fetchUserAdsSuccess,
   fetchUserAdsFailure,
-  // updateUserAdSuccess,
-  // updateUserAdFailure,
+  updateUserAdSuccess,
+  updateUserAdFailure,
   deleteUserAdSuccess,
   deleteUserAdFailure,
   fetchAdsSuccess,
   fetchAdsFailure,
   fetchAdSuccess,
   fetchAdFailure,
+  userIsOwner,
   clearUserAds,
   clearAds
 } from '../redux/readWrite/actionCreators';
@@ -43,9 +44,8 @@ const { storRef } = stor;
 
 // userAuth
 export function loginWithEmail({ email, password }) {
-  debugger;
   auth.loginWithEmail(email, password).then(
-    snapshot => {
+    () => {
       fetchUser();
     },
     error => {
@@ -57,7 +57,7 @@ export function loginWithEmail({ email, password }) {
 
 export function registerWithEmail({ email, password }) {
   auth.registerWithEmail(email, password).then(
-    snapshot => {
+    () => {
       fetchUser();
     },
     error => {
@@ -300,15 +300,39 @@ export function fetchAds() {
   }
 }
 
-export function fetchAd(adKey) {
+export function fetchAd(adKey, uid) {
   dbRef(`ads/${adKey}`).once('value').then(
-    snapshot => store.dispatch(fetchAdSuccess(snapshot.val())),
+    snapshot => {
+      store.dispatch(fetchAdSuccess(snapshot.val()));
+      //eslint-disable-next-line
+      uid && dbRef(`user_ads/${uid}/${adKey}`).once('value').then(
+        () => {
+          store.dispatch(userIsOwner(true));
+        },
+      );
+    },
     error => {
       store.dispatch(fetchAdFailure());
       throw new Error(error);
     },
   );
 }
+
+// export function updateAd(values, uid, adKey) {
+//   const updates = {};
+//   updates[`/user_ads/${uid}/${adKey}`] = values;
+//   updates[`/ads/${adKey}`] = values;
+//   return dbRef().update(updates).then('value',
+//     snapshot => {
+//       store.dispatch(updateUserAdSuccess(snapshot.val()))
+//       browserHistory.push()
+//     },
+//     error => {
+//       store.dispatch(updateUserAdFailure());
+//       throw new Error(error);
+//     },
+//   );
+// }
 
 export function userAdsListener(uid) {
   const userAdsRef = dbRef(`/user_ads/${uid}`);
