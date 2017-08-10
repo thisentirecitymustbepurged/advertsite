@@ -50,13 +50,13 @@ class LoginForm extends Component {
             </button>
             <button
               className="btn btn-block btn-social btn-google"
-              onClick={() => loginWithProvider('facebook')}>
-              <span className="fa fa-google"></span> Sign in with Facebook
+              onClick={() => loginWithProvider('google')}>
+              <span className="fa fa-google"></span> Sign in with Google
             </button>
             <button
               className="btn btn-block btn-social btn-twitter"
-              onClick={() => loginWithProvider('facebook')}>
-              <span className="fa fa-twitter"></span> Sign in with Facebook
+              onClick={() => loginWithProvider('twitter')}>
+              <span className="fa fa-twitter"></span> Sign in with Twitter
             </button>
           </Col>
         </Row>

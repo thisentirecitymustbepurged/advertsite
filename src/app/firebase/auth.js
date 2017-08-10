@@ -10,6 +10,11 @@ export default {
       switch (providerName) {
         case 'facebook':
           return new firebase.auth.FacebookAuthProvider();
+        case 'google':
+          return new firebase.auth.GoogleAuthProvider();
+        case 'twitter':
+          return new firebase.auth.TwitterAuthProvider();
+          break;
         default:
           throw new Error('Provider is not supported.');
       }

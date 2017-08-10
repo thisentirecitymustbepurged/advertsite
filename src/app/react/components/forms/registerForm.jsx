@@ -44,12 +44,12 @@ class RegisterForm extends Component {
             </button>
             <button
               className="btn btn-block btn-social btn-google"
-              onClick={() => loginWithProvider('facebook')}>
+              onClick={() => loginWithProvider('google')}>
               <span className="fa fa-google"></span> Sign in with Facebook
             </button>
             <button
               className="btn btn-block btn-social btn-twitter"
-              onClick={() => loginWithProvider('facebook')}>
+              onClick={() => loginWithProvider('twitter')}>
               <span className="fa fa-twitter"></span> Sign in with Facebook
             </button>
           </Col>

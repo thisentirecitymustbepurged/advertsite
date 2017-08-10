@@ -32,7 +32,7 @@ class Navigation extends Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {user.email} <span className="caret" /></a>
+            {user.email || user.displayName} <span className="caret" /></a>
           <ul className="dropdown-menu">
             <li><Link to="/user">Profile</Link></li>
             <li><Link to="/ad/create">Create New Ad</Link></li>
