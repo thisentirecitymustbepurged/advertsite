@@ -29,4 +29,36 @@ export default {
       },
     );
   }),
+
+  loginWithEmail: (email, password) => auth.signInWithEmailAndPassword(email, password),
+
+  registerWithEmail: (email, password) => auth.createUserWithEmailAndPassword(email, password),
+
+  updateUserProfile: u => auth.currentUser.updateProfile(u).then(
+    () => auth.currentUser,
+    error => ({
+      errorCode: error.code,
+      errorMessage: error.message,
+    })),
+
+  resetPasswordEmail: email => auth.sendPasswordResetEmail(email).then(
+    () => ({ message: 'Email sent' }),
+    error => ({
+      errorCode: error.code,
+      errorMessage: error.message,
+    })),
+
+  changePassword: newPassword => auth.currentUser.updatePassword(newPassword).then(
+    user => user,
+    error => ({
+      errorCode: error.code,
+      errorMessage: error.message,
+    })),
+
+  sendEmailVerification: () => auth.currentUser.sendEmailVerification().then(
+    () => ({ message: 'Email sent' }),
+    error => ({
+      errorCode: error.code,
+      errorMessage: error.message,
+    }))
 };

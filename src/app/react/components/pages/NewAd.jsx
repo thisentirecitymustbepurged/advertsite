@@ -15,7 +15,6 @@ class NewAd extends Component {
   }
 
   createNewAd(values) {
-    console.log(values);
     /* eslint-disable */
     !values.title ? values.title = 'Amazing Title' : '';
     !values.category ? values.category = 'flat' : '';

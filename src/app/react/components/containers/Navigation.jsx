@@ -43,7 +43,8 @@ class Navigation extends Component {
       );
     }
     return [
-      <li key={1}><Link to="/login">Login</Link></li>,
+      <li key={'login'}><Link to="/login">Login</Link></li>,
+      <li key={'register'}><Link to="/register">Register</Link></li>
     ];
   }
 

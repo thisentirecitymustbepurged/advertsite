@@ -37,14 +37,30 @@ const {
   paginationSetEndReached
 } = Creators;
 
-const {
-  logoutUser,
-  onAuthStateChanged,
-} = auth;
 const { dbRef } = db;
 const { storRef } = stor;
 
 // userAuth
+export function loginWithEmail({ email, password }) {
+  auth.loginWithEmail(email, password).then(
+    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
+    error => {
+      store.dispatch(loginUserFailure());
+      throw new Error(error);
+    },
+  );
+}
+
+export function registerWithEmail({ email, password }) {
+  auth.registerWithEmail(email, password).then(
+    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
+    error => {
+      store.dispatch(loginUserFailure());
+      throw new Error(error);
+    },
+  );
+}
+
 export function loginWithProvider(provider) {
   auth.loginWithProvider(provider).then(
     snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
@@ -56,7 +72,7 @@ export function loginWithProvider(provider) {
 }
 
 export function fetchUser() {
-  onAuthStateChanged().then(
+  auth.onAuthStateChanged().then(
     user => store.dispatch(fetchUserSuccess(user)),
     error => {
       store.dispatch(fetchUserFailure());
@@ -66,7 +82,7 @@ export function fetchUser() {
 }
 
 export function logOut() {
-  logoutUser().then(
+  auth.logoutUser().then(
     () => {
       store.dispatch(logoutUserSuccess());
       store.dispatch(clearUserAds());

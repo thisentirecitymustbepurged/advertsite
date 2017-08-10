@@ -1,30 +1,28 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Link } from 'react-router';
-
 import { Grid, Row, Col } from 'react-bootstrap';
 
 import {
   loginWithProvider,
-  loginWithEmail
+  registerWithEmail
 } from '../../../api';
 
-class Login extends Component {
+class Register extends Component {
   handleSubmit(values) {
-    loginWithEmail(values);
+    debugger;
+    registerWithEmail(values);
   }
+
   render() {
-    const { handleSubmit, pristine, submitting } = this.props;
+    const { pristine, submitting } = this.props;
     return (
       <Grid>
         <Row>
           <Col sm={12} md={6}>
-            <form id="frmLogin" role="form" onSubmit={this.handleSubmit}>
-              <p>
-              </p>
-              <h1>Login</h1>
+            <form id="frmRegister" role="form" onSubmit={this.handleSubmit}>
+              <h1>Register</h1>
               <div className="form-group">
-                <label htmlFor="txtEmail">Email address</label>
+                <label htmlFor="txtRegEmail">Email address</label>
                 <Field
                   component="input"
                   type="email"
@@ -34,7 +32,7 @@ class Login extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="txtPass">Password</label>
+                <label htmlFor="txtRegPass">Password</label>
                 <Field
                   component="input"
                   type="password" className="form-control" id="txtPass" placeholder="Password"
@@ -44,9 +42,8 @@ class Login extends Component {
               <button
                 type="submit" className="btn btn-default btn-block"
                 disabled={pristine || submitting}>
-                Login
+                Register
               </button>
-              <h5><Link to="/reset">Forgot password?</Link></h5>
               <br />
             </form>
             <h4>Login with:</h4>
@@ -74,4 +71,4 @@ class Login extends Component {
 
 export default reduxForm({
   form: 'login', // a unique identifier for this form
-})(Login);
+})(Register);

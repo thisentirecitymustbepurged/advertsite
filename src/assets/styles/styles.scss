@@ -92,8 +92,14 @@ h1 {
         margin: 0 0 0 5px;
       }
     }
+    .selected_images_row {
+    }
+    .selected_image_cont {
+      height: 66px;
+      padding: 0px 5px 0 0;
+    }
     .selected_image {
-      padding: 0;
+      height: 66px;
     }
   }
   h1 {

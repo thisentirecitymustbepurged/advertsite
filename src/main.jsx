@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
-import "bootstrap-social";
+import 'bootstrap-social';
 
 import App from './app/react/components/App';
 import Home from './app/react/components/pages/Home';
@@ -12,6 +12,7 @@ import About from './app/react/components/pages/About';
 import Ad from './app/react/components/pages/Ad';
 import NewAd from './app/react/components/pages/NewAd';
 import Login from './app/react/components/pages/Login';
+import Register from './app/react/components/pages/Register';
 
 import { fetchUser } from './app/api';
 import store from './app/redux/store';
@@ -27,6 +28,7 @@ ReactDOM.render((
         <Route path="about" component={About} />
         <Route path="user" component={User} />
         <Route path="login" component={Login} />
+        <Route path="register" component={Register} />
         <Route path="ad/create" component={NewAd} />
         <Route path="ad/:adKey" component={Ad} />
       </Route>

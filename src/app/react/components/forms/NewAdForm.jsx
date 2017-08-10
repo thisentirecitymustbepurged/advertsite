@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
 
-import { Row, Col, Image, Clearfix } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files);
 
@@ -66,15 +66,20 @@ class NewAdForm extends Component {
     ) {
       if (this.state.imageUrlList.length > 0) {
         return (
-          <Row>
+          <Row className="selected_images_row">
             {
               this.state.imageUrlList.map((imgUrl, i) => (
-                <Col key={i} sm={3} md={3} className="selected_image">
-                  <Image src={imgUrl} width="100%" />
+                <Col key={i} sm={2} md={2} className="selected_image_cont">
+                  <div
+                    className="selected_image"
+                    style={{
+                      backgroundImage: `url(${imgUrl})`,
+                      backgroundSize: 'cover',
+                    }}>
+                  </div>
                 </Col>
               ))
             }
-            <Clearfix />
           </Row>
         );
       }
