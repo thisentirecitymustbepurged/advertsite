@@ -46,11 +46,9 @@ const { storRef } = stor;
 
 // userAuth
 export function loginWithProvider(provider) {
-  debugger;
   auth.loginWithProvider(provider).then(
-    snapshot => {debugger;store.dispatch(loginUserSuccess(snapshot.user))},
+    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
     error => {
-      debugger;
       store.dispatch(loginUserFailure());
       throw new Error(error);
     },

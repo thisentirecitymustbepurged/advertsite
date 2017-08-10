@@ -3,18 +3,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
 
-import App from './react/components/App';
-import Home from './react/components/pages/Home';
-import User from './react/components/pages/User';
-import About from './react/components/pages/About';
-import Ad from './react/components/pages/Ad';
-import NewAd from './react/components/pages/NewAd';
-import Login from './react/components/pages/Login';
+import "bootstrap-social";
 
-import { fetchUser } from './api';
-import store from './redux/store';
+import App from './app/react/components/App';
+import Home from './app/react/components/pages/Home';
+import User from './app/react/components/pages/User';
+import About from './app/react/components/pages/About';
+import Ad from './app/react/components/pages/Ad';
+import NewAd from './app/react/components/pages/NewAd';
+import Login from './app/react/components/pages/Login';
 
-import '../styles.scss';
+import { fetchUser } from './app/api';
+import store from './app/redux/store';
+
+
+import './assets/styles/styles.scss';
 
 ReactDOM.render((
   <Provider store={store}>

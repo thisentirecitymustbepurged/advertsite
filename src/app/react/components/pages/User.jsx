@@ -29,7 +29,7 @@ class User extends Component {
   userAdsListener() {
     if (
       this.props.user
-      && this.props.user.uid !== undefined
+      && this.props.user.uid
       && !this.userAdsListenerWasCalled
     ) {
       this.userAdsListenerWasCalled = true;
