@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "set NODE_ENV=devt&& webpack-dev-server --progress --colors --hot --inline --host 0.0.0.0",
+    "dev": "set NODE_ENV=dev&& webpack-dev-server --progress --colors --hot --inline --host 0.0.0.0",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
