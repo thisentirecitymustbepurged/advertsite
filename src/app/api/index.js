@@ -303,6 +303,8 @@ export function fetchAds() {
 export function fetchAd(adKey, uid) {
   dbRef(`ads/${adKey}`).once('value').then(
     snapshot => {
+      const a = snapshot.val();
+      debugger;
       store.dispatch(fetchAdSuccess(snapshot.val()));
       //eslint-disable-next-line
       uid && dbRef(`user_ads/${uid}/${adKey}`).once('value').then(
@@ -318,21 +320,37 @@ export function fetchAd(adKey, uid) {
   );
 }
 
-// export function updateAd(values, uid, adKey) {
-//   const updates = {};
-//   updates[`/user_ads/${uid}/${adKey}`] = values;
-//   updates[`/ads/${adKey}`] = values;
-//   return dbRef().update(updates).then('value',
-//     snapshot => {
-//       store.dispatch(updateUserAdSuccess(snapshot.val()))
-//       browserHistory.push()
-//     },
-//     error => {
-//       store.dispatch(updateUserAdFailure());
-//       throw new Error(error);
-//     },
-//   );
-// }
+export function updateAd(values, uid, adKey) {
+  const {
+    ad
+  } = store.getState();
+  const updates = { ...ad, ...values };
+  debugger;
+  const promiseList = Object.keys(updates).map(prop => {
+    const update = {};
+    update[`/user_ads/${uid}/${adKey}/${prop}`] = updates[prop];
+    update[`/ads/${adKey}/${prop}`] = updates[prop];
+    const promise = new Promise((resolve, reject) => {
+      dbRef().update(update).then(
+        () => resolve(),
+        error => reject(error)
+      );
+    });
+    debugger;
+    return promise;
+  });
+
+  Promise.all(promiseList).then(
+    () => {
+      store.dispatch(updateUserAdSuccess());
+      fetchAd(adKey, uid);
+    },
+    error => {
+      store.dispatch(updateUserAdFailure());
+      throw new Error(error);
+    },
+  );
+}
 
 export function userAdsListener(uid) {
   const userAdsRef = dbRef(`/user_ads/${uid}`);

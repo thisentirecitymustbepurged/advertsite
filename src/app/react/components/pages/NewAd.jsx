@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
 
-import NewAdForm from '../forms/NewAdForm';
+import AdForm from '../forms/AdForm';
 
 import {
   createNewAd,
@@ -30,8 +30,9 @@ class NewAd extends Component {
     return (
       <Grid>
         <Row>
-          <Col sm={12} md={6} className="new_ad_form">
-            <NewAdForm onSubmit={this.createNewAd} />
+          <Col sm={12} md={6} className="ad_form">
+            <h1>New Ad</h1>
+            <AdForm onSubmit={this.createNewAd} />
           </Col>
         </Row>
       </Grid>

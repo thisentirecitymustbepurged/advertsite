@@ -14,7 +14,8 @@ export default {
           return new firebase.auth.GoogleAuthProvider();
         case 'twitter':
           return new firebase.auth.TwitterAuthProvider();
-          break;
+        case 'github':
+          return new firebase.auth.GithubAuthProvider();
         default:
           throw new Error('Provider is not supported.');
       }

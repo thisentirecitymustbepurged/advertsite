@@ -15,9 +15,8 @@ export function userIsOwner(isOwner) {
   return {
     type: actionTypes.USER_IS_OWNER,
     isOwner
-  }
+  };
 }
-
 
 export function fetchAdsSuccess(ads) {
   return {

@@ -58,6 +58,11 @@ class LoginForm extends Component {
               onClick={() => loginWithProvider('twitter')}>
               <span className="fa fa-twitter"></span> Sign in with Twitter
             </button>
+            <button
+              className="btn btn-block btn-social btn-github"
+              onClick={() => loginWithProvider('github')}>
+              <span className="fa fa-github"></span> Sign in with Github
+            </button>
           </Col>
         </Row>
       </Grid>

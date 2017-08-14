@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Grid, Row, Col } from 'react-bootstrap';
 
+import {
+  loginWithProvider,
+} from '../../../api';
+
 class RegisterForm extends Component {
   render() {
     const { handleSubmit, pristine, submitting } = this.props;
@@ -51,6 +55,11 @@ class RegisterForm extends Component {
               className="btn btn-block btn-social btn-twitter"
               onClick={() => loginWithProvider('twitter')}>
               <span className="fa fa-twitter"></span> Sign in with Twitter
+            </button>
+            <button
+              className="btn btn-block btn-social btn-github"
+              onClick={() => loginWithProvider('github')}>
+              <span className="fa fa-github"></span> Sign in with GitHub
             </button>
           </Col>
         </Row>

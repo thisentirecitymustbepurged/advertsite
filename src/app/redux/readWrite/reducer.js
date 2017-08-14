@@ -49,7 +49,8 @@ export function fetchAd(state = {}, { type, ad, isOwner }) {
     case actionTypes.FETCH_AD_SUCCESS:
       return ad || {};
     case actionTypes.FETCH_AD_FAILURE:
-      return state;
+      const newAd = { ...state, ad };
+      return newAd;
     case actionTypes.USER_IS_OWNER:
       const newState = { ...state, isOwner };
       return newState;

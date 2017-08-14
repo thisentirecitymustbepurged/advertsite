@@ -15,12 +15,15 @@ export default class Login extends Component {
               <div className="form-group">
                 <label htmlFor="txtEmail">Email address</label>
                 <input
-                type="email" className="form-control" id="txtEmail" ref="email" placeholder="Enter email"
-                name="email"
-              />
-            </div>
+                  type="email"
+                  className="form-control"
+                  id="txtEmail"
+                  placeholder="Enter email"
+                  name="email"
+                />
+              </div>
               <button type="submit" className="btn btn-default btn-block">Reset Password</button>
-          </form>
+            </form>
           </Col>
         </Row>
       </Grid>

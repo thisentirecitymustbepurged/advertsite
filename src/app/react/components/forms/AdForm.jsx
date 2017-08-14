@@ -26,7 +26,7 @@ const FileInput = ({
   />
 );
 
-class NewAdForm extends Component {
+class AdForm extends Component {
   constructor() {
     super();
     this.state = {
@@ -36,8 +36,14 @@ class NewAdForm extends Component {
     this.imageUrlList = [];
   }
 
+  componentDidMount() {
+    this.props.initializeFromState //eslint-disable-line
+      ? this.props.initialize(this.props.initialValues)
+      : '';
+  }
+
   handleImages() {
-    const images = this.props.newAdForm.values.images;
+    const images = this.props.adForm.values.images;
     let i = 0;
     const handleImage = () => {
       const reader = new FileReader(); //eslint-disable-line
@@ -59,10 +65,10 @@ class NewAdForm extends Component {
 
   renderSelectedImages() {
     if (
-      this.props.newAdForm
-      && this.props.newAdForm.values
-      && this.props.newAdForm.values.images
-      && Object.keys(this.props.newAdForm.values.images).length !== 0
+      this.props.adForm
+      && this.props.adForm.values
+      && this.props.adForm.values.images
+      && Object.keys(this.props.adForm.values.images).length !== 0
     ) {
       if (this.state.imageUrlList.length > 0) {
         return (
@@ -96,7 +102,6 @@ class NewAdForm extends Component {
     const { handleSubmit, pristine, reset, submitting } = this.props;
     return (
       <form onSubmit={handleSubmit}>
-        <h1>New Ad</h1>
         <Row>
           <Col md={3}>Title</Col>
           <Col md={9}>
@@ -105,6 +110,7 @@ class NewAdForm extends Component {
               name="title"
               component="input"
               type="text"
+
             />
           </Col>
         </Row>
@@ -203,14 +209,15 @@ class NewAdForm extends Component {
   }
 }
 
-function mapStateToProps({ form: { newAdForm } }) {
+function mapStateToProps({ form: { adForm }, ad }) {
   return {
-    newAdForm,
+    initialValues: ad,
+    adForm
   };
 }
 
-NewAdForm = connect(mapStateToProps)(NewAdForm); //eslint-disable-line
+AdForm = connect(mapStateToProps)(AdForm); //eslint-disable-line
 
 export default reduxForm({
-  form: 'newAdForm', // a unique identifier for this form
-})(NewAdForm);
+  form: 'adForm', // a unique identifier for this form
+})(AdForm);

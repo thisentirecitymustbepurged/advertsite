@@ -4,7 +4,7 @@ import { Grid, Row, Col, Button } from 'react-bootstrap';
 
 import { fetchAd, updateAd } from '../../../api';
 
-import AdUpdateForm from '../forms/AdUpdateForm';
+import AdForm from '../forms/AdForm';
 
 class Ad extends Component {
   constructor() {
@@ -21,47 +21,37 @@ class Ad extends Component {
   }
 
   fetchAd() {
-    fetchAd(this.props.params.adKey, this.props.user.uid);
+    if (this.props.user) {
+      fetchAd(this.props.params.adKey, this.props.user.uid);
+    }
+    fetchAd(this.props.params.adKey);
   }
 
   toggleUpdateForm() {
     this.setState({ showUpdateForm: !this.state.showUpdateForm });
   }
 
-  updateAd() {
-
-  }
-
-  renderUpdateForm() {
-    if (this.props.ad.isOwner && this.state.showUpdateForm) {
-      return (
-        <div>
-          <Button
-            className="toggle_update_form"
-            onClick={this.toggleUpdateForm.bind(this)}>
-            Edit Ad
-          </Button>
-          <AdUpdateForm onSumbit />
-        </div>
-      );
-    }
-    return (
-      <Button
-        className="toggle_update_form"
-        onClick={this.toggleUpdateForm.bind(this)}>
-        Edit Ad
-      </Button>);
+  updateAd(values) {
+    const uid = this.props.user.uid;
+    const adKey = this.props.params.adKey;
+    updateAd(
+      values,
+      uid,
+      adKey,
+    );
   }
 
   renderAd() {
     const {
-      ad,
       ad: {
+        title,
+        category,
         images,
         desc,
         price,
         address,
-        phone
+        phone,
+        isOwner
       },
     } = this.props;
     if (Object.keys(this.props.ad).length !== 0) {
@@ -74,25 +64,57 @@ class Ad extends Component {
       };
       return (
         <Row>
-          <Col className="ad_info_col" sm={12} md={6}>
-            <h1>{ad.title}</h1>
-            <Row>
-              <Col md={4}>Description</Col>
-              <Col md={8}>{desc}</Col>
-            </Row>
-            <Row>
-              <Col md={4}>Pricing</Col>
-              <Col md={8}>{price}</Col>
-            </Row>
-            <Row>
-              <Col md={4}>Location</Col>
-              <Col md={8}>{address}</Col>
-            </Row>
-            <Row>
-              <Col md={4}>Contact</Col>
-              <Col md={8}>{phone}</Col>
-            </Row>
-          </Col>
+          {
+            this.state.showUpdateForm
+              ? <Col sm={12} md={6} className="ad_form">
+                <h1>
+                  Update Ad
+                  <Button
+                    className="toggle_update_form"
+                    onClick={this.toggleUpdateForm.bind(this)}>
+                    Cancel
+                  </Button>
+                </h1>
+                <AdForm
+                  initializeFromState
+                  onSubmit={this.updateAd.bind(this)}
+                />
+              </Col>
+              :
+              <Col className="ad_info_col" sm={12} md={6}>
+                <h1>
+                  {title}
+                  {
+                    isOwner &&
+                    <Button
+                      className="toggle_update_form"
+                      onClick={this.toggleUpdateForm.bind(this)}>
+                      Edit Ad
+                    </Button>
+                  }
+                </h1>
+                <Row>
+                  <Col md={4}>Description</Col>
+                  <Col md={8}>{desc}</Col>
+                </Row>
+                <Row>
+                  <Col md={4}>Category</Col>
+                  <Col md={8}>{category}</Col>
+                </Row>
+                <Row>
+                  <Col md={4}>Pricing</Col>
+                  <Col md={8}>{price}</Col>
+                </Row>
+                <Row>
+                  <Col md={4}>Location</Col>
+                  <Col md={8}>{address}</Col>
+                </Row>
+                <Row>
+                  <Col md={4}>Contact</Col>
+                  <Col md={8}>{phone}</Col>
+                </Row>
+              </Col>
+          }
           <Col sm={12} md={6} className="ad_image_col">
             <div
               className="active_image"
@@ -124,12 +146,9 @@ class Ad extends Component {
   render() {
     return (
       <Grid className="ad">
-        <Row>
-          <Col sm={12} md={6} className="new_ad_form">
-            {this.renderUpdateForm()}
-          </Col>
-        </Row>
-        {this.renderAd()}
+        {
+          this.renderAd()
+        }
       </Grid>
     );
   }
