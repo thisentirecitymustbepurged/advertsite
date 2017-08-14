@@ -61,7 +61,7 @@ class Home extends Component {
       return visibleAds.map(({ images, key, title }) => {
         const imgUrl = images
           ? images[Object.keys(images)[0]]
-          : 'http://via.placeholder.com/500x500';
+          : 'https://via.placeholder.com/500x500';
         const style = {
           backgroundImage: `url(${imgUrl})`,
           backgroundSize: 'cover',

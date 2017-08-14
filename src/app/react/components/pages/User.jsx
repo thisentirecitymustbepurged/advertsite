@@ -47,7 +47,7 @@ class User extends Component {
       return Object.keys(ads).map(key => {
         const imgUrl = ads[key].images
           ? ads[key].images[Object.keys(ads[key].images)[0]]
-          : 'http://via.placeholder.com/500x500';
+          : 'https://via.placeholder.com/500x500';
         const style = {
           backgroundImage: `url(${imgUrl})`,
           backgroundSize: 'cover',

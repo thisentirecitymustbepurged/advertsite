@@ -15,6 +15,8 @@ const __DEV__ = env === 'dev';
 const __TEST__ = env === 'test';
 const __PROD__ = env === 'production';
 
+const hash = __DEV__ ? '' : '.[hash]';
+
 module.exports = {
   watch: __DEV__,
   devtool: __DEV__ ? 'cheap-module-source-map' : false,
@@ -25,7 +27,7 @@ module.exports = {
   output: {
     path: OUTPUT,
     publicPath: '/',
-    filename: 'assets/js/[name].bundle.js',
+    filename: `assets/js/[name]${hash}.bundle.js`,
     chunkFilename: 'assets/js/[id].bundle.js'
   },
   resolve: {

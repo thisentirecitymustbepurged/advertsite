@@ -57,7 +57,7 @@ class Ad extends Component {
     if (Object.keys(this.props.ad).length !== 0) {
       const firstImageUrl = images
         ? images[Object.keys(images)[0]]
-        : 'http://via.placeholder.com/500x500';
+        : 'https://via.placeholder.com/500x500';
       const activeImgStyle = {
         backgroundImage: `url(${this.state.activeImageUrl || firstImageUrl})`,
         backgroundSize: 'cover',
