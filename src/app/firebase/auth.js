@@ -40,6 +40,8 @@ export default {
 
   registerWithEmail: (email, password) => auth.createUserWithEmailAndPassword(email, password),
 
+  updatePassword: newPassword => auth.currentUser.updatePassword(newPassword),
+
   updateUserProfile: u => auth.currentUser.updateProfile(u).then(
     () => auth.currentUser,
     error => ({
@@ -49,13 +51,6 @@ export default {
 
   resetPasswordEmail: email => auth.sendPasswordResetEmail(email).then(
     () => ({ message: 'Email sent' }),
-    error => ({
-      errorCode: error.code,
-      errorMessage: error.message,
-    })),
-
-  changePassword: newPassword => auth.currentUser.updatePassword(newPassword).then(
-    user => user,
     error => ({
       errorCode: error.code,
       errorMessage: error.message,

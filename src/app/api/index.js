@@ -1,4 +1,4 @@
-import { browserHistory } from 'react-router';
+// import { browserHistory } from 'react-router';
 import store from '../redux/store';
 
 import auth from '../firebase/auth';
@@ -8,27 +8,40 @@ import stor from '../firebase/stor';
 import {
   loginUserFailure,
   loginUserSuccess,
+
   fetchUserSuccess,
   fetchUserFailure,
+
   logoutUserSuccess,
   logoutUserFailure,
+
+  updatePasswordSuccess,
+  updatePasswordFailure,
 } from '../redux/userAuth/actionCreators';
 
 import {
   createUserAdSuccess,
   createUserAdFailure,
+
   fetchUserAdsSuccess,
   fetchUserAdsFailure,
+
   updateUserAdSuccess,
   updateUserAdFailure,
+
   deleteUserAdSuccess,
   deleteUserAdFailure,
+
   fetchAdsSuccess,
   fetchAdsFailure,
+
   fetchAdSuccess,
   fetchAdFailure,
+
   userIsOwner,
+
   clearUserAds,
+
   clearAds
 } from '../redux/readWrite/actionCreators';
 
@@ -43,6 +56,16 @@ const { dbRef } = db;
 const { storRef } = stor;
 
 // userAuth
+export function updatePassword(newPassword) {
+  auth.updatePassword(newPassword).then(
+    () => store.dispatch(updatePasswordSuccess()),
+    error => {
+      store.dispatch(updatePasswordFailure());
+      throw new Error(error);
+    }
+  );
+}
+
 export function loginWithEmail({ email, password }) {
   auth.loginWithEmail(email, password).then(
     () => {
@@ -81,7 +104,6 @@ export function fetchUser() {
   auth.onAuthStateChanged().then(
     user => {
       store.dispatch(fetchUserSuccess(user));
-      browserHistory.push('/');
     },
     error => {
       store.dispatch(fetchUserFailure());
@@ -303,8 +325,6 @@ export function fetchAds() {
 export function fetchAd(adKey, uid) {
   dbRef(`ads/${adKey}`).once('value').then(
     snapshot => {
-      const a = snapshot.val();
-      debugger;
       store.dispatch(fetchAdSuccess(snapshot.val()));
       //eslint-disable-next-line
       uid && dbRef(`user_ads/${uid}/${adKey}`).once('value').then(
@@ -325,7 +345,6 @@ export function updateAd(values, uid, adKey) {
     ad
   } = store.getState();
   const updates = { ...ad, ...values };
-  debugger;
   const promiseList = Object.keys(updates).map(prop => {
     const update = {};
     update[`/user_ads/${uid}/${adKey}/${prop}`] = updates[prop];
@@ -336,7 +355,6 @@ export function updateAd(values, uid, adKey) {
         error => reject(error)
       );
     });
-    debugger;
     return promise;
   });
 

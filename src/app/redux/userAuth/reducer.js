@@ -17,6 +17,11 @@ export default function (state = {}, action) {
     case actionTypes.LOGIN_USER_FAILURE:
       return state;
 
+    case actionTypes.UPDATE_PASSWORD_SUCCESS:
+      return state;
+    case actionTypes.UPDATE_PASSWORD_FAILURE:
+      return state;
+
     default:
       return state;
   }

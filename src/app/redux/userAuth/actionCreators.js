@@ -29,8 +29,18 @@ export function logoutUserFailure() {
   };
 }
 
+export function updatePasswordSuccess() {
+  return {
+    type: actionTypes.UPDATE_PASSWORD_SUCCESS,
+  };
+}
+export function updatePasswordFailure() {
+  return {
+    type: actionTypes.UPDATE_PASSWORD_FAILURE,
+  };
+}
+
 export function loginUserSuccess(user) {
-  debugger;
   return {
     type: actionTypes.LOGIN_USER_SUCCESS,
     user,

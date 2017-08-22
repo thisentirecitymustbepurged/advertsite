@@ -43,23 +43,23 @@ module.exports = {
     'react/lib/ReactContext': true
   },
   plugins: [
-    new ExtractTextPlugin('assets/styles.css'),
+    new ExtractTextPlugin('assets/styles/styles.scss'),
 
-    new CopyWebpackPlugin(
-      [
-        {
-          from: 'src/assets/images/illustrations',
-          to: 'assets/images/illustrations'
-        },
-        {
-          from: 'src/assets/images/favicon',
-          to: 'assets/images/favicon'
-        }
-      ],
-      {
-        copyUnmodified: true
-      }
-    ),
+    // new CopyWebpackPlugin(
+    //   [
+    //     {
+    //       from: 'src/assets/images/illustrations',
+    //       to: 'assets/images/illustrations'
+    //     },
+    //     {
+    //       from: 'src/assets/images/favicon',
+    //       to: 'assets/images/favicon'
+    //     }
+    //   ],
+    //   {
+    //     copyUnmodified: true
+    //   }
+    // ),
 
     new HtmlWebpackPlugin({
       template: `${SRC}/index.html`,

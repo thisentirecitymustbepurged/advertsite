@@ -6,8 +6,11 @@ import { Grid, Row, Col } from 'react-bootstrap';
 
 import {
   deleteAd,
-  userAdsListener
+  userAdsListener,
+  updatePassword,
 } from '../../../api';
+
+import ChangePassword from '../forms/ChangePassword';
 
 class User extends Component {
   constructor(props) {
@@ -16,6 +19,7 @@ class User extends Component {
     this.userAdsListenerWasCalled = false;
     this.userAdsListener();
     this.deleteAd = this.deleteAd.bind(this);
+    this.updatePassword = this.updatePassword.bind(this);
   }
 
   componentDidUpdate() {
@@ -35,6 +39,10 @@ class User extends Component {
       this.userAdsListenerWasCalled = true;
       this.userAdsRef = userAdsListener(this.props.user.uid);
     }
+  }
+
+  updatePassword({ password }) {
+    updatePassword(password);
   }
 
   deleteAd(key) {
@@ -76,6 +84,10 @@ class User extends Component {
             <Row>
               {this.renderAds()}
             </Row>
+          </Col>
+          <Col sm={12} md={6}>
+            <h1>Change Password</h1>
+            <ChangePassword onSubmit={this.updatePassword} />
           </Col>
         </Row>
       </Grid>
