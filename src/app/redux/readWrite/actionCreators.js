@@ -1,23 +1,5 @@
 import * as actionTypes from './types';
 
-export function fetchAdSuccess(ad) {
-  return {
-    type: actionTypes.FETCH_AD_SUCCESS,
-    ad,
-  };
-}
-export function fetchAdFailure() {
-  return {
-    type: actionTypes.FETCH_AD_FAILURE,
-  };
-}
-export function userIsOwner(isOwner) {
-  return {
-    type: actionTypes.USER_IS_OWNER,
-    isOwner
-  };
-}
-
 export function fetchAdsSuccess(ads) {
   return {
     type: actionTypes.FETCH_ADS_SUCCESS,
@@ -74,16 +56,3 @@ export function deleteUserAdFailure() {
     type: actionTypes.DELETE_USER_AD_FAILURE,
   };
 }
-
-export function clearAds() {
-  return {
-    type: actionTypes.CLEAR_ADS,
-  };
-}
-
-export function clearUserAds() {
-  return {
-    type: actionTypes.CLEAR_USER_ADS,
-  };
-}
-

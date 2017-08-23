@@ -1,11 +1,5 @@
 import * as actionTypes from './types';
 
-export function fetchingUser(isFetching) {
-  return {
-    type: actionTypes.FETCHING_USER,
-    isFetching,
-  };
-}
 export function fetchUserSuccess(user) {
   return {
     type: actionTypes.FETCH_USER_SUCCESS,
@@ -26,17 +20,6 @@ export function logoutUserSuccess() {
 export function logoutUserFailure() {
   return {
     type: actionTypes.LOGOUT_USER_FAILURE,
-  };
-}
-
-export function updatePasswordSuccess() {
-  return {
-    type: actionTypes.UPDATE_PASSWORD_SUCCESS,
-  };
-}
-export function updatePasswordFailure() {
-  return {
-    type: actionTypes.UPDATE_PASSWORD_FAILURE,
   };
 }
 

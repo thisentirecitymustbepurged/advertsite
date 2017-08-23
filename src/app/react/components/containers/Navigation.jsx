@@ -1,23 +1,17 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
-import { fetchUser, logOut } from '../../../api';
+export default class Navigation extends Component {
+  userExists() {
+    if (this.props.username === undefined) {
+      return <Link to="/user">Login</Link>;
+    }
+    return (
+      <span>
+        <Link to="/user"> Logged in as {this.props.username} </Link>
 
-import {
-  logoutUserSuccess,
-  logoutUserFailure,
-} from '../../../redux/userAuth/actionCreators';
-
-class Navigation extends Component {
-  componentDidMount() {
-    fetchUser();
-  }
-
-  logOut(e) {
-    e.preventDefault();
-    logOut();
+      </span>
+    );
   }
 
   renderUserMenu(user) {
@@ -32,26 +26,25 @@ class Navigation extends Component {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            {user.email || user.displayName} <span className="caret" /></a>
+            {user.email} <span className="caret" /></a>
           <ul className="dropdown-menu">
             <li><Link to="/user">Profile</Link></li>
-            <li><Link to="/ad/create">Create New Ad</Link></li>
             <li role="separator" className="divider" />
-            <li><a href="" onClick={this.logOut.bind(this)}>Logout</a></li>
+            <li><a href="" onClick={this.props.logOut}>Logout</a></li>
           </ul>
         </li>
       );
     }
     return [
-      <li key={'login'}><Link to="/login">Login</Link></li>,
-      <li key={'register'}><Link to="/register">Register</Link></li>
+      <li key={1}>Login</li>,
+      <li key={2}><Link to="/user">Register</Link></li>,
     ];
   }
 
   render() {
     return (
-      <div className="nav">
-        <header className="navbar navbar-default navbar-fixed-top" id="top" role="banner">
+      <div>
+        <header className="navbar navbar-static-top navbar-inverse" id="top" role="banner">
           <div className="container">
             <div className="navbar-header">
               <button
@@ -59,15 +52,17 @@ class Navigation extends Component {
                 type="button"
                 data-toggle="collapse"
                 data-target=".bs-navbar-collapse"
-              >
-                <span className="sr-only">Toggle navigation</span>
+              ><span className="sr-only">Toggle navigation</span>
                 <span className="icon-bar" />
                 <span className="icon-bar" />
                 <span className="icon-bar" />
               </button>
-              <Link to="/" className="navbar-brand">AdSite</Link>
+              <Link to="/" className="navbar-brand">Firebase & Redux boilerplate</Link>
             </div>
             <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+              <ul className="nav navbar-nav">
+                <li><Link to="/">Home</Link></li>,
+              </ul>
               <ul className="nav navbar-nav navbar-right">
                 { this.renderUserMenu(this.props.user) }
               </ul>
@@ -78,18 +73,3 @@ class Navigation extends Component {
     );
   }
 }
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    logoutUserSuccess,
-    logoutUserFailure,
-  }, dispatch);
-}
-
-function mapStateToProps({ user }) {
-  return {
-    user,
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
