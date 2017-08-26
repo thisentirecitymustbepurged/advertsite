@@ -15,15 +15,21 @@ export const INITIAL_STATE = Immutable({
 
 // FETCH USER
 const fetchUserAttempt = (state) =>
-  {debugger; return state.merge({
-      fetchingUser: true
-    });}
-const fetchUserSuccess = (state, { data }) =>
   state.merge({
-    data,
-    fetchingUser: false,
-    isLoggedIn: true
+    fetchingUser: true
   });
+
+const fetchUserSuccess = (state, { data }) => {
+  const result = data
+    ? state.merge({
+      data,
+      fetchingUser: false,
+      isLoggedIn: true
+    })
+    : state;
+  return result;
+};
+
 const fetchUserFailure = (state, { error }) =>
   state.merge({
     error,

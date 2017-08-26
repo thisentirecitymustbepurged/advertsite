@@ -133,11 +133,13 @@ export function fetchUser() {
   auth.onAuthStateChanged().then(
     data => {
       // eslint-disable-next-line
-      data && store.dispatch(fetchUserSuccess({
-        uid: data.uid,
-        email: data.email,
-        displayName: data.displayName
-      }));
+      data
+        ? store.dispatch(fetchUserSuccess({
+          uid: data.uid,
+          email: data.email,
+          displayName: data.displayName
+        }))
+        : store.dispatch(fetchUserSuccess(null));
     },
     err => {
       store.dispatch(fetchUserFailure(err));
