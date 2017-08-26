@@ -15,13 +15,14 @@ export const INITIAL_STATE = Immutable({
 
 // FETCH USER
 const fetchUserAttempt = (state) =>
-  state.merge({
-    fetchingUser: true
-  });
+  {debugger; return state.merge({
+      fetchingUser: true
+    });}
 const fetchUserSuccess = (state, { data }) =>
   state.merge({
     data,
-    fetchingUser: false
+    fetchingUser: false,
+    isLoggedIn: true
   });
 const fetchUserFailure = (state, { error }) =>
   state.merge({
@@ -37,7 +38,8 @@ const loginUserAttempt = (state) =>
 const loginUserSuccess = (state, { data }) =>
   state.merge({
     data,
-    isLoggingIn: false
+    isLoggingIn: false,
+    isLoggedIn: true
   });
 const loginUserFailure = (state, { error }) =>
   state.merge({
@@ -53,7 +55,8 @@ const logoutUserAttempt = (state) =>
 const logoutUserSuccess = (state) =>
   state.merge({
     data: {},
-    isLoggingOut: false
+    isLoggingOut: false,
+    isLoggedIn: false
   });
 const logoutUserFailure = (state, { error }) =>
   state.merge({
@@ -84,7 +87,8 @@ const registerAttempt = (state) =>
 const registerSuccess = (state, { data }) =>
   state.merge({
     data,
-    isRegistering: false
+    isRegistering: false,
+    isLoggedIn: true
   });
 const registerFailure = (state, { error }) =>
   state.merge({

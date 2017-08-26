@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 
-import { fetchUser, logOut } from '../../../api';
-
-import {
-  logoutUserSuccess,
-  logoutUserFailure,
-} from '../../../redux/userAuth/actionCreators';
+import { logOut } from '../../../api';
 
 class Navigation extends Component {
-  componentDidMount() {
-    fetchUser();
-  }
-
   logOut(e) {
     e.preventDefault();
     logOut();
@@ -79,17 +69,10 @@ class Navigation extends Component {
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    logoutUserSuccess,
-    logoutUserFailure,
-  }, dispatch);
-}
-
 function mapStateToProps({ user: { data } }) {
   return {
     user: data,
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
+export default connect(mapStateToProps)(Navigation);
