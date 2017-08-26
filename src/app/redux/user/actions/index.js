@@ -3,17 +3,21 @@ import { createActions } from 'reduxsauce';
 export const { Types, Creators } = createActions({
   fetchUserAttempt: [],
   fetchUserSuccess: ['data'],
-  fetchUserFailure: ['err'],
+  fetchUserFailure: ['error'],
 
   loginUserAttempt: [],
   loginUserSuccess: ['data'],
-  loginUserFailure: ['err'],
+  loginUserFailure: ['error'],
 
   logoutUserAttempt: [],
   logoutUserSuccess: [],
-  logoutUserFailure: ['err'],
+  logoutUserFailure: ['error'],
 
   updatePasswordAttempt: [],
   updatePasswordSuccess: [],
-  updatePasswordFailure: ['err'],
+  updatePasswordFailure: ['error'],
+
+  registerAttempt: [],
+  registerSuccess: ['data'],
+  registerFailure: ['error'],
 });

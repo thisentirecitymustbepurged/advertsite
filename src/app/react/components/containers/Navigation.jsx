@@ -21,7 +21,7 @@ class Navigation extends Component {
   }
 
   renderUserMenu(user) {
-    if (user) {
+    if (user && Object.keys(user).length) {
       return (
         <li className="dropdown">
           <a

@@ -9,7 +9,8 @@ export const INITIAL_STATE = Immutable({
   isLoggingIn: false,
   isLoggedIn: false,
   isLoggingOut: false,
-  updatingPassword: false
+  updatingPassword: false,
+  isRegistering: false
 });
 
 // FETCH USER
@@ -75,6 +76,22 @@ const updatePasswordFailure = (state, { error }) =>
     updatingPassword: false
   });
 
+// REGISTER WITH EMAIL
+const registerAttempt = (state) =>
+  state.merge({
+    isRegistering: true
+  });
+const registerSuccess = (state, { data }) =>
+  state.merge({
+    data,
+    isRegistering: false
+  });
+const registerFailure = (state, { error }) =>
+  state.merge({
+    error,
+    isRegistering: false
+  });
+
 export default createReducer(INITIAL_STATE, {
   [Types.FETCH_USER_ATTEMPT]: fetchUserAttempt,
   [Types.FETCH_USER_SUCCESS]: fetchUserSuccess,
@@ -91,5 +108,9 @@ export default createReducer(INITIAL_STATE, {
   [Types.UPDATE_PASSWORD_ATTEMPT]: updatePasswordAttempt,
   [Types.UPDATE_PASSWORD_SUCCESS]: updatePasswordSuccess,
   [Types.UPDATE_PASSWORD_FAILURE]: updatePasswordFailure,
+
+  [Types.REGISTER_ATTEMPT]: registerAttempt,
+  [Types.REGISTER_SUCCESS]: registerSuccess,
+  [Types.REGISTER_FAILURE]: registerFailure,
 });
 
