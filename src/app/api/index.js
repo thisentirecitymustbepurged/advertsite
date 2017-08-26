@@ -7,8 +7,8 @@ import {
   loginUserFailure,
   loginUserSuccess,
 
-  fetchUserSuccess,
-  fetchUserFailure,
+  // fetchUserSuccess,
+  // fetchUserFailure,
 
   logoutUserSuccess,
   logoutUserFailure,
@@ -39,8 +39,28 @@ import {
   clearUserAds,
   clearAds
 } from '../redux/readWrite/actionCreators';
+import { Creators as userActions } from '../redux/user/actions';
 import { Creators as adActions } from '../redux/ad/actions';
 import { Creators as paginationActions } from '../redux/pagination/actions';
+
+
+const {
+  fetchUserAttempt,
+  fetchUserSuccess,
+  fetchUserFailure,
+
+  // loginUserAttempt,
+  // loginUserSuccess,
+  // loginUserFailure,
+
+  // logoutUserAttempt,
+  // logoutUserSuccess,
+  // logoutUserFailure,
+
+  // updatePasswordAttempt,
+  // updatePasswordSuccess,
+  // updatePasswordFailure
+} = userActions;
 
 const {
   fetchAdAttempt,
@@ -105,9 +125,10 @@ export function loginWithProvider(provider) {
 }
 
 export function fetchUser() {
+  store.dispatch(fetchUserAttempt());
   auth.onAuthStateChanged().then(
-    user => {
-      store.dispatch(fetchUserSuccess(user));
+    ({ uid, email }) => {
+      store.dispatch(fetchUserSuccess({ uid, email }));
     },
     err => {
       store.dispatch(fetchUserFailure());

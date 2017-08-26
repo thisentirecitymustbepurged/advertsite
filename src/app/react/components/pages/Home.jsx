@@ -12,17 +12,17 @@ import {
   fetchAds
 } from '../../../api';
 
-import { Creators as paginationCreators } from '../../../redux/pagination/actions';
-import { Creators as filterCreators } from '../../../redux/filter/actions';
+import { Creators as paginationActions } from '../../../redux/pagination/actions';
+import { Creators as filterActions } from '../../../redux/filter/actions';
 
 const {
   paginationSetActivePage,
   paginationSetEndReached
-} = paginationCreators;
+} = paginationActions;
 
 const {
   setAdsFilter
-} = filterCreators;
+} = filterActions;
 
 class Home extends Component {
   componentDidMount() {
