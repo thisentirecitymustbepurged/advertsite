@@ -127,8 +127,8 @@ export function loginWithProvider(provider) {
 export function fetchUser() {
   store.dispatch(fetchUserAttempt());
   auth.onAuthStateChanged().then(
-    ({ uid, email }) => {
-      store.dispatch(fetchUserSuccess({ uid, email }));
+    ({ uid, email, displayName }) => {
+      store.dispatch(fetchUserSuccess({ uid, email, displayName }));
     },
     err => {
       store.dispatch(fetchUserFailure());

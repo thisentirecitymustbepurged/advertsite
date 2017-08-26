@@ -97,7 +97,7 @@ class User extends Component {
 
 function mapStateToProps({ user, userAds }) {
   return {
-    user,
+    user: user.data,
     userAds,
   };
 }

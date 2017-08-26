@@ -18,10 +18,10 @@ const fetchUserAttempt = (state) =>
     fetchingUser: true
   });
 const fetchUserSuccess = (state, { data }) =>
-  {debugger;return state.merge({
-      data,
-      fetchingUser: false
-    });}
+  state.merge({
+    data,
+    fetchingUser: false
+  });
 const fetchUserFailure = (state, { error }) =>
   state.merge({
     error,

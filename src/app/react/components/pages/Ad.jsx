@@ -157,7 +157,7 @@ class Ad extends Component {
 function mapStateToProps({ ad: { data }, user }) {
   return {
     data,
-    user,
+    user: user.data,
   };
 }
 

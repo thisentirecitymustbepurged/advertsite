@@ -42,7 +42,7 @@ class NewAd extends Component {
 
 function mapStateToProps({ user }) {
   return {
-    user,
+    user: user.data,
   };
 }
 

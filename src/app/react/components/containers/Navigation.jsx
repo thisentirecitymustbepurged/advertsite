@@ -86,9 +86,9 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-function mapStateToProps({ user }) {
+function mapStateToProps({ user: { data } }) {
   return {
-    user,
+    user: data,
   };
 }
 
