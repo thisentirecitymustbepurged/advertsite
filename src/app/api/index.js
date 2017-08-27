@@ -1,24 +1,21 @@
 // import { browserHistory } from 'react-router';
 import store from '../redux/store';
-
 import auth from '../firebase/auth';
 import db from '../firebase/db';
 import stor from '../firebase/stor';
+// import {
+//   loginUserFailure,
+//   loginUserSuccess,
 
-import {
-  loginUserFailure,
-  loginUserSuccess,
+//   // fetchUserSuccess,
+//   // fetchUserFailure,
 
-  fetchUserSuccess,
-  fetchUserFailure,
+//   logoutUserSuccess,
+//   logoutUserFailure,
 
-  logoutUserSuccess,
-  logoutUserFailure,
-
-  updatePasswordSuccess,
-  updatePasswordFailure,
-} from '../redux/userAuth/actionCreators';
-
+//   updatePasswordSuccess,
+//   updatePasswordFailure,
+// } from '../redux/userAuth/actionCreators';
 import {
   createUserAdSuccess,
   createUserAdFailure,
@@ -35,92 +32,132 @@ import {
   fetchAdsSuccess,
   fetchAdsFailure,
 
-  fetchAdSuccess,
-  fetchAdFailure,
-
-  userIsOwner,
+  // fetchAdSuccess,
+  // fetchAdFailure,
+  // userIsOwner,
 
   clearUserAds,
-
   clearAds
 } from '../redux/readWrite/actionCreators';
+import { Creators as userActions } from '../redux/user/actions';
+import { Creators as adActions } from '../redux/ad/actions';
+import { Creators as paginationActions } from '../redux/pagination/actions';
 
-import { Creators } from '../redux/pagination/actions';
+
+const {
+  fetchUserAttempt,
+  fetchUserSuccess,
+  fetchUserFailure,
+  loginUserAttempt,
+  loginUserSuccess,
+  loginUserFailure,
+  logoutUserAttempt,
+  logoutUserSuccess,
+  logoutUserFailure,
+  updatePasswordAttempt,
+  updatePasswordSuccess,
+  updatePasswordFailure,
+  registerAttempt,
+  registerSuccess,
+  registerFailure,
+} = userActions;
+
+const {
+  fetchAdAttempt,
+  fetchAdSuccess,
+  fetchAdFailure,
+  checkIfUserIsOwnerAttempt,
+  checkIfUserIsOwnerSuccess,
+  checkIfUserIsOwnerFailure
+} = adActions;
 
 const {
   paginationSetPagesFetched,
   paginationSetEndReached
-} = Creators;
+} = paginationActions;
 
 const { dbRef } = db;
 const { storRef } = stor;
 
 // userAuth
 export function updatePassword(newPassword) {
+  store.dispatch(updatePasswordAttempt());
   auth.updatePassword(newPassword).then(
     () => store.dispatch(updatePasswordSuccess()),
-    error => {
-      store.dispatch(updatePasswordFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(updatePasswordFailure(err));
+      throw new Error(err);
     }
   );
 }
 
 export function loginWithEmail({ email, password }) {
+  store.dispatch(loginUserAttempt());
   auth.loginWithEmail(email, password).then(
-    () => {
-      fetchUser();
-    },
-    error => {
-      store.dispatch(loginUserFailure());
-      throw new Error(error);
+    ({ displayName, uid }) =>
+      store.dispatch(loginUserSuccess({ email, displayName, uid })),
+    err => {
+      store.dispatch(loginUserFailure(err));
+      throw new Error(err);
     },
   );
 }
 
 export function registerWithEmail({ email, password }) {
+  store.dispatch(registerAttempt());
   auth.registerWithEmail(email, password).then(
-    () => {
-      fetchUser();
+    ({ displayName, uid }) => {
+      store.dispatch(registerSuccess({ email, displayName, uid }));
     },
-    error => {
-      store.dispatch(loginUserFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(registerFailure(err));
+      throw new Error(err);
     },
   );
 }
 
 export function loginWithProvider(provider) {
+  store.dispatch(loginUserAttempt());
   auth.loginWithProvider(provider).then(
-    snapshot => store.dispatch(loginUserSuccess(snapshot.user)),
-    error => {
-      store.dispatch(loginUserFailure());
-      throw new Error(error);
+    ({ user: { email, displayName, uid } }) =>
+      store.dispatch(loginUserSuccess({ email, displayName, uid })),
+    err => {
+      store.dispatch(loginUserFailure(err));
+      throw new Error(err);
     },
   );
 }
 
 export function fetchUser() {
+  store.dispatch(fetchUserAttempt());
   auth.onAuthStateChanged().then(
-    user => {
-      store.dispatch(fetchUserSuccess(user));
+    data => {
+      // eslint-disable-next-line
+      data
+        ? store.dispatch(fetchUserSuccess({
+          uid: data.uid,
+          email: data.email,
+          displayName: data.displayName
+        }))
+        : store.dispatch(fetchUserSuccess(null));
     },
-    error => {
-      store.dispatch(fetchUserFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(fetchUserFailure(err));
+      throw new Error(err);
     },
   );
 }
 
 export function logOut() {
+  store.dispatch(logoutUserAttempt());
   auth.logoutUser().then(
     () => {
       store.dispatch(logoutUserSuccess());
       store.dispatch(clearUserAds());
     },
-    error => {
-      store.dispatch(logoutUserFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(logoutUserFailure(err));
+      throw new Error(err);
     },
   );
 }
@@ -146,10 +183,10 @@ export function createNewAd(values, uid) {
             imgUrl[pathUserAds] = snapshot.downloadURL;
             dbRef().update(imgUrl).then(
               () => resolve(),
-              error => reject(error),
+              err => reject(err),
             );
           },
-          error => reject(error),
+          err => reject(err),
         );
       };
 
@@ -163,15 +200,15 @@ export function createNewAd(values, uid) {
 
       Promise.all(promiseList).then(
         () => store.dispatch(createUserAdSuccess()),
-        error => {
-          store.dispatch(createUserAdFailure());
-          throw new Error(error);
+        err => {
+          store.dispatch(createUserAdFailure(err));
+          throw new Error(err);
         },
       );
     },
-    error => {
-      store.dispatch(createUserAdFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(createUserAdFailure(err));
+      throw new Error(err);
     },
   );
 }
@@ -198,7 +235,7 @@ export function query(ref, filter) {
         q = q.orderByValue(order.value);
         break;
       default:
-        throw new Error(`Something's wrong with query order object: ${order}`);
+        throw new Error(`Something's wrong with the query order object: ${order}`);
     }
     if (equalTo) {
       q = q.equalTo(equalTo);
@@ -254,9 +291,9 @@ export function fetchAds() {
     };
     return query('/ads', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch, true),
-      error => {
-        store.dispatch(fetchAdsFailure());
-        throw new Error(error);
+      err => {
+        store.dispatch(fetchAdsFailure(err));
+        throw new Error(err);
       }
     );
   }
@@ -284,9 +321,9 @@ export function fetchAds() {
     };
     return query('/ads', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch),
-      error => {
-        store.dispatch(fetchAdsFailure());
-        throw new Error(error);
+      err => {
+        store.dispatch(fetchAdsFailure(err));
+        throw new Error(err);
       }
     );
   }
@@ -323,19 +360,24 @@ export function fetchAds() {
 }
 
 export function fetchAd(adKey, uid) {
+  store.dispatch(fetchAdAttempt());
   dbRef(`ads/${adKey}`).once('value').then(
     snapshot => {
       store.dispatch(fetchAdSuccess(snapshot.val()));
+      store.dispatch(checkIfUserIsOwnerAttempt(true));
       //eslint-disable-next-line
       uid && dbRef(`user_ads/${uid}/${adKey}`).once('value').then(
         () => {
-          store.dispatch(userIsOwner(true));
+          store.dispatch(checkIfUserIsOwnerSuccess(true, false));
         },
+        err => {
+          store.dispatch(checkIfUserIsOwnerFailure(err, false));
+        }
       );
     },
-    error => {
-      store.dispatch(fetchAdFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(fetchAdFailure(err, false));
+      throw new Error(err);
     },
   );
 }
@@ -352,7 +394,7 @@ export function updateAd(values, uid, adKey) {
     const promise = new Promise((resolve, reject) => {
       dbRef().update(update).then(
         () => resolve(),
-        error => reject(error)
+        err => reject(err)
       );
     });
     return promise;
@@ -363,9 +405,9 @@ export function updateAd(values, uid, adKey) {
       store.dispatch(updateUserAdSuccess());
       fetchAd(adKey, uid);
     },
-    error => {
-      store.dispatch(updateUserAdFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(updateUserAdFailure(err));
+      throw new Error(err);
     },
   );
 }
@@ -374,9 +416,9 @@ export function userAdsListener(uid) {
   const userAdsRef = dbRef(`/user_ads/${uid}`);
   userAdsRef.on('value',
     snapshot => store.dispatch(fetchUserAdsSuccess(snapshot.val())),
-    error => {
-      store.dispatch(fetchUserAdsFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(fetchUserAdsFailure(err));
+      throw new Error(err);
     },
   );
   return userAdsRef;
@@ -388,9 +430,9 @@ export function deleteAd(uid, key) {
   updates[`/user_ads/${uid}/${key}`] = null;
   dbRef('/').update(updates).then(
     () => store.dispatch(deleteUserAdSuccess()),
-    error => {
-      store.dispatch(deleteUserAdFailure());
-      throw new Error(error);
+    err => {
+      store.dispatch(deleteUserAdFailure(err));
+      throw new Error(err);
     },
   );
 }

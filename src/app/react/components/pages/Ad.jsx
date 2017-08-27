@@ -43,7 +43,7 @@ class Ad extends Component {
 
   renderAd() {
     const {
-      ad: {
+      data: {
         title,
         category,
         images,
@@ -54,7 +54,7 @@ class Ad extends Component {
         isOwner
       },
     } = this.props;
-    if (Object.keys(this.props.ad).length !== 0) {
+    if (Object.keys(this.props.data).length !== 0) {
       const firstImageUrl = images
         ? images[Object.keys(images)[0]]
         : 'https://via.placeholder.com/500x500';
@@ -154,10 +154,10 @@ class Ad extends Component {
   }
 }
 
-function mapStateToProps({ ad, user }) {
+function mapStateToProps({ ad: { data }, user }) {
   return {
-    ad,
-    user,
+    data,
+    user: user.data,
   };
 }
 
