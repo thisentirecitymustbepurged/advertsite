@@ -1,20 +1,14 @@
 import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions({
-  fetchAdSuccess: ['ad'],
-  fetchAdFailure: [],
-  checkIfUserIsOwnerSuccess: ['isOwner'],
-  checkIfUserIsOwnerFailure: [],
+  fetchAdsAttempt: [],
+  fetchAdsSuccess: ['data'],
+  fetchAdsFailure: ['err'],
 
-  fetchAdsSuccess: ['ads'],
-  fetchAdsFailure: [],
+  fetchUserAdsAttempt: [],
+  fetchUserAdsSuccess: ['data'],
+  fetchUserAdsFailure: ['err'],
+
   clearAds: [],
-
-  createUserAdSuccess: [],
-  createUserAdFailure: [],
-  updateUserAdSuccess: [],
-  updateUserAdFailure: [],
-  deleteUserAdSuccess: [],
-  deleteUserAdFailure: [],
   clearUserAds: []
 });

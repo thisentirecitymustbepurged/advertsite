@@ -3,107 +3,64 @@ import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
-  initialPageCount: 5,
-  itemsPerPage: 6,
-  activePage: 1,
-  pagesFetched: 0,
-  endReached: false,
-  adsCount: null,
+  data: {},
+  userAds: {},
+  error: {},
+  attempting: false
 });
 
-const fetchAdSuccess = (state, { ad }) =>
+// FETCH ADS
+const fetchAdsAttempt = (state) =>
   state.merge({
-    ad,
+    attempting: true
   });
-const fetchAdFailure = (state, { error }) =>
+const fetchAdsSuccess = (state, { data }) =>
   state.merge({
-    error
+    data,
+    attempting: false
   });
-
-const checkIfUserIsOwnerSuccess = (state, { isOwner }) =>
+const fetchAdsFailure = (state, { err }) =>
   state.merge({
-    isOwner,
-  });
-const checkIfUserIsOwnerFailure = (state, { error }) =>
-  state.merge({
-    error
+    err,
+    attempting: false
   });
 
-const paginationSetEndReached = (state, { endReached }) =>
+// FETCH USER ADS
+const fetchUserAdsAttempt = (state) =>
   state.merge({
-    endReached,
+    attempting: true
+  });
+const fetchUserAdsSuccess = (state, { data }) =>
+  state.merge({
+    data,
+    attempting: false
+  });
+const fetchUserAdsFailure = (state, { err }) =>
+  state.merge({
+    err,
+    attempting: false
   });
 
-const paginationSetAdsCount = (state, { adsCount }) =>
+// CLEAR ADS
+const clearAds = (state) =>
   state.merge({
-    adsCount,
+    data: {}
+  });
+const clearUserAds = (state) =>
+  state.merge({
+    userAds: {}
   });
 
 export default createReducer(INITIAL_STATE, {
-  [Types.PAGINATION_SET_ITEMS_PER_PAGE]: paginationSetItemsPerPage,
-  [Types.PAGINATION_SET_ACTIVE_PAGE]: paginationSetActivePage,
-  [Types.PAGINATION_SET_PAGES_FETCHED]: paginationSetPagesFetched,
-  [Types.PAGINATION_SET_END_REACHED]: paginationSetEndReached,
+  [Types.FETCH_ADS_ATTEMPT]: fetchAdsAttempt,
+  [Types.FETCH_ADS_SUCCESS]: fetchAdsSuccess,
+  [Types.FETCH_ADS_FAILURE]: fetchAdsFailure,
 
-  [Types.PAGINATION_SET_ADS_COUNT]: paginationSetAdsCount,
+  [Types.FETCH_USER_ADS_ATTEMPT]: fetchUserAdsAttempt,
+  [Types.FETCH_USER_ADS_SUCCESS]: fetchUserAdsSuccess,
+  [Types.FETCH_USER_ADS_FAILURE]: fetchUserAdsFailure,
+
+  [Types.CLEAR_ADS]: clearAds,
+  [Types.CLEAR_USER_ADS]: clearUserAds,
 });
 
-export function userReadWrite(state = {}, { type, ads }) {
-  switch (type) {
-    case actionTypes.FETCH_USER_ADS_SUCCESS:
-      return ads ? ads : {}; //eslint-disable-line
-    case actionTypes.FETCH_USER_ADS_FAILURE:
-      return state;
-
-    case actionTypes.CREATE_USER_AD_SUCCESS:
-      return state;
-    case actionTypes.CREATE_USER_AD_FAILURE:
-      return state;
-
-    case actionTypes.UPDATE_USER_AD_SUCCESS:
-      return state;
-    case actionTypes.UPDATE_USER_AD_FAILURE:
-      return state;
-
-    case actionTypes.DELETE_USER_AD_SUCCESS:
-      return state;
-    case actionTypes.DELETE_USER_AD_FAILURE:
-      return state;
-
-    case actionTypes.CLEAR_USER_ADS:
-      return {};
-
-    default:
-      return state;
-  }
-}
-
-export function fetchAllAds(state = [], { type, ads }) {
-  switch (type) {
-    case actionTypes.FETCH_ADS_SUCCESS:
-      return ads ? state.concat(ads) : state;
-    case actionTypes.FETCH_ADS_FAILURE:
-      return state;
-    case actionTypes.CLEAR_ADS:
-      return [];
-
-    default:
-      return state;
-  }
-}
-
-export function fetchAd(state = {}, { type, ad, isOwner }) {
-  switch (type) {
-    case actionTypes.FETCH_AD_SUCCESS:
-      return ad || {};
-    case actionTypes.FETCH_AD_FAILURE:
-      const newAd = { ...state, ad };
-      return newAd;
-    case actionTypes.USER_IS_OWNER:
-      const newState = { ...state, isOwner };
-      return newState;
-
-    default:
-      return state;
-  }
-}

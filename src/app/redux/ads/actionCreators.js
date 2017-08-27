@@ -1,22 +1,5 @@
 import * as actionTypes from './types';
 
-export function fetchAdSuccess(ad) {
-  return {
-    type: actionTypes.FETCH_AD_SUCCESS,
-    ad,
-  };
-}
-export function fetchAdFailure() {
-  return {
-    type: actionTypes.FETCH_AD_FAILURE,
-  };
-}
-export function userIsOwner(isOwner) {
-  return {
-    type: actionTypes.USER_IS_OWNER,
-    isOwner
-  };
-}
 
 export function fetchAdsSuccess(ads) {
   return {

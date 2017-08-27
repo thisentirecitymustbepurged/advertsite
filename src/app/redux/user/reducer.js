@@ -4,6 +4,7 @@ import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
   data: {},
+  ads: {},
   error: {},
   fetchingUser: false,
   isLoggingIn: false,
