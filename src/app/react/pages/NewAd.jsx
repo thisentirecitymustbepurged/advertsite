@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Grid, Row, Col } from 'react-bootstrap';
-
-import AdForm from '../forms/AdForm';
-
-import {
-  createNewAd,
-} from '../../../api';
+import AdForm from '../components/forms/AdForm';
+import { createNewAd } from '../../api';
 
 class NewAd extends Component {
   constructor() {

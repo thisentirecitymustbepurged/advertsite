@@ -5,7 +5,7 @@ $gray: #ddd;
 $blue: #337ab7;
 
 body {
-  padding-top: 70px;
+  padding-top: 65px;
   font-size: 20px;
 }
 
@@ -28,9 +28,7 @@ h1 {
   }
   .category_filter_cont {
     text-align: left;
-    .btn-group {
-      padding: 20px 0 0;
-    }
+    padding: 0 0 10px;
     button {
       text-transform: capitalize;
       font-size: 18px;

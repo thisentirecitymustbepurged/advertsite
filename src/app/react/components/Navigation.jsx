@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
-import { logOut } from '../../../api';
+import { logOut } from '../../api';
 
 class Navigation extends Component {
   logOut(e) {
