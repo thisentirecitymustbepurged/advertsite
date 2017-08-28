@@ -16,8 +16,11 @@ import { Creators as paginationActions } from '../../../redux/pagination/actions
 import { Creators as filterActions } from '../../../redux/filter/actions';
 
 const {
+  paginationSetItemsPerPage,
+  paginationSetItemsPerPageOld,
   paginationSetActivePage,
-  paginationSetEndReached
+  paginationSetEndReached,
+  paginationSetPagesFetched
 } = paginationActions;
 
 const {
@@ -32,6 +35,21 @@ class Home extends Component {
   paginationSelect(nextPage) {
     this.props.paginationSetActivePage(nextPage);
     fetchAds();
+  }
+
+  paginationSetItemsPerPage(itemsPerPageNew) {
+    const {
+      adsCount,
+      itemsPerPage,
+      activePage
+    } = this.props.pagination;
+    this.props.paginationSetPagesFetched(
+      Math.ceil(adsCount / itemsPerPageNew)
+    );
+    this.props.paginationSetActivePage(
+      Math.ceil(activePage * (itemsPerPage / itemsPerPageNew))
+    );
+    this.props.paginationSetItemsPerPage(itemsPerPageNew);
   }
 
   filterByCategory(equalToValue) {
@@ -83,7 +101,8 @@ class Home extends Component {
   render() {
     const {
       activePage,
-      pagesFetched
+      pagesFetched,
+      itemsPerPage
     } = this.props.pagination;
     const title = this.props.filter.equalTo || 'Select Category';
     return (
@@ -95,12 +114,23 @@ class Home extends Component {
               onSelect={this.filterByCategory.bind(this)}
               id="select_category_dropdown"
             >
-              <MenuItem eventKey="flat">Flat</MenuItem>
+              <MenuItem eventKey="1">Flat</MenuItem>
               <MenuItem eventKey="house">House</MenuItem>
               <MenuItem eventKey="cottage">Cottage</MenuItem>
             </DropdownButton>
           </Col>
-          <Col sm={12} md={8} className="pagination_cont">
+          <Col sm={12} md={2} className="paginationSetItemsPerPage">
+            <DropdownButton
+              title={itemsPerPage}
+              onSelect={this.paginationSetItemsPerPage.bind(this)}
+              id="select_category_dropdown"
+            >
+              <MenuItem eventKey="6">6</MenuItem>
+              <MenuItem eventKey="12">12</MenuItem>
+              <MenuItem eventKey="18">18</MenuItem>
+            </DropdownButton>
+          </Col>
+          <Col sm={12} md={6} className="pagination_cont">
             <Pagination
               prev
               next
@@ -127,9 +157,12 @@ class Home extends Component {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    paginationSetItemsPerPage,
+    paginationSetItemsPerPageOld,
     paginationSetActivePage,
     setAdsFilter,
-    paginationSetEndReached
+    paginationSetEndReached,
+    paginationSetPagesFetched
   }, dispatch);
 }
 
