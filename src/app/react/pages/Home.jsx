@@ -158,9 +158,9 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-function mapStateToProps({ ads, pagination, filter }) {
+function mapStateToProps({ ads: { data }, pagination, filter }) {
   return {
-    ads,
+    ads: data,
     pagination,
     filter
   };

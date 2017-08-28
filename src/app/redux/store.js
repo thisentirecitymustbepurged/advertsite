@@ -1,24 +1,23 @@
 import { createStore, combineReducers } from 'redux';
-import { reducer as formReducer } from 'redux-form';
+import { reducer as form } from 'redux-form';
 import {
   userReadWrite,
-  fetchAllAds
+  // fetchAllAds
 } from './readWrite/reducer';
-// import userAuth from './userAuth/reducer';
-
 import pagination from './pagination/reducer';
 import filter from './filter/reducer';
 
 import user from './user/reducer';
+import ads from './ads/reducer';
 import ad from './ad/reducer';
 
 
 const reducersCombined = combineReducers({
   user,
   userAds: userReadWrite,
-  ads: fetchAllAds,
+  ads,
   ad,
-  form: formReducer,
+  form,
   pagination,
   filter
 });

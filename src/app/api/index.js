@@ -29,8 +29,8 @@ import {
   deleteUserAdSuccess,
   deleteUserAdFailure,
 
-  fetchAdsSuccess,
-  fetchAdsFailure,
+  // fetchAdsSuccess,
+  // fetchAdsFailure,
 
   // fetchAdSuccess,
   // fetchAdFailure,
@@ -41,6 +41,7 @@ import {
 } from '../redux/readWrite/actionCreators';
 import { Creators as userActions } from '../redux/user/actions';
 import { Creators as adActions } from '../redux/ad/actions';
+import { Creators as adsActions } from '../redux/ads/actions';
 import { Creators as paginationActions } from '../redux/pagination/actions';
 
 
@@ -61,7 +62,6 @@ const {
   registerSuccess,
   registerFailure,
 } = userActions;
-
 const {
   fetchAdAttempt,
   fetchAdSuccess,
@@ -70,7 +70,11 @@ const {
   checkIfUserIsOwnerSuccess,
   checkIfUserIsOwnerFailure
 } = adActions;
-
+const {
+  fetchAdsAttempt,
+  fetchAdsSuccess,
+  fetchAdsFailure,
+} = adsActions;
 const {
   paginationSetPagesFetched,
   paginationSetEndReached,
@@ -268,7 +272,7 @@ export function fetchAds() {
       adsCount
     },
     filter,
-    ads
+    ads,
   } = store.getState();
   const filterExists = Object.keys(filter).length;
 
@@ -291,6 +295,7 @@ export function fetchAds() {
         limitToFirst: numberToFetch
       };
     };
+    store.dispatch(fetchAdsAttempt());
     return query('/ads', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch, true),
       err => {
@@ -302,7 +307,7 @@ export function fetchAds() {
 
   // NEXT CALL
   if (pagesFetched) {
-    const lastKey = ads[ads.length - 1].key;
+    const lastKey = ads.data[ads.data.length - 1].key;
     const pageCountToFetch = (initialPageCount - 1) - (pagesFetched - activePage);
     const numberToFetch = (itemsPerPage * pageCountToFetch) + 1;
     const f = () => {
@@ -321,6 +326,7 @@ export function fetchAds() {
         startAt: lastKey
       };
     };
+    store.dispatch(fetchAdsAttempt());
     return query('/ads', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch),
       err => {

@@ -3,7 +3,7 @@ import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
 
 export const INITIAL_STATE = Immutable({
-  data: {},
+  data: [],
   userAds: {},
   error: {},
   attempting: false
@@ -16,7 +16,7 @@ const fetchAdsAttempt = (state) =>
   });
 const fetchAdsSuccess = (state, { data }) =>
   state.merge({
-    data,
+    data: state.data.concat(data),
     attempting: false
   });
 const fetchAdsFailure = (state, { err }) =>
