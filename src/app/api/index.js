@@ -334,30 +334,30 @@ export function fetchAds() {
     if (filterExists) {
       store.dispatch(clearAds());
     }
-    const handledAds = Object.keys(fetchedAds).map(key => {
+    const result = Object.keys(fetchedAds).map(key => {
       const obj = Object.assign({}, fetchedAds[key]);
       obj.key = key;
       return obj;
     });
 
     if (isInitial) {
-      if (handledAds.length < numberToFetch) {
+      if (result.length < numberToFetch) {
         store.dispatch(paginationSetEndReached(true));
       }
-      store.dispatch(fetchAdsSuccess(handledAds));
-      store.dispatch(paginationSetAdsCount(handledAds.length));
+      store.dispatch(fetchAdsSuccess(result));
+      store.dispatch(paginationSetAdsCount(result.length));
       store.dispatch(paginationSetPagesFetched(
-        Math.ceil(handledAds.length / itemsPerPage)
+        Math.ceil(result.length / itemsPerPage)
       ));
     } else {
-      if (handledAds.length < numberToFetch) {
+      if (result.length < numberToFetch) {
         store.dispatch(paginationSetEndReached(true));
       }
-      handledAds.shift();
-      store.dispatch(fetchAdsSuccess(handledAds));
-      store.dispatch(paginationSetAdsCount(adsCount + handledAds.length));
+      result.shift();
+      store.dispatch(fetchAdsSuccess(result));
+      store.dispatch(paginationSetAdsCount(adsCount + result.length));
       store.dispatch(paginationSetPagesFetched(
-        pagesFetched + Math.ceil(handledAds.length / itemsPerPage)
+        Math.ceil((adsCount + result.length) / itemsPerPage)
       ));
     }
   }
