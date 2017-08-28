@@ -32,8 +32,13 @@ class Home extends Component {
   }
 
   paginationSelect(nextPage) {
+    const {
+      activePage
+    } = this.props.pagination;
+    const oldActivePage = activePage;
     this.props.paginationSetActivePage(nextPage);
-    fetchAds();
+    oldActivePage < nextPage && fetchAds(); //eslint-disable-line
+    // fetchAds();
   }
 
   paginationSetItemsPerPage(itemsPerPageNew) {
@@ -42,13 +47,28 @@ class Home extends Component {
       itemsPerPage,
       activePage
     } = this.props.pagination;
-    this.props.paginationSetPagesFetched(
-      Math.ceil(adsCount / itemsPerPageNew)
-    );
+    let newActivePage;
+
+    const newPagesFetched = Math.ceil(adsCount / itemsPerPageNew);
+    this.props.paginationSetPagesFetched(newPagesFetched);
+
+    const oldFirstItemInActivePage = (itemsPerPage * (activePage - 1)) + 1;
+
+    for (let i = 1; i <= newPagesFetched; i += 1) {
+      if (i * itemsPerPageNew >= oldFirstItemInActivePage) {
+        newActivePage = i;
+        break;
+      }
+    }
+
     this.props.paginationSetActivePage(
-      Math.ceil(activePage * (itemsPerPage / itemsPerPageNew))
+      newActivePage < newPagesFetched
+        ? newActivePage
+        : newPagesFetched
     );
+
     this.props.paginationSetItemsPerPage(itemsPerPageNew);
+    fetchAds();
   }
 
   filterByCategory(equalToValue) {
