@@ -10,6 +10,7 @@ import {
 import { fetchAds } from '../../api';
 import { Creators as paginationActions } from '../../redux/pagination/actions';
 import { Creators as filterActions } from '../../redux/filter/actions';
+import { Creators as adsActions } from '../../redux/ads/actions';
 
 const {
   paginationSetItemsPerPage,
@@ -21,6 +22,9 @@ const {
 const {
   setAdsFilter
 } = filterActions;
+const {
+  setThereWasInitialFetch
+} = adsActions;
 
 class Home extends Component {
   componentDidMount() {
@@ -56,6 +60,7 @@ class Home extends Component {
       equalTo: equalToValue
     };
     this.props.paginationSetEndReached(false);
+    this.props.setThereWasInitialFetch(false);
     this.props.setAdsFilter(filter);
     fetchAds();
   }
@@ -152,9 +157,10 @@ function mapDispatchToProps(dispatch) {
     paginationSetItemsPerPage,
     paginationSetItemsPerPageOld,
     paginationSetActivePage,
-    setAdsFilter,
     paginationSetEndReached,
-    paginationSetPagesFetched
+    paginationSetPagesFetched,
+    setAdsFilter,
+    setThereWasInitialFetch
   }, dispatch);
 }
 

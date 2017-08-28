@@ -10,5 +10,6 @@ export const { Types, Creators } = createActions({
   fetchUserAdsFailure: ['err'],
 
   clearAds: [],
-  clearUserAds: []
+  clearUserAds: [],
+  setThereWasInitialFetch: ['bool']
 });

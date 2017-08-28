@@ -44,7 +44,6 @@ import { Creators as adActions } from '../redux/ad/actions';
 import { Creators as adsActions } from '../redux/ads/actions';
 import { Creators as paginationActions } from '../redux/pagination/actions';
 
-
 const {
   fetchUserAttempt,
   fetchUserSuccess,
@@ -74,6 +73,7 @@ const {
   fetchAdsAttempt,
   fetchAdsSuccess,
   fetchAdsFailure,
+  setThereWasInitialFetch
 } = adsActions;
 const {
   paginationSetPagesFetched,
@@ -84,84 +84,88 @@ const {
 const { dbRef } = db;
 const { storRef } = stor;
 
+const dispatch = func => {
+  store.dispatch(func);
+};
+
 // userAuth
 export function updatePassword(newPassword) {
-  store.dispatch(updatePasswordAttempt());
+  dispatch(updatePasswordAttempt());
   auth.updatePassword(newPassword).then(
-    () => store.dispatch(updatePasswordSuccess()),
+    () => dispatch(updatePasswordSuccess()),
     err => {
-      store.dispatch(updatePasswordFailure(err));
+      dispatch(updatePasswordFailure(err));
       throw new Error(err);
     }
   );
 }
 
 export function loginWithEmail({ email, password }) {
-  store.dispatch(loginUserAttempt());
+  dispatch(loginUserAttempt());
   auth.loginWithEmail(email, password).then(
     ({ displayName, uid }) =>
-      store.dispatch(loginUserSuccess({ email, displayName, uid })),
+      dispatch(loginUserSuccess({ email, displayName, uid })),
     err => {
-      store.dispatch(loginUserFailure(err));
+      dispatch(loginUserFailure(err));
       throw new Error(err);
     },
   );
 }
 
 export function registerWithEmail({ email, password }) {
-  store.dispatch(registerAttempt());
+  dispatch(registerAttempt());
   auth.registerWithEmail(email, password).then(
     ({ displayName, uid }) => {
-      store.dispatch(registerSuccess({ email, displayName, uid }));
+      dispatch(registerSuccess({ email, displayName, uid }));
     },
     err => {
-      store.dispatch(registerFailure(err));
+      dispatch(registerFailure(err));
       throw new Error(err);
     },
   );
 }
 
 export function loginWithProvider(provider) {
-  store.dispatch(loginUserAttempt());
+  dispatch(loginUserAttempt());
   auth.loginWithProvider(provider).then(
     ({ user: { email, displayName, uid } }) =>
-      store.dispatch(loginUserSuccess({ email, displayName, uid })),
+      dispatch(loginUserSuccess({ email, displayName, uid })),
     err => {
-      store.dispatch(loginUserFailure(err));
+      dispatch(loginUserFailure(err));
       throw new Error(err);
     },
   );
 }
 
 export function fetchUser() {
-  store.dispatch(fetchUserAttempt());
+  dispatch(fetchUserAttempt());
   auth.onAuthStateChanged().then(
     data => {
       // eslint-disable-next-line
       data
-        ? store.dispatch(fetchUserSuccess({
+        ? dispatch(fetchUserSuccess({
           uid: data.uid,
           email: data.email,
           displayName: data.displayName
         }))
-        : store.dispatch(fetchUserSuccess(null));
+        : dispatch(fetchUserSuccess(null));
     },
     err => {
-      store.dispatch(fetchUserFailure(err));
+      dispatch(fetchUserFailure(err));
       throw new Error(err);
     },
   );
 }
 
 export function logOut() {
-  store.dispatch(logoutUserAttempt());
+  dispatch(logoutUserAttempt());
   auth.logoutUser().then(
     () => {
-      store.dispatch(logoutUserSuccess());
-      store.dispatch(clearUserAds());
+      dispatch(logoutUserSuccess());
+      dispatch(clearUserAds());
     },
     err => {
-      store.dispatch(logoutUserFailure(err));
+      dispatch(logoutUserFailure(err));
       throw new Error(err);
     },
   );
@@ -204,15 +208,15 @@ export function createNewAd(values, uid) {
       });
 
       Promise.all(promiseList).then(
-        () => store.dispatch(createUserAdSuccess()),
+        () => dispatch(createUserAdSuccess()),
         err => {
-          store.dispatch(createUserAdFailure(err));
+          dispatch(createUserAdFailure(err));
           throw new Error(err);
         },
       );
     },
     err => {
-      store.dispatch(createUserAdFailure(err));
+      dispatch(createUserAdFailure(err));
       throw new Error(err);
     },
   );
@@ -273,13 +277,16 @@ export function fetchAds() {
     },
     filter,
     ads,
+    ads: {
+      thereWasInitialFetch
+    }
   } = store.getState();
   const filterExists = Object.keys(filter).length;
 
   if (endReached) return;
 
   // INITIAL CALL
-  if (activePage === 1) {
+  if (!thereWasInitialFetch) {
     const numberToFetch = itemsPerPage * initialPageCount;
     const f = () => {
       if (!filterExists) {
@@ -295,11 +302,11 @@ export function fetchAds() {
         limitToFirst: numberToFetch
       };
     };
-    store.dispatch(fetchAdsAttempt());
+    dispatch(fetchAdsAttempt());
     return query('/ads', f()).then(
-      snapshot => handleAds(snapshot.val(), numberToFetch, true),
+      snapshot => handleAds(snapshot.val(), numberToFetch, !thereWasInitialFetch),
       err => {
-        store.dispatch(fetchAdsFailure(err));
+        dispatch(fetchAdsFailure(err));
         throw new Error(err);
       }
     );
@@ -326,11 +333,11 @@ export function fetchAds() {
         startAt: lastKey
       };
     };
-    store.dispatch(fetchAdsAttempt());
+    dispatch(fetchAdsAttempt());
     return query('/ads', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch),
       err => {
-        store.dispatch(fetchAdsFailure(err));
+        dispatch(fetchAdsFailure(err));
         throw new Error(err);
       }
     );
@@ -338,7 +345,10 @@ export function fetchAds() {
 
   function handleAds(fetchedAds, numberToFetch, isInitial) {
     if (filterExists) {
-      store.dispatch(clearAds());
+      dispatch(clearAds());
+    }
+    if (isInitial) {
+      dispatch(setThereWasInitialFetch(true));
     }
     const result = Object.keys(fetchedAds).map(key => {
       const obj = Object.assign({}, fetchedAds[key]);
@@ -348,21 +358,21 @@ export function fetchAds() {
 
     if (isInitial) {
       if (result.length < numberToFetch) {
-        store.dispatch(paginationSetEndReached(true));
+        dispatch(paginationSetEndReached(true));
       }
-      store.dispatch(fetchAdsSuccess(result));
-      store.dispatch(paginationSetAdsCount(result.length));
-      store.dispatch(paginationSetPagesFetched(
+      dispatch(fetchAdsSuccess(result));
+      dispatch(paginationSetAdsCount(result.length));
+      dispatch(paginationSetPagesFetched(
         Math.ceil(result.length / itemsPerPage)
       ));
     } else {
       if (result.length < numberToFetch) {
-        store.dispatch(paginationSetEndReached(true));
+        dispatch(paginationSetEndReached(true));
       }
       result.shift();
-      store.dispatch(fetchAdsSuccess(result));
-      store.dispatch(paginationSetAdsCount(adsCount + result.length));
-      store.dispatch(paginationSetPagesFetched(
+      dispatch(fetchAdsSuccess(result));
+      dispatch(paginationSetAdsCount(adsCount + result.length));
+      dispatch(paginationSetPagesFetched(
         Math.ceil((adsCount + result.length) / itemsPerPage)
       ));
     }
@@ -370,23 +380,23 @@ export function fetchAds() {
 }
 
 export function fetchAd(adKey, uid) {
-  store.dispatch(fetchAdAttempt());
+  dispatch(fetchAdAttempt());
   dbRef(`ads/${adKey}`).once('value').then(
     snapshot => {
-      store.dispatch(fetchAdSuccess(snapshot.val()));
-      store.dispatch(checkIfUserIsOwnerAttempt(true));
+      dispatch(fetchAdSuccess(snapshot.val()));
+      dispatch(checkIfUserIsOwnerAttempt(true));
       //eslint-disable-next-line
       uid && dbRef(`user_ads/${uid}/${adKey}`).once('value').then(
         () => {
-          store.dispatch(checkIfUserIsOwnerSuccess(true, false));
+          dispatch(checkIfUserIsOwnerSuccess(true, false));
         },
         err => {
-          store.dispatch(checkIfUserIsOwnerFailure(err, false));
+          dispatch(checkIfUserIsOwnerFailure(err, false));
         }
       );
     },
     err => {
-      store.dispatch(fetchAdFailure(err, false));
+      dispatch(fetchAdFailure(err, false));
       throw new Error(err);
     },
   );
@@ -412,11 +422,11 @@ export function updateAd(values, uid, adKey) {
 
   Promise.all(promiseList).then(
     () => {
-      store.dispatch(updateUserAdSuccess());
+      dispatch(updateUserAdSuccess());
       fetchAd(adKey, uid);
     },
     err => {
-      store.dispatch(updateUserAdFailure(err));
+      dispatch(updateUserAdFailure(err));
       throw new Error(err);
     },
   );
@@ -425,9 +435,9 @@ export function updateAd(values, uid, adKey) {
 export function userAdsListener(uid) {
   const userAdsRef = dbRef(`/user_ads/${uid}`);
   userAdsRef.on('value',
-    snapshot => store.dispatch(fetchUserAdsSuccess(snapshot.val())),
+    snapshot => dispatch(fetchUserAdsSuccess(snapshot.val())),
     err => {
-      store.dispatch(fetchUserAdsFailure(err));
+      dispatch(fetchUserAdsFailure(err));
       throw new Error(err);
     },
   );
@@ -439,9 +449,9 @@ export function deleteAd(uid, key) {
   updates[`/ads/${key}`] = null;
   updates[`/user_ads/${uid}/${key}`] = null;
   dbRef('/').update(updates).then(
-    () => store.dispatch(deleteUserAdSuccess()),
+    () => dispatch(deleteUserAdSuccess()),
     err => {
-      store.dispatch(deleteUserAdFailure(err));
+      dispatch(deleteUserAdFailure(err));
       throw new Error(err);
     },
   );
