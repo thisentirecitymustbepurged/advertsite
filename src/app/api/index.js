@@ -73,7 +73,8 @@ const {
 
 const {
   paginationSetPagesFetched,
-  paginationSetEndReached
+  paginationSetEndReached,
+  paginationSetAdsCount
 } = paginationActions;
 
 const { dbRef } = db;
@@ -263,7 +264,8 @@ export function fetchAds() {
       itemsPerPage,
       activePage,
       pagesFetched,
-      endReached
+      endReached,
+      adsCount
     },
     filter,
     ads
@@ -343,6 +345,7 @@ export function fetchAds() {
         store.dispatch(paginationSetEndReached(true));
       }
       store.dispatch(fetchAdsSuccess(handledAds));
+      store.dispatch(paginationSetAdsCount(handledAds.length));
       store.dispatch(paginationSetPagesFetched(
         Math.ceil(handledAds.length / itemsPerPage)
       ));
@@ -352,6 +355,7 @@ export function fetchAds() {
       }
       handledAds.shift();
       store.dispatch(fetchAdsSuccess(handledAds));
+      store.dispatch(paginationSetAdsCount(adsCount + handledAds.length));
       store.dispatch(paginationSetPagesFetched(
         pagesFetched + Math.ceil(handledAds.length / itemsPerPage)
       ));
