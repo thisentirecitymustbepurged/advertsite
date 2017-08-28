@@ -7,13 +7,9 @@ import {
   Pagination,
   DropdownButton, MenuItem,
 } from 'react-bootstrap';
-
-import {
-  fetchAds
-} from '../../../api';
-
-import { Creators as paginationActions } from '../../../redux/pagination/actions';
-import { Creators as filterActions } from '../../../redux/filter/actions';
+import { fetchAds } from '../../api';
+import { Creators as paginationActions } from '../../redux/pagination/actions';
+import { Creators as filterActions } from '../../redux/filter/actions';
 
 const {
   paginationSetItemsPerPage,
@@ -22,7 +18,6 @@ const {
   paginationSetEndReached,
   paginationSetPagesFetched
 } = paginationActions;
-
 const {
   setAdsFilter
 } = filterActions;
@@ -104,33 +99,35 @@ class Home extends Component {
       pagesFetched,
       itemsPerPage
     } = this.props.pagination;
-    const title = this.props.filter.equalTo || 'Select Category';
+    const title = this.props.filter.equalTo;
     return (
       <Grid className="home_cont">
+        <div className="category_filter_cont">
+          <DropdownButton
+            title={title ? `Category: ${title}` : 'Select Category'}
+            onSelect={this.filterByCategory.bind(this)}
+            id="select_category_dropdown"
+          >
+            <MenuItem eventKey="flat">Flat</MenuItem>
+            <MenuItem eventKey="house">House</MenuItem>
+            <MenuItem eventKey="cottage">Cottage</MenuItem>
+          </DropdownButton>
+
+          <DropdownButton
+            title={`Items Per Page: ${itemsPerPage}`}
+            onSelect={this.paginationSetItemsPerPage.bind(this)}
+            id="select_category_dropdown"
+          >
+            <MenuItem eventKey="6">6</MenuItem>
+            <MenuItem eventKey="12">12</MenuItem>
+            <MenuItem eventKey="18">18</MenuItem>
+          </DropdownButton>
+        </div>
+        <Row className="ads_cont">
+          {this.renderAds()}
+        </Row>
         <Row>
-          <Col sm={12} md={2} className="category_filter_cont">
-            <DropdownButton
-              title={title}
-              onSelect={this.filterByCategory.bind(this)}
-              id="select_category_dropdown"
-            >
-              <MenuItem eventKey="1">Flat</MenuItem>
-              <MenuItem eventKey="house">House</MenuItem>
-              <MenuItem eventKey="cottage">Cottage</MenuItem>
-            </DropdownButton>
-          </Col>
-          <Col sm={12} md={2} className="paginationSetItemsPerPage">
-            <DropdownButton
-              title={itemsPerPage}
-              onSelect={this.paginationSetItemsPerPage.bind(this)}
-              id="select_category_dropdown"
-            >
-              <MenuItem eventKey="6">6</MenuItem>
-              <MenuItem eventKey="12">12</MenuItem>
-              <MenuItem eventKey="18">18</MenuItem>
-            </DropdownButton>
-          </Col>
-          <Col sm={12} md={6} className="pagination_cont">
+          <Col className="pagination_cont">
             <Pagination
               prev
               next
@@ -144,11 +141,6 @@ class Home extends Component {
               onSelect={this.paginationSelect.bind(this)}
             />
           </Col>
-          <Col sm={12} md={2}>
-          </Col>
-        </Row>
-        <Row className="ads_cont">
-          {this.renderAds()}
         </Row>
       </Grid>
     );

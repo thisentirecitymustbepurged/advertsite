@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-
 import { Grid, Row, Col } from 'react-bootstrap';
-
 import {
   deleteAd,
   userAdsListener,
   updatePassword,
-} from '../../../api';
-
-import ChangePassword from '../forms/ChangePassword';
+} from '../../api';
+import ChangePassword from '../components/forms/ChangePassword';
 
 class User extends Component {
   constructor(props) {
