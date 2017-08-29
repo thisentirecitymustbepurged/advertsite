@@ -14,7 +14,6 @@ import { Creators as adsActions } from '../../redux/ads/actions';
 
 const {
   paginationSetItemsPerPage,
-  paginationSetItemsPerPageOld,
   paginationSetActivePage,
   paginationSetEndReached,
   paginationSetPagesFetched
@@ -38,7 +37,6 @@ class Home extends Component {
     const oldActivePage = activePage;
     this.props.paginationSetActivePage(nextPage);
     oldActivePage < nextPage && fetchAds(); //eslint-disable-line
-    // fetchAds();
   }
 
   paginationSetItemsPerPage(itemsPerPageNew) {
@@ -79,6 +77,7 @@ class Home extends Component {
       },
       equalTo: equalToValue
     };
+    this.props.paginationSetActivePage(1);
     this.props.paginationSetEndReached(false);
     this.props.setThereWasInitialFetch(false);
     this.props.setAdsFilter(filter);
@@ -175,7 +174,6 @@ class Home extends Component {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     paginationSetItemsPerPage,
-    paginationSetItemsPerPageOld,
     paginationSetActivePage,
     paginationSetEndReached,
     paginationSetPagesFetched,

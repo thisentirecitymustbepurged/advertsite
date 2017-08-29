@@ -9,7 +9,7 @@ class Ad extends Component {
     super();
     this.state = {
       activeImageUrl: undefined,
-      showUpdateForm: false
+      showUpdateForm: false,
     };
     this.firstImageWasRendered = false;
   }
@@ -19,7 +19,7 @@ class Ad extends Component {
   }
 
   fetchAd() {
-    if (this.props.user) {
+    if (Object.keys(this.props.user).length) {
       fetchAd(this.props.params.adKey, this.props.user.uid);
     }
     fetchAd(this.props.params.adKey);

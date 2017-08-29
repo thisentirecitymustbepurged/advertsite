@@ -382,16 +382,18 @@ export function fetchAds() {
 export function fetchAd(adKey, uid) {
   dispatch(fetchAdAttempt());
   dbRef(`ads/${adKey}`).once('value').then(
-    snapshot => {
-      dispatch(fetchAdSuccess(snapshot.val()));
-      dispatch(checkIfUserIsOwnerAttempt(true));
+    adSnapshot => {
+      dispatch(fetchAdSuccess(adSnapshot.val()));
+      dispatch(checkIfUserIsOwnerAttempt());
       //eslint-disable-next-line
       uid && dbRef(`user_ads/${uid}/${adKey}`).once('value').then(
-        () => {
-          dispatch(checkIfUserIsOwnerSuccess(true, false));
+        isOwnerSnapshot => {
+          if (isOwnerSnapshot.val()) return dispatch(checkIfUserIsOwnerSuccess(true));
+          return dispatch(checkIfUserIsOwnerSuccess(false));
         },
         err => {
-          dispatch(checkIfUserIsOwnerFailure(err, false));
+          dispatch(checkIfUserIsOwnerFailure(err));
+          throw new Error(err);
         }
       );
     },
