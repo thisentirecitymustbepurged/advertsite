@@ -37,12 +37,17 @@ class AdForm extends Component {
   }
 
   componentDidMount() {
-    this.props.initializeFromState //eslint-disable-line
-      ? this.props.initialize(this.props.initialValues)
-      : '';
+    if (this.props.initializeFromState) {
+      const {
+        images,
+        ...initialValues
+      } = this.props.initialValues;
+      this.props.initialize(initialValues);
+    }
   }
 
   handleImages() {
+    this.imagesAreBeingHandled = true;
     const images = this.props.adForm.values.images;
     let i = 0;
     const handleImage = () => {
@@ -93,7 +98,6 @@ class AdForm extends Component {
       return <div>You can select multiple images...</div>;
     }
     if (!this.imagesAreBeingHandled) {
-      this.imagesAreBeingHandled = true;
       this.handleImages();
     }
   }
@@ -209,9 +213,9 @@ class AdForm extends Component {
   }
 }
 
-function mapStateToProps({ form: { adForm }, ad }) {
+function mapStateToProps({ form: { adForm }, ad: { data } }) {
   return {
-    initialValues: ad,
+    initialValues: data,
     adForm
   };
 }

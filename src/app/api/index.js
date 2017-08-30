@@ -140,16 +140,15 @@ export function loginWithProvider(provider) {
 export function fetchUser() {
   dispatch(fetchUserAttempt());
   auth.onAuthStateChanged().then(
-    data => {
-      // eslint-disable-next-line
+    // eslint-disable-next-line
+    data =>
       data
         ? dispatch(fetchUserSuccess({
           uid: data.uid,
           email: data.email,
           displayName: data.displayName
         }))
-        : dispatch(fetchUserSuccess(null));
-    },
+        : dispatch(fetchUserSuccess(null)),
     err => {
       dispatch(fetchUserFailure(err));
       throw new Error(err);
@@ -166,57 +165,6 @@ export function logOut() {
     },
     err => {
       dispatch(logoutUserFailure(err));
-      throw new Error(err);
-    },
-  );
-}
-
-// readWrite
-export function createNewAd(values, uid) {
-  const images = values.images;
-  delete values.images; //eslint-disable-line
-  const newAdKey = dbRef('ads').push().key;
-  const newAd = {};
-  newAd[`/ads/${newAdKey}`] = { ...values };
-  newAd[`/user_ads/${uid}/${newAdKey}`] = { ...values };
-  dbRef().update(newAd).then(
-    () => {
-      const handleImageUpload = (image, resolve, reject) => {
-        const newImageKey = dbRef(`ads/${newAdKey}/images`).push().key;
-        storRef(`/images/${newImageKey}`).put(image).then(
-          snapshot => {
-            const pathAds = `/ads/${newAdKey}/images/${newImageKey}`;
-            const pathUserAds = `/user_ads/${uid}/${newAdKey}/images/${newImageKey}`;
-            const imgUrl = {};
-            imgUrl[pathAds] = snapshot.downloadURL;
-            imgUrl[pathUserAds] = snapshot.downloadURL;
-            dbRef().update(imgUrl).then(
-              () => resolve(),
-              err => reject(err),
-            );
-          },
-          err => reject(err),
-        );
-      };
-
-      const promiseList = Object.keys(images).map(key => {
-        const image = images[key];
-        const promise = new Promise((resolve, reject) => {
-          handleImageUpload(image, resolve, reject);
-        });
-        return promise;
-      });
-
-      Promise.all(promiseList).then(
-        () => dispatch(createUserAdSuccess()),
-        err => {
-          dispatch(createUserAdFailure(err));
-          throw new Error(err);
-        },
-      );
-    },
-    err => {
-      dispatch(createUserAdFailure(err));
       throw new Error(err);
     },
   );
@@ -404,12 +352,66 @@ export function fetchAd(adKey, uid) {
   );
 }
 
+const imageUpload = (image, resolve, reject, adKey, uid) => {
+  const imageKey = dbRef(`ads/${adKey}/images`).push().key;
+  storRef(`/images/${imageKey}`).put(image).then(
+    snapshot => {
+      const pathAds = `/ads/${adKey}/images/${imageKey}`;
+      const pathUserAds = `/user_ads/${uid}/${adKey}/images/${imageKey}`;
+      const imgUrl = {};
+      imgUrl[pathAds] = snapshot.downloadURL;
+      imgUrl[pathUserAds] = snapshot.downloadURL;
+      dbRef().update(imgUrl).then(
+        () => resolve(),
+        err => reject(err),
+      );
+    },
+    err => reject(err),
+  );
+};
+
+export function createNewAd(values, uid) {
+  const {
+    images,
+    ...updates
+  } = values;
+
+  const adKey = dbRef('ads').push().key;
+  const ad = {};
+  ad[`/ads/${adKey}`] = updates;
+  ad[`/user_ads/${uid}/${adKey}`] = updates;
+  dbRef().update(ad).then(
+    () => {
+      const promiseList = Object.keys(images).map(key => {
+        const image = images[key];
+        const promise = new Promise((resolve, reject) => {
+          imageUpload(image, resolve, reject, adKey, uid);
+        });
+        return promise;
+      });
+
+      Promise.all(promiseList).then(
+        () => dispatch(createUserAdSuccess()),
+        err => {
+          dispatch(createUserAdFailure(err));
+          throw new Error(err);
+        },
+      );
+    },
+    err => {
+      dispatch(createUserAdFailure(err));
+      throw new Error(err);
+    },
+  );
+}
+
 export function updateAd(values, uid, adKey) {
   const {
-    ad
-  } = store.getState();
-  const updates = { ...ad, ...values };
-  const promiseList = Object.keys(updates).map(prop => {
+    images,
+    ...updates
+  } = values;
+
+  let promiseList = Object.keys(updates).map(prop => {
     const update = {};
     update[`/user_ads/${uid}/${adKey}/${prop}`] = updates[prop];
     update[`/ads/${adKey}/${prop}`] = updates[prop];
@@ -421,6 +423,14 @@ export function updateAd(values, uid, adKey) {
     });
     return promise;
   });
+
+  promiseList = promiseList.concat(Object.keys(images).map(key => {
+    const image = images[key];
+    const promise = new Promise((resolve, reject) => {
+      imageUpload(image, resolve, reject, adKey, uid);
+    });
+    return promise;
+  }));
 
   Promise.all(promiseList).then(
     () => {

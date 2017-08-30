@@ -8,7 +8,7 @@ class Ad extends Component {
   constructor() {
     super();
     this.state = {
-      activeImageUrl: undefined,
+      activeImageUrl: null,
       showUpdateForm: false,
     };
     this.firstImageWasRendered = false;
@@ -41,6 +41,9 @@ class Ad extends Component {
 
   renderAd() {
     const {
+      ad: {
+        isOwner
+      },
       data: {
         title,
         category,
@@ -48,8 +51,7 @@ class Ad extends Component {
         desc,
         price,
         address,
-        phone,
-        isOwner
+        phone
       },
     } = this.props;
     if (Object.keys(this.props.data).length !== 0) {
@@ -152,8 +154,9 @@ class Ad extends Component {
   }
 }
 
-function mapStateToProps({ ad: { data }, user }) {
+function mapStateToProps({ ad, ad: { data }, user }) {
   return {
+    ad,
     data,
     user: user.data,
   };
