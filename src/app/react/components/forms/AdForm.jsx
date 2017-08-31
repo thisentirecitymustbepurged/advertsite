@@ -69,11 +69,13 @@ class AdForm extends Component {
           i += 1;
           pushUrlToTemp();
         } else {
-          this.setState({ imageUrlList: temp });
+          this.setState(prevState => ({
+            imageUrlList: prevState.imageUrlList.concat(temp)
+          }));
         }
       };
 
-      reader.readAsDataURL(images[i]);
+      if (images.length) reader.readAsDataURL(images[i]);
     };
 
     pushUrlToTemp();
@@ -103,7 +105,6 @@ class AdForm extends Component {
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
-    console.log(this.props.selectedImages);
     return (
       <form onSubmit={handleSubmit}>
         <Row>
