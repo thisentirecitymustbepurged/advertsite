@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
-
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import { Row, Col } from 'react-bootstrap';
+
+const selector = formValueSelector('adForm');
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files);
 
@@ -27,13 +28,12 @@ const FileInput = ({
 );
 
 class AdForm extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       imageUrlList: [],
     };
-    this.imagesAreBeingHandled = false;
-    this.imageUrlList = [];
+    this.imagesChanged = false;
   }
 
   componentDidMount() {
@@ -46,64 +46,64 @@ class AdForm extends Component {
     }
   }
 
-  handleImages() {
-    this.imagesAreBeingHandled = true;
-    const images = this.props.adForm.values.images;
+  componentDidUpdate(prevProps) {
+    if (this.props.selectedImages !== prevProps.selectedImages) {
+      this.imagesChanged = true;
+      this.imgToDataUrl();
+    }
+  }
+
+  imgToDataUrl() {
     let i = 0;
-    const handleImage = () => {
-      const reader = new FileReader(); //eslint-disable-line
-      reader.onload = e => {
-        this.imageUrlList.push(e.target.result);
+    const temp = [];
+    const images = this.props.selectedImages;
+
+    const pushUrlToTemp = () => {
+      //eslint-disable-next-line
+      const reader = new FileReader();
+
+      reader.onload = ({ target: { result } }) => {
+        temp.push(result);
+
         if (images[i + 1]) {
           i += 1;
-          handleImage();
+          pushUrlToTemp();
         } else {
-          this.setState({ imageUrlList: this.imageUrlList });
-          this.imageUrlList = [];
-          this.imagesAreBeingHandled = false;
+          this.setState({ imageUrlList: temp });
         }
       };
+
       reader.readAsDataURL(images[i]);
     };
-    handleImage();
+
+    pushUrlToTemp();
   }
 
   renderSelectedImages() {
-    if (
-      this.props.adForm
-      && this.props.adForm.values
-      && this.props.adForm.values.images
-      && Object.keys(this.props.adForm.values.images).length !== 0
-    ) {
-      if (this.state.imageUrlList.length > 0) {
-        return (
-          <Row className="selected_images_row">
-            {
-              this.state.imageUrlList.map((imgUrl, i) => (
-                <Col key={i} sm={2} md={2} className="selected_image_cont">
-                  <div
-                    className="selected_image"
-                    style={{
-                      backgroundImage: `url(${imgUrl})`,
-                      backgroundSize: 'cover',
-                    }}>
-                  </div>
-                </Col>
-              ))
-            }
-          </Row>
-        );
-      }
-    } else {
-      return <div>You can select multiple images...</div>;
-    }
-    if (!this.imagesAreBeingHandled) {
-      this.handleImages();
+    if (this.state.imageUrlList.length > 0) {
+      return (
+        <Row className="selected_images_row">
+          {
+            this.state.imageUrlList.map((imgUrl, i) => (
+              <Col key={i} sm={2} md={2} className="selected_image_cont">
+                <div
+                  className="selected_image"
+                  style={{
+                    backgroundImage: `url(${imgUrl})`,
+                    backgroundSize: 'cover',
+                  }}>
+                </div>
+              </Col>
+            ))
+          }
+        </Row>
+      );
     }
   }
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
+    console.log(this.props.selectedImages);
     return (
       <form onSubmit={handleSubmit}>
         <Row>
@@ -213,15 +213,15 @@ class AdForm extends Component {
   }
 }
 
-function mapStateToProps({ form: { adForm }, ad: { data } }) {
+function mapStateToProps(state) {
   return {
-    initialValues: data,
-    adForm
+    selectedImages: selector(state, 'images'),
+    initialValues: state.ad.data
   };
 }
 
 AdForm = connect(mapStateToProps)(AdForm); //eslint-disable-line
 
 export default reduxForm({
-  form: 'adForm', // a unique identifier for this form
+  form: 'adForm',
 })(AdForm);

@@ -147,7 +147,7 @@ class Ad extends Component {
     return (
       <Grid className="ad">
         {
-          this.renderAd()
+          this.props.user.uid && this.renderAd()
         }
       </Grid>
     );

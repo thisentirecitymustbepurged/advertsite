@@ -45,21 +45,17 @@ module.exports = {
   plugins: [
     new ExtractTextPlugin('assets/styles/styles.scss'),
 
-    // new CopyWebpackPlugin(
-    //   [
-    //     {
-    //       from: 'src/assets/images/illustrations',
-    //       to: 'assets/images/illustrations'
-    //     },
-    //     {
-    //       from: 'src/assets/images/favicon',
-    //       to: 'assets/images/favicon'
-    //     }
-    //   ],
-    //   {
-    //     copyUnmodified: true
-    //   }
-    // ),
+    new CopyWebpackPlugin(
+      [
+        {
+          from: 'src/assets/images',
+          to: 'assets/images'
+        }
+      ],
+      {
+        copyUnmodified: true
+      }
+    ),
 
     new HtmlWebpackPlugin({
       template: `${SRC}/index.html`,

@@ -141,14 +141,13 @@ export function fetchUser() {
   dispatch(fetchUserAttempt());
   auth.onAuthStateChanged().then(
     // eslint-disable-next-line
-    data =>
-      data
-        ? dispatch(fetchUserSuccess({
-          uid: data.uid,
-          email: data.email,
-          displayName: data.displayName
-        }))
-        : dispatch(fetchUserSuccess(null)),
+    data => data
+      ? dispatch(fetchUserSuccess({
+        uid: data.uid,
+        email: data.email,
+        displayName: data.displayName
+      }))
+      : dispatch(fetchUserSuccess(null)),
     err => {
       dispatch(fetchUserFailure(err));
       throw new Error(err);
