@@ -14,6 +14,7 @@ import Register from './app/react/pages/Register';
 import { fetchUser } from './app/api';
 import store from './app/redux/store';
 import './assets/styles/styles.scss';
+import 'react-dates/lib/css/_datepicker.css';
 
 ReactDOM.render((
   <Provider store={store}>
