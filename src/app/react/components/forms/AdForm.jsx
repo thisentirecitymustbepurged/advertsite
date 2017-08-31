@@ -81,6 +81,14 @@ class AdForm extends Component {
     pushUrlToTemp();
   }
 
+  removeSelectedImage(index) {
+    const imageUrlList = this.state.imageUrlList;
+    imageUrlList.splice(index, 1);
+    this.setState({
+      imageUrlList
+    });
+  }
+
   renderSelectedImages() {
     if (this.state.imageUrlList.length > 0) {
       return (
@@ -94,6 +102,11 @@ class AdForm extends Component {
                     backgroundImage: `url(${imgUrl})`,
                     backgroundSize: 'cover',
                   }}>
+                  <i
+                    role="button"
+                    className="fa fa-times"
+                    onClick={() => this.removeSelectedImage(i)}>
+                  </i>
                 </div>
               </Col>
             ))

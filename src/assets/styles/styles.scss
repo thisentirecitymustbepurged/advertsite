@@ -98,9 +98,24 @@ h1 {
     .selected_images_row {
     }
     .selected_image_cont {
+      position: relative;
       height: 66px;
       margin: 0 0 5px;
       padding: 0px 5px 0 0;
+      .fa-times {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        font-size: 15px;
+        padding: 3px;
+        border-radius: 2px;
+        color: #fff;
+        background: red;
+        &:hover {
+          font-size: 25px;
+        }
+      }
     }
     .selected_image {
       height: 66px;
