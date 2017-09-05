@@ -1,0 +1,17 @@
+{
+  "rules": {
+    ".write": false,
+    "ads":{
+      ".read": true,
+      "$ad_key": {
+      ".write": "data.exists() ? root.child('user_ads').child(auth.uid).hasChild($ad_key) : auth != null",
+      }
+    },
+    "user_ads":{
+      "$user_id": {
+        ".read": "$user_id === auth.uid",
+        ".write": "$user_id === auth.uid",
+      }
+    }
+  }
+}

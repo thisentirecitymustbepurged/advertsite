@@ -2,8 +2,6 @@ import app from './app';
 
 const stor = app.storage();
 
-const firebaseStor = {
+export default {
   storRef: path => stor.ref(path),
 };
-
-export default firebaseStor;

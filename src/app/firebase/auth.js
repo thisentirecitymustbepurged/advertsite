@@ -4,25 +4,28 @@ import app from './app';
 
 const auth = app.auth();
 
-const firebaseAuth = {
-  getProvider: (providerName) => {
-    switch (providerName) {
-      case 'facebook':
-        return new firebase.auth.FacebookAuthProvider();
-        break;
-      default:
-        throw new Error('Provider is not supported.');
+export default {
+  loginWithProvider: (providerName) => {
+    function getAuthProvider() {
+      switch (providerName) {
+        case 'facebook':
+          return new firebase.auth.FacebookAuthProvider();
+        case 'google':
+          return new firebase.auth.GoogleAuthProvider();
+        case 'twitter':
+          return new firebase.auth.TwitterAuthProvider();
+        case 'github':
+          return new firebase.auth.GithubAuthProvider();
+        default:
+          throw new Error('Provider is not supported.');
+      }
     }
-  },
-
-  loginWithProvider(providerName) {
-    const provider = this.getProvider(providerName);
-    return auth.signInWithPopup(provider);
+    return auth.signInWithPopup(getAuthProvider());
   },
 
   logoutUser: () => auth.signOut(),
 
-  fetchUser: () => new Promise((resolve, reject) => {
+  onAuthStateChanged: () => new Promise((resolve, reject) => {
     auth.onAuthStateChanged(
       (user) => {
         resolve(user);
@@ -32,6 +35,31 @@ const firebaseAuth = {
       },
     );
   }),
-};
 
-export default firebaseAuth;
+  loginWithEmail: (email, password) => auth.signInWithEmailAndPassword(email, password),
+
+  registerWithEmail: (email, password) => auth.createUserWithEmailAndPassword(email, password),
+
+  updatePassword: newPassword => auth.currentUser.updatePassword(newPassword),
+
+  updateUserProfile: u => auth.currentUser.updateProfile(u).then(
+    () => auth.currentUser,
+    error => ({
+      errorCode: error.code,
+      errorMessage: error.message,
+    })),
+
+  resetPasswordEmail: email => auth.sendPasswordResetEmail(email).then(
+    () => ({ message: 'Email sent' }),
+    error => ({
+      errorCode: error.code,
+      errorMessage: error.message,
+    })),
+
+  sendEmailVerification: () => auth.currentUser.sendEmailVerification().then(
+    () => ({ message: 'Email sent' }),
+    error => ({
+      errorCode: error.code,
+      errorMessage: error.message,
+    }))
+};
