@@ -332,7 +332,6 @@ export function fetchAd(adKey, uid) {
     adSnapshot => {
       dispatch(fetchAdSuccess(adSnapshot.val()));
       dispatch(checkIfUserIsOwnerAttempt());
-      //eslint-disable-next-line
       uid && dbRef(`user_ads/${uid}/${adKey}`).once('value').then(
         isOwnerSnapshot => {
           if (isOwnerSnapshot.val()) return dispatch(checkIfUserIsOwnerSuccess(true));

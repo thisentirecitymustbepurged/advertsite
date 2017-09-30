@@ -20,13 +20,13 @@ class Ad extends Component {
 
   fetchAd() {
     if (Object.keys(this.props.user).length) {
-      fetchAd(this.props.params.adKey, this.props.user.uid);
+      return fetchAd(this.props.params.adKey, this.props.user.uid);
     }
-    fetchAd(this.props.params.adKey);
+    return fetchAd(this.props.params.adKey);
   }
 
   toggleUpdateForm() {
-    this.setState({ showUpdateForm: !this.state.showUpdateForm });
+    return this.setState({ showUpdateForm: !this.state.showUpdateForm });
   }
 
   updateAd(values) {
