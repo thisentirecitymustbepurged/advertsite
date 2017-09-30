@@ -47,8 +47,8 @@ module.exports = [
     exclude: /node_modules/,
     loader: 'url-loader?limit=10000&name=assets/styles/[name].[ext]&mimetype=image/png'
   },
-  // {
-  //   test: /\.html$/,
-  //   loader: 'raw-loader?minimize=false'
-  // }
+  {
+    test: /\.html$/,
+    loader: 'raw-loader?minimize=false'
+  }
 ];

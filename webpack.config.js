@@ -8,7 +8,6 @@ const loaders = require('./webpack.loaders');
 const SRC = path.resolve(__dirname, 'src');
 const OUTPUT = path.resolve(__dirname, 'www');
 
-//  Available options are production, test, development
 const env = process.env.NODE_ENV || 'dev';
 
 const __DEV__ = env === 'dev';
@@ -31,17 +30,13 @@ module.exports = {
     chunkFilename: 'assets/js/[id].bundle.js'
   },
   resolve: {
-    alias: {
-      app: path.resolve(__dirname, './src/app/'),
-      images: path.resolve(__dirname, './src/assets/images/')
-    },
     extensions: ['.js', '.jsx']
   },
-  externals: {
-    cheerio: 'window',
-    'react/lib/ExecutionEnvironment': true,
-    'react/lib/ReactContext': true
-  },
+  // externals: {
+  //   cheerio: 'window',
+  //   'react/lib/ExecutionEnvironment': true,
+  //   'react/lib/ReactContext': true
+  // },
   plugins: [
     new ExtractTextPlugin('assets/styles/styles.scss'),
 
