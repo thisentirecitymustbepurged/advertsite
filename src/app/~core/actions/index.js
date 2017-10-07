@@ -1,1 +1,1 @@
-export { default as actions } from './core-actions';
+export { Types, Creators } from './core-actions';

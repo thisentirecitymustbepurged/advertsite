@@ -1,4 +1,18 @@
-import { combineReducers };
+import Immutable from 'seamless-immutable';
+import { createReducer } from 'reduxsauce';
+import { Types } from '../actions';
 
-import coreReducer from './core-reducer';
+export const INITIAL_STATE = Immutable({
+  data: {},
+  error: {},
+  isOwner: false,
+  attempting: false
+});
 
+const log = (state) => {
+  return state;
+};
+
+export default createReducer(INITIAL_STATE, {
+  [Types.LOG]: log
+});

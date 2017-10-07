@@ -1,1 +1,1 @@
-export {default as reducer} from './core-reducer';
+export { default as reducer } from './root-reducer';

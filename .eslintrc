@@ -23,6 +23,7 @@
       "never"
     ],
     "linebreak-style": 0,
+    "arrow-parens": 0,
     // "no-fallthrough": 0,
     "react/prop-types": 0,
     // "jsx-a11y/no-redundant-roles": 0,

@@ -22,7 +22,7 @@ module.exports = {
   devtool: __DEV__ ? 'cheap-module-source-map' : false,
   cache: true,
   entry: {
-    main: `${SRC}/main`
+    main: ['babel-polyfill', `${SRC}/main`]
   },
   output: {
     path: OUTPUT,

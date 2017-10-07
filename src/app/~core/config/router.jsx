@@ -6,7 +6,6 @@ import App from 'app/~core/containers/App';
 import { routes as HomeRoutes } from 'app/home';
 // import { routes as HomeRoutes } from 'app/home';
 // import { routes as UserProfileRoutes } from 'app/userprofile';
-console.log(HomeRoutes);
 
 export default (
   <Router history={browserHistory}>
