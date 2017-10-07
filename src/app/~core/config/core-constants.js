@@ -1,0 +1,6 @@
+export default {
+  FACEBOOK: 'FACEBOOK',
+  TWITTER: 'TWITTER',
+  GOOGLE: 'GOOGLE',
+  GITHUB: 'GITHUB'
+};
