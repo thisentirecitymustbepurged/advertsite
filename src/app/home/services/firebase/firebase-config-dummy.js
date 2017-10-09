@@ -1,4 +1,4 @@
-// RENAME THIS FILE TO config.js
+// RENAME THIS FILE TO firebase-config or firebase-config-dev
 // THANK YOU FOR COOPERATION
 export default {
   apiKey: 'XXXXXXXXXXXXXXXXXX6xENp-TE',

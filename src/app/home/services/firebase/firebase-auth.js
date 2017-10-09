@@ -29,6 +29,8 @@ export default {
     return auth.signInWithPopup(getOAuthProvider());
   },
 
+  loginWithEmail: (email, password) => auth.signInWithEmailAndPassword(email, password),
+
   logout: () => auth.signOut(),
 
   onAuthStateChanged: () => new Promise((resolve, reject) => {
@@ -37,8 +39,6 @@ export default {
       error => reject(error)
     );
   }),
-
-  loginWithEmail: (email, password) => auth.signInWithEmailAndPassword(email, password),
 
   registerWithEmail: (email, password) => auth.createUserWithEmailAndPassword(email, password),
 

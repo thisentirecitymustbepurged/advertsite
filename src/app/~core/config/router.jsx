@@ -1,10 +1,7 @@
 import React from 'react';
 import { Router, Route, browserHistory, IndexRoute } from 'react-router';
-
 import App from 'app/~core/containers/App';
-
 import { routes as HomeRoutes } from 'app/home';
-// import { routes as HomeRoutes } from 'app/home';
 // import { routes as UserProfileRoutes } from 'app/userprofile';
 
 export default (
