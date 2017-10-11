@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=dev webpack-dev-server --progress --colors --hot --inline",
-    "build-prod": "NODE_ENV=production webpack",
+    "build-prod": "NODE_ENV=production webpack --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

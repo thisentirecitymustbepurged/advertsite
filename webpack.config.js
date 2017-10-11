@@ -3,7 +3,6 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const loaders = require('./webpack.loaders');
 
 const {
   NODE_ENV,
@@ -15,7 +14,6 @@ const OUTPUT = path.resolve(__dirname, 'www');
 const __DEV__ = NODE_ENV === 'dev';
 // const __TEST__ = NODE_ENV === 'test';
 const __PROD__ = NODE_ENV === 'production';
-const hash = __DEV__ ? '' : '.[hash]';
 
 module.exports = {
   watch: __DEV__,
@@ -27,16 +25,13 @@ module.exports = {
   output: {
     path: OUTPUT,
     publicPath: '/',
-    filename: `assets/js/[name]${hash}.bundle.js`,
+    filename: `assets/js/[name]${__DEV__ ? '' : '.[hash]'}.js`,
   },
   resolve: {
     alias: {
       app: `${SRC}/app`
     },
     extensions: ['.js', '.jsx']
-  },
-  module: {
-    loaders
   },
   devServer: {
     contentBase: OUTPUT,
@@ -46,7 +41,7 @@ module.exports = {
     host: HOST || '127.0.0.1'
   },
   plugins: [
-    new ExtractTextPlugin('assets/styles/styles.scss'),
+    new ExtractTextPlugin(`assets/styles/styles${__DEV__ ? '' : '.[contenthash]'}.css`),
     new CopyWebpackPlugin(
       [
         {
@@ -75,5 +70,21 @@ module.exports = {
         })
       ]
       : [])
-  ]
+  ],
+  module: {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules)/,
+        loaders: ['react-hot-loader/webpack', 'babel-loader']
+      },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
+      }
+    ]
+  }
 };
