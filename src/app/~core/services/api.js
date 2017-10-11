@@ -23,7 +23,7 @@ export default {
   logout: () => logout(),
   registerWithEmail: (email, password) => registerWithEmail(email, password),
   updatePassword: newPassword => updatePassword(newPassword),
-  fetchUserData: () => onAuthStateChanged(),
+  fetchUser: () => onAuthStateChanged(),
 
   newAd: data => post(ADS, data),
   getAd: key => get(ADS + key),

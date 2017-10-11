@@ -1,8 +1,12 @@
-export const OAuthProviderNames = {
+export const OAuth = {
   FACEBOOK: 'FACEBOOK',
   TWITTER: 'TWITTER',
   GOOGLE: 'GOOGLE',
   GITHUB: 'GITHUB',
+  OAUTH: 'OAUTH',
+};
+
+export const Common = {
 };
 
 export const DatabaseRefMap = {
