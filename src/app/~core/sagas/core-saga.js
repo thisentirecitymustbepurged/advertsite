@@ -59,6 +59,16 @@ export default api => {
     }
   }
 
+  function* newAdSaga({ email, password }) {
+    try {
+      const res = yield call(api.registerWithEmail, email, password);
+      yield put({ type: Types.REGISTER_WITH_EMAIL_SUCCESS, res });
+    } catch (err) {
+      yield put({ type: Types.REGISTER_WITH_EMAIL_FAILURE, err });
+      throw new Error(err);
+    }
+  }
+
   function* startWatchers() {
     yield takeLatest(Types.FETCH_USER_ATTEMPT, fetchUserSaga);
     yield takeLatest(Types.LOGIN_USER_ATTEMPT, loginSaga);

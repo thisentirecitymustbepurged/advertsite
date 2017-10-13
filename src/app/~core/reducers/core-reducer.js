@@ -78,24 +78,6 @@ const logoutUserFailure = (state, { error }) =>
   });
 
 
-// UPDATE PASSWORD
-const updatePasswordAttempt = (state) =>
-  state.merge({
-    updatingPassword: true
-  });
-
-const updatePasswordSuccess = (state) =>
-  state.merge({
-    updatingPassword: false
-  });
-
-const updatePasswordFailure = (state, { error }) =>
-  state.merge({
-    error,
-    updatingPassword: false
-  });
-
-
 // REGISTER WITH EMAIL
 const registerWithEmailAttempt = (state) =>
   state.merge({
@@ -115,6 +97,23 @@ const registerWithEmailFailure = (state, { error }) =>
     isRegisteringWithEmail: false
   });
 
+
+// NEW AD
+const newAdAttempt = (state) =>
+  state.merge({
+    newAd_attempting: true
+  });
+
+const newAdSuccess = (state) =>
+  state.merge({
+    newAd_attempting: false
+  });
+
+const newAdFailure = (state, { error }) =>
+  state.merge({
+    newAd_attempting: true
+  });
+
 export default createReducer(INITIAL_STATE, {
   [Types.FETCH_USER_ATTEMPT]: fetchUserAttempt,
   [Types.FETCH_USER_SUCCESS]: fetchUserSuccess,
@@ -128,12 +127,12 @@ export default createReducer(INITIAL_STATE, {
   [Types.LOGOUT_USER_SUCCESS]: logoutUserSuccess,
   [Types.LOGOUT_USER_FAILURE]: logoutUserFailure,
 
-  [Types.UPDATE_PASSWORD_ATTEMPT]: updatePasswordAttempt,
-  [Types.UPDATE_PASSWORD_SUCCESS]: updatePasswordSuccess,
-  [Types.UPDATE_PASSWORD_FAILURE]: updatePasswordFailure,
-
   [Types.REGISTER_WITH_EMAIL_ATTEMPT]: registerWithEmailAttempt,
   [Types.REGISTER_WITH_EMAIL_SUCCESS]: registerWithEmailSuccess,
   [Types.REGISTER_WITH_EMAIL_FAILURE]: registerWithEmailFailure,
+
+  [Types.NEW_AD_ATTEMPT]: newAdAttempt,
+  [Types.NEW_AD_SUCCESS]: newAdSuccess,
+  [Types.NEW_AD_FAILURE]: newAdFailure,
 });
 

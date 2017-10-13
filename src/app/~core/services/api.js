@@ -18,21 +18,30 @@ const { uploadFile, deleteFile } = firebaseStor;
 const { ADS, USER_ADS } = DatabaseRefMap;
 
 export default {
+  // core
   loginWithOAuth: oauthProviderName => loginWithOAuth(oauthProviderName),
   loginWithEmail: (email, password) => loginWithEmail(email, password),
   logout: () => logout(),
   registerWithEmail: (email, password) => registerWithEmail(email, password),
-  updatePassword: newPassword => updatePassword(newPassword),
   fetchUser: () => onAuthStateChanged(),
-
   newAd: data => post(ADS, data),
-  getAd: key => get(ADS + key),
-  getAds: params => get(ADS, params),
-  updateAd: (key, data) => update(ADS + key, data),
-  deleteAd: key => del(ADS + key),
-  uploadAdImage: (image, imageName) => uploadFile(image, imageName),
-  deleteAdImage: imageName => deleteFile(imageName),
   saveAdToUserAdList: (uid, key) => post(USER_ADS + uid + key),
+
+  // ad
+  getAd: key => get(ADS + key),
+  checkIfUserIsOwner: (uid, key) => get(USER_ADS + uid + key),
+  updateAd: (key, data) => update(ADS + key, data),
+  deleteAdImage: imageName => deleteFile(imageName),
+
+  // commmon
+  uploadAdImage: (image, imageName) => uploadFile(image, imageName),
+
+  // home
+  getAds: params => get(ADS, params),
+
+  // userprofile
+  getUserAds: uid => get(USER_ADS + uid),
+  deleteAd: key => del(ADS + key),
   deleteAdFromUserAdList: (uid, key) => del(USER_ADS + uid + key),
-  getUserAds: uid => get(USER_ADS + uid)
+  updatePassword: newPassword => updatePassword(newPassword),
 };

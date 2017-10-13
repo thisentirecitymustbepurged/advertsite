@@ -13,11 +13,15 @@ export const { Types, Creators } = createActions({
   logoutUserSuccess: [],
   logoutUserFailure: ['error'],
 
-  updatePasswordAttempt: [],
-  updatePasswordSuccess: [],
-  updatePasswordFailure: ['error'],
-
   registerAttempt: [],
   registerSuccess: ['data'],
   registerFailure: ['error'],
+
+  newAdAttempt: [],
+  newAdSuccess: [],
+  newAdFailure: ['err'],
+
+  saveAdToUserAdListAttempt: [],
+  saveAdToUserAdListSuccess: [],
+  saveAdToUserAdListFailure: ['err'],
 });
