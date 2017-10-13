@@ -61,10 +61,20 @@ export default api => {
 
   function* newAdSaga({ email, password }) {
     try {
-      const res = yield call(api.registerWithEmail, email, password);
-      yield put({ type: Types.REGISTER_WITH_EMAIL_SUCCESS, res });
+      yield call(api.registerWithEmail, email, password);
+      yield put({ type: Types.NEW_AD_SUCCESS });
     } catch (err) {
-      yield put({ type: Types.REGISTER_WITH_EMAIL_FAILURE, err });
+      yield put({ type: Types.NEW_AD_FAILURE, err });
+      throw new Error(err);
+    }
+  }
+
+  function* saveAdToUserAdList({ uid, key }) {
+    try {
+      yield call(api.saveAdToUserAdList, uid, key);
+      yield put({ type: Types.NEW_AD_SUCCESS });
+    } catch (err) {
+      yield put({ type: Types.NEW_AD_FAILURE, err });
       throw new Error(err);
     }
   }
@@ -75,6 +85,7 @@ export default api => {
     yield takeLatest(Types.LOGOUT_USER_ATTEMPT, logoutSaga);
     yield takeLatest(Types.UPDATE_PASSWORD_ATTEMPT, updatePasswordSaga);
     yield takeLatest(Types.REGISTER_WITH_EMAIL_ATTEMPT, registerWithEmailSaga);
+    yield takeLatest(Types.SAVE_AD_TO_USER_AD_LIST_ATTEMPT, saveAdToUserAdList);
   }
 
   return startWatchers;

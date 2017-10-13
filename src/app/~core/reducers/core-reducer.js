@@ -111,8 +111,24 @@ const newAdSuccess = (state) =>
 
 const newAdFailure = (state, { error }) =>
   state.merge({
-    newAd_attempting: true
+    newAd_attempting: true,
+    error
   });
+
+// SAVE AD TO USER AD LIST
+const saveAdToUserAdListAttempt = (state) =>
+  state.merge({
+  });
+
+const saveAdToUserAdListSuccess = (state) =>
+  state.merge({
+  });
+
+const saveAdToUserAdListFailure = (state, { error }) =>
+  state.merge({
+    error
+  });
+
 
 export default createReducer(INITIAL_STATE, {
   [Types.FETCH_USER_ATTEMPT]: fetchUserAttempt,
@@ -134,5 +150,9 @@ export default createReducer(INITIAL_STATE, {
   [Types.NEW_AD_ATTEMPT]: newAdAttempt,
   [Types.NEW_AD_SUCCESS]: newAdSuccess,
   [Types.NEW_AD_FAILURE]: newAdFailure,
+
+  [Types.NEW_AD_ATTEMPT]: saveAdToUserAdListAttempt,
+  [Types.NEW_AD_SUCCESS]: saveAdToUserAdListSuccess,
+  [Types.NEW_AD_FAILURE]: saveAdToUserAdListFailure,
 });
 
