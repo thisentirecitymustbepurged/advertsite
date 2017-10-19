@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import oauthProviderNames from 'app/~core/config/constants';
+import { OAuth } from 'app/~core/config/constants';
 import app from './firebase-app';
 
 const auth = app.auth();
@@ -12,7 +12,7 @@ export default {
         GOOGLE,
         TWITTER,
         GITHUB
-      } = oauthProviderNames;
+      } = OAuth;
       switch (oauthProviderName) {
         case FACEBOOK:
           return new firebase.auth.FacebookAuthProvider();

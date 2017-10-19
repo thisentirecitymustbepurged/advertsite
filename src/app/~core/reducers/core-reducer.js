@@ -3,15 +3,6 @@ import { createReducer } from 'reduxsauce';
 import { Types } from '../actions';
 
 export const INITIAL_STATE = Immutable({
-  data: {},
-  ads: {},
-  error: {},
-  fetchingUser: false,
-  isLoggingIn: false,
-  isLoggedIn: false,
-  isLoggingOut: false,
-  updatingPassword: false,
-  isRegistering: false
 });
 
 // FETCH USER
@@ -151,8 +142,8 @@ export default createReducer(INITIAL_STATE, {
   [Types.NEW_AD_SUCCESS]: newAdSuccess,
   [Types.NEW_AD_FAILURE]: newAdFailure,
 
-  [Types.NEW_AD_ATTEMPT]: saveAdToUserAdListAttempt,
-  [Types.NEW_AD_SUCCESS]: saveAdToUserAdListSuccess,
-  [Types.NEW_AD_FAILURE]: saveAdToUserAdListFailure,
+  [Types.SAVE_AD_TO_USER_AD_LIST_ATTEMPT]: saveAdToUserAdListAttempt,
+  [Types.SAVE_AD_TO_USER_AD_LIST_SUCCESS]: saveAdToUserAdListSuccess,
+  [Types.SAVE_AD_TO_USER_AD_LIST_FAILURE]: saveAdToUserAdListFailure,
 });
 

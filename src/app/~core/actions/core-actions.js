@@ -13,9 +13,9 @@ export const { Types, Creators } = createActions({
   logoutUserSuccess: [],
   logoutUserFailure: ['error'],
 
-  registerAttempt: [],
-  registerSuccess: ['data'],
-  registerFailure: ['error'],
+  registerWithEmailAttempt: [],
+  registerWithEmailSuccess: ['data'],
+  registerWithEmailFailure: ['error'],
 
   newAdAttempt: [],
   newAdSuccess: [],

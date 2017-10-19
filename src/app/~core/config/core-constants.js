@@ -1,24 +1,25 @@
-export const OAuth = {
-  FACEBOOK: 'FACEBOOK',
-  TWITTER: 'TWITTER',
-  GOOGLE: 'GOOGLE',
-  GITHUB: 'GITHUB',
-  OAUTH: 'OAUTH',
-};
+export default {
+  OAuth: {
+    FACEBOOK: 'FACEBOOK',
+    TWITTER: 'TWITTER',
+    GOOGLE: 'GOOGLE',
+    GITHUB: 'GITHUB',
+    OAUTH: 'OAUTH',
+  },
 
-export const Common = {
-};
+  Common: {},
 
-export const DatabaseRefMap = {
-  // Root database refs
-  ADS: 'ads/',
-  USER_ADS: 'user_ads/',
+  DatabaseRefMap: {
+    // Root database refs
+    ADS: 'ads/',
+    USER_ADS: 'user_ads/',
 
-  // Ad properties' refs
-  TITLE: '/title',
-  PRICE: '/price',
-  PHONE: '/phone',
-  EMAIL: '/email',
-  IMAGES: '/images/',
-  ADDRESS: '/address'
+    // Ad properties' refs
+    TITLE: '/title',
+    PRICE: '/price',
+    PHONE: '/phone',
+    EMAIL: '/email',
+    IMAGES: '/images/',
+    ADDRESS: '/address'
+  }
 };

@@ -1,10 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { constants } from 'app/~core/config';
 import { Types } from '../actions';
-import Auth from '../config';
 
 const {
-  OAUTH
-} = Auth;
+  OAuth: {
+    OAUTH
+  }
+} = constants;
 
 export default api => {
   function* fetchUserSaga() {
@@ -85,8 +87,9 @@ export default api => {
     yield takeLatest(Types.LOGOUT_USER_ATTEMPT, logoutSaga);
     yield takeLatest(Types.UPDATE_PASSWORD_ATTEMPT, updatePasswordSaga);
     yield takeLatest(Types.REGISTER_WITH_EMAIL_ATTEMPT, registerWithEmailSaga);
+    yield takeLatest(Types.NEW_AD_ATTEMPT, newAdSaga);
     yield takeLatest(Types.SAVE_AD_TO_USER_AD_LIST_ATTEMPT, saveAdToUserAdList);
   }
 
   return startWatchers;
-}
+};
