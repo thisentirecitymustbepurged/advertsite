@@ -1,18 +1,18 @@
 import firebase from 'firebase';
-import { OAuth } from 'app/~core/config/constants';
+import { constants } from 'app/~core/config';
 import app from './firebase-app';
 
 const auth = app.auth();
+const {
+  FACEBOOK,
+  GOOGLE,
+  TWITTER,
+  GITHUB
+} = constants.OAuth;
 
 export default {
   loginWithOAuth: (oauthProviderName) => {
     const getOAuthProvider = () => {
-      const {
-        FACEBOOK,
-        GOOGLE,
-        TWITTER,
-        GITHUB
-      } = OAuth;
       switch (oauthProviderName) {
         case FACEBOOK:
           return new firebase.auth.FacebookAuthProvider();

@@ -1,13 +1,12 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
-import App from 'app/~core/containers/App';
-import Home from 'app/home';
-// import { routes as UserProfileRoutes } from 'app/userprofile';
+import { routes as HomeRoutes } from 'app/home';
+import App from '../containers/App';
 
 export default (
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      { Home }
+      { HomeRoutes }
     </Route>
   </Router>
 );
