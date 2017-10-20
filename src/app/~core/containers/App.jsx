@@ -1,17 +1,14 @@
 import React from 'react';
-
-// const App = props => (
-//   <div className="app">
-//     <Header />
-//     { props.children }
-//     <Footer />
-//   </div>
-// );
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Header } from '../components';
 
 const App = props => (
-  <div className="app">
-    { props.children }
-  </div>
+  <MuiThemeProvider>
+    <div className="app">
+      <Header />
+      { props.children }
+    </div>
+  </MuiThemeProvider>
 );
 
 export default App;
