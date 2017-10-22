@@ -4,13 +4,13 @@
     "contracts":{
       ".read": true,
       "$contract_key": {
-      ".write": "data.exists() ? root.child('user_contracts').child(auth.uid).hasChild($contract_key) : auth != null",
+      ".write": "data.exists() ? root.child('user_contracts').child(auth.uid).hasChild($contract_key) : auth != null"
       }
     },
     "user_contracts":{
       "$user_id": {
         ".read": "$user_id === auth.uid",
-        ".write": "$user_id === auth.uid",
+        ".write": "$user_id === auth.uid"
       }
     }
   }

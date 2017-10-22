@@ -1,5 +1,9 @@
 {
   "hosting": {
-    "public": "www"
+    "public": "www",
+    "rewrites": [ {
+      "source": "**",
+      "destination": "/"
+    } ]
   }
 }

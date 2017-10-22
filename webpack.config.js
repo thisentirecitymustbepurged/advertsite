@@ -53,6 +53,11 @@ module.exports = {
         copyUnmodified: true
       }
     ),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: `'${process.env.NODE_ENV}'`
+      }
+    }),
     new HtmlWebpackPlugin({
       template: `${SRC}/index.html`,
       filename: 'index.html',
