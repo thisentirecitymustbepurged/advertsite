@@ -1,6 +1,7 @@
 import Immutable from 'seamless-immutable';
 import { createReducer } from 'reduxsauce';
 import { Types } from './actions';
+import { browserHistory } from 'react-router';
 
 export const INITIAL_STATE = Immutable({
   data: {},
@@ -42,12 +43,15 @@ const loginUserAttempt = (state) =>
   state.merge({
     isLoggingIn: true
   });
-const loginUserSuccess = (state, { data }) =>
-  state.merge({
+
+const loginUserSuccess = (state, { data }) => {
+  return state.merge({
     data,
     isLoggingIn: false,
     isLoggedIn: true
   });
+};
+
 const loginUserFailure = (state, { error }) =>
   state.merge({
     error,

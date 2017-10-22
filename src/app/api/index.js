@@ -1,4 +1,4 @@
-// import { browserHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 import store from '../redux/store';
 import auth from '../firebase/auth';
 import db from '../firebase/db';
@@ -103,8 +103,9 @@ export function updatePassword(newPassword) {
 export function loginWithEmail({ email, password }) {
   dispatch(loginUserAttempt());
   auth.loginWithEmail(email, password).then(
-    ({ displayName, uid }) =>
-      dispatch(loginUserSuccess({ email, displayName, uid })),
+    ({ displayName, uid }) =>{
+      dispatch(loginUserSuccess({ email, displayName, uid }));
+      browserHistory.push('/');},
     err => {
       dispatch(loginUserFailure(err));
       throw new Error(err);
@@ -128,8 +129,9 @@ export function registerWithEmail({ email, password }) {
 export function loginWithProvider(provider) {
   dispatch(loginUserAttempt());
   auth.loginWithProvider(provider).then(
-    ({ user: { email, displayName, uid } }) =>
-      dispatch(loginUserSuccess({ email, displayName, uid })),
+    ({ user: { email, displayName, uid } }) =>{
+      dispatch(loginUserSuccess({ email, displayName, uid }));
+      browserHistory.push('/');},
     err => {
       dispatch(loginUserFailure(err));
       throw new Error(err);

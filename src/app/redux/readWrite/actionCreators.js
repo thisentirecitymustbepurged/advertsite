@@ -1,4 +1,5 @@
 import * as actionTypes from './types';
+import { browserHistory } from 'react-router'
 
 export function fetchAdSuccess(ad) {
   return {
@@ -43,6 +44,7 @@ export function fetchUserAdsFailure() {
 }
 
 export function createUserAdSuccess() {
+  browserHistory.push('/');
   return {
     type: actionTypes.CREATE_USER_AD_SUCCESS,
   };
