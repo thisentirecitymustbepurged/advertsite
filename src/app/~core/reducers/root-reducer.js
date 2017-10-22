@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import coreReducer from './core-reducer';
 
 const appReducer = combineReducers({
-  coreReducer
+  core: coreReducer
 });
 
 export default function rootReducer(state, action) {

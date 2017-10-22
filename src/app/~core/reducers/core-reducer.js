@@ -3,6 +3,7 @@ import { createReducer } from 'reduxsauce';
 import { Types } from '../actions';
 
 export const INITIAL_STATE = Immutable({
+  showSideMenu: false
 });
 
 // FETCH USER
@@ -120,6 +121,12 @@ const saveAdToUserAdListFailure = (state, { error }) =>
     error
   });
 
+// UI
+const toggleSideMenu = state =>
+  state.merge({
+    showSideMenu: !state.showSideMenu
+  });
+
 
 export default createReducer(INITIAL_STATE, {
   [Types.FETCH_USER_ATTEMPT]: fetchUserAttempt,
@@ -145,5 +152,7 @@ export default createReducer(INITIAL_STATE, {
   [Types.SAVE_AD_TO_USER_AD_LIST_ATTEMPT]: saveAdToUserAdListAttempt,
   [Types.SAVE_AD_TO_USER_AD_LIST_SUCCESS]: saveAdToUserAdListSuccess,
   [Types.SAVE_AD_TO_USER_AD_LIST_FAILURE]: saveAdToUserAdListFailure,
+
+  [Types.TOGGLE_SIDE_MENU]: toggleSideMenu
 });
 

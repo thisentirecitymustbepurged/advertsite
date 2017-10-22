@@ -1,6 +1,7 @@
 import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions({
+  // SERVICES & API
   fetchUserAttempt: [],
   fetchUserSuccess: ['data'],
   fetchUserFailure: ['error'],
@@ -24,4 +25,7 @@ export const { Types, Creators } = createActions({
   saveAdToUserAdListAttempt: [],
   saveAdToUserAdListSuccess: [],
   saveAdToUserAdListFailure: ['err'],
+
+  // UI
+  toggleSideMenu: []
 });
