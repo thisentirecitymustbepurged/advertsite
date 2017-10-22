@@ -331,7 +331,7 @@ export function fetchAd(adKey, uid) {
   dbRef(`contracts/${adKey}`).once('value').then(
     adSnapshot => {
       dispatch(fetchAdSuccess(adSnapshot.val()));
-      dispatch(checkIfUserIsOwnerAttempt());
+      uid && dispatch(checkIfUserIsOwnerAttempt());
       uid && dbRef(`user_contracts/${uid}/${adKey}`).once('value').then(
         isOwnerSnapshot => {
           if (isOwnerSnapshot.val()) return dispatch(checkIfUserIsOwnerSuccess(true));

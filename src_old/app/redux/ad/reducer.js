@@ -5,7 +5,7 @@ import { Types } from './actions';
 export const INITIAL_STATE = Immutable({
   data: {},
   error: {},
-  isOwner: false,
+  isOwner: null,
   attempting: false
 });
 
