@@ -9,7 +9,7 @@ const {
   PORT,
   HOST
 } = process.env;
-const SRC = path.resolve(__dirname, 'src');
+const SRC = path.resolve(__dirname, 'src_old');
 const OUTPUT = path.resolve(__dirname, 'www');
 const __DEV__ = NODE_ENV === 'dev';
 // const __TEST__ = NODE_ENV === 'test';
@@ -79,11 +79,24 @@ module.exports = {
         loaders: ['react-hot-loader/webpack', 'babel-loader']
       },
       {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader']
+        })
+      },
+      {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: ['css-loader', 'sass-loader']
         })
+      },
+      {
+        test: /\.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+        use: [
+          'url-loader'
+        ]
       }
     ]
   }
