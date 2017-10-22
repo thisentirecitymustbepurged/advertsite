@@ -95,7 +95,7 @@ class Home extends Component {
         && index < activePage * itemsPerPage;
     });
     if (Object.keys(visibleAds).length !== 0) {
-      return visibleAds.map(({ images, key, title }) => {
+      return visibleAds.map(({ images, key, name, amount }) => {
         const imgUrl = images
           ? images[Object.keys(images)[0]]
           : 'https://via.placeholder.com/500x500';
@@ -108,13 +108,13 @@ class Home extends Component {
             key={key} sm={12} md={4} className="item_cont">
             <Link to={`ad/${key}`}>
               <div style={style} className="item_img_cont"></div>
-              <div>{title}</div>
+              <div>{`${name}, ${amount}`}</div>
             </Link>
           </Col>
         );
       });
     }
-    return <div>No Ads</div>;
+    return null;
   }
 
   render() {
@@ -127,7 +127,7 @@ class Home extends Component {
     return (
       <Grid className="home_cont">
         <div className="category_filter_cont">
-          <DropdownButton
+          {/* <DropdownButton
             title={title ? `Category: ${title}` : 'Select Category'}
             onSelect={this.filterByCategory.bind(this)}
             id="select_category_dropdown"
@@ -135,7 +135,7 @@ class Home extends Component {
             <MenuItem eventKey="flat">Flat</MenuItem>
             <MenuItem eventKey="house">House</MenuItem>
             <MenuItem eventKey="cottage">Cottage</MenuItem>
-          </DropdownButton>
+          </DropdownButton> */}
 
           <DropdownButton
             title={`Items Per Page: ${itemsPerPage}`}

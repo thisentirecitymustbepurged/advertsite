@@ -45,13 +45,10 @@ class Ad extends Component {
         isOwner
       },
       data: {
-        title,
-        category,
-        images,
+        name,
+        amount,
         desc,
-        price,
-        address,
-        phone
+        images
       },
     } = this.props;
     if (Object.keys(this.props.data).length !== 0) {
@@ -83,7 +80,7 @@ class Ad extends Component {
               :
               <Col className="ad_info_col" sm={12} md={6}>
                 <h1>
-                  {title}
+                  {name}
                   {
                     isOwner &&
                     <Button
@@ -94,14 +91,14 @@ class Ad extends Component {
                   }
                 </h1>
                 <Row>
+                  <Col md={4}>Unpaid amount</Col>
+                  <Col md={8}>{amount}</Col>
+                </Row>
+                <Row>
                   <Col md={4}>Description</Col>
                   <Col md={8}>{desc}</Col>
                 </Row>
-                <Row>
-                  <Col md={4}>Category</Col>
-                  <Col md={8}>{category}</Col>
-                </Row>
-                <Row>
+                {/* <Row>
                   <Col md={4}>Pricing</Col>
                   <Col md={8}>{price}</Col>
                 </Row>
@@ -112,7 +109,7 @@ class Ad extends Component {
                 <Row>
                   <Col md={4}>Contact</Col>
                   <Col md={8}>{phone}</Col>
-                </Row>
+                </Row> */}
               </Col>
           }
           <Col sm={12} md={6} className="ad_image_col">

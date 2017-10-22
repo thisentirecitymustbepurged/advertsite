@@ -1,13 +1,13 @@
 {
   "rules": {
     ".write": false,
-    "ads":{
+    "contracts":{
       ".read": true,
-      "$ad_key": {
-      ".write": "data.exists() ? root.child('user_ads').child(auth.uid).hasChild($ad_key) : auth != null",
+      "$contract_key": {
+      ".write": "data.exists() ? root.child('user_contracts').child(auth.uid).hasChild($contract_key) : auth != null",
       }
     },
-    "user_ads":{
+    "user_contracts":{
       "$user_id": {
         ".read": "$user_id === auth.uid",
         ".write": "$user_id === auth.uid",

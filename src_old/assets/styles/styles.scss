@@ -89,6 +89,7 @@ h1 {
     padding: 10px 0;
     [class^="col"] {
       padding: 0;
+      white-space: nowrap;
       button {
         float: right;
         font-size: 20px;

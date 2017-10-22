@@ -250,7 +250,7 @@ export function fetchAds() {
       };
     };
     dispatch(fetchAdsAttempt());
-    return query('/ads', f()).then(
+    return query('/contracts', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch, !thereWasInitialFetch),
       err => {
         dispatch(fetchAdsFailure(err));
@@ -281,7 +281,7 @@ export function fetchAds() {
       };
     };
     dispatch(fetchAdsAttempt());
-    return query('/ads', f()).then(
+    return query('/contracts', f()).then(
       snapshot => handleAds(snapshot.val(), numberToFetch),
       err => {
         dispatch(fetchAdsFailure(err));
@@ -328,11 +328,11 @@ export function fetchAds() {
 
 export function fetchAd(adKey, uid) {
   dispatch(fetchAdAttempt());
-  dbRef(`ads/${adKey}`).once('value').then(
+  dbRef(`contracts/${adKey}`).once('value').then(
     adSnapshot => {
       dispatch(fetchAdSuccess(adSnapshot.val()));
       dispatch(checkIfUserIsOwnerAttempt());
-      uid && dbRef(`user_ads/${uid}/${adKey}`).once('value').then(
+      uid && dbRef(`user_contracts/${uid}/${adKey}`).once('value').then(
         isOwnerSnapshot => {
           if (isOwnerSnapshot.val()) return dispatch(checkIfUserIsOwnerSuccess(true));
           return dispatch(checkIfUserIsOwnerSuccess(false));
@@ -354,8 +354,8 @@ const imageUpload = (image, resolve, reject, adKey, uid) => {
   const imageKey = dbRef(`ads/${adKey}/images`).push().key;
   storRef(`/images/${imageKey}`).put(image).then(
     snapshot => {
-      const pathAds = `/ads/${adKey}/images/${imageKey}`;
-      const pathUserAds = `/user_ads/${uid}/${adKey}/images/${imageKey}`;
+      const pathAds = `/contracts/${adKey}/images/${imageKey}`;
+      const pathUserAds = `/user_contracts/${uid}/${adKey}/images/${imageKey}`;
       const imgUrl = {};
       imgUrl[pathAds] = snapshot.downloadURL;
       imgUrl[pathUserAds] = snapshot.downloadURL;
@@ -374,10 +374,10 @@ export function createNewAd(values, uid) {
     ...updates
   } = values;
 
-  const adKey = dbRef('ads').push().key;
+  const adKey = dbRef('contracts').push().key;
   const ad = {};
-  ad[`/ads/${adKey}`] = updates;
-  ad[`/user_ads/${uid}/${adKey}`] = updates;
+  ad[`/contracts/${adKey}`] = updates;
+  ad[`/user_contracts/${uid}/${adKey}`] = updates;
   dbRef().update(ad).then(
     () => {
       const promiseList = Object.keys(images).map(key => {
@@ -411,8 +411,8 @@ export function updateAd(values, uid, adKey) {
 
   let promiseList = Object.keys(updates).map(prop => {
     const update = {};
-    update[`/user_ads/${uid}/${adKey}/${prop}`] = updates[prop];
-    update[`/ads/${adKey}/${prop}`] = updates[prop];
+    update[`/user_contracts/${uid}/${adKey}/${prop}`] = updates[prop];
+    update[`/contracts/${adKey}/${prop}`] = updates[prop];
     const promise = new Promise((resolve, reject) => {
       dbRef().update(update).then(
         () => resolve(),
@@ -422,13 +422,13 @@ export function updateAd(values, uid, adKey) {
     return promise;
   });
 
-  promiseList = promiseList.concat(Object.keys(images).map(key => {
+  images ? promiseList = promiseList.concat(Object.keys(images).map(key => {
     const image = images[key];
     const promise = new Promise((resolve, reject) => {
       imageUpload(image, resolve, reject, adKey, uid);
     });
     return promise;
-  }));
+  })): '';
 
   Promise.all(promiseList).then(
     () => {
@@ -443,7 +443,7 @@ export function updateAd(values, uid, adKey) {
 }
 
 export function userAdsListener(uid) {
-  const userAdsRef = dbRef(`/user_ads/${uid}`);
+  const userAdsRef = dbRef(`/user_contracts/${uid}`);
   userAdsRef.on('value',
     snapshot => dispatch(fetchUserAdsSuccess(snapshot.val())),
     err => {
@@ -456,8 +456,8 @@ export function userAdsListener(uid) {
 
 export function deleteAd(uid, key) {
   const updates = {};
-  updates[`/ads/${key}`] = null;
-  updates[`/user_ads/${uid}/${key}`] = null;
+  updates[`/contracts/${key}`] = null;
+  updates[`/user_contracts/${uid}/${key}`] = null;
   dbRef('/').update(updates).then(
     () => dispatch(deleteUserAdSuccess()),
     err => {

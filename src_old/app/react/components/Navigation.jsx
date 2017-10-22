@@ -25,7 +25,7 @@ class Navigation extends Component {
             {user.email || user.displayName} <span className="caret" /></a>
           <ul className="dropdown-menu">
             <li><Link to="/user">Profile</Link></li>
-            <li><Link to="/ad/create">Create New Ad</Link></li>
+            <li><Link to="/ad/create">Create New Unpaid Contract</Link></li>
             <li role="separator" className="divider" />
             <li><a href="" onClick={this.logOut.bind(this)}>Logout</a></li>
           </ul>
@@ -55,7 +55,7 @@ class Navigation extends Component {
                 <span className="icon-bar" />
                 <span className="icon-bar" />
               </button>
-              <Link to="/" className="navbar-brand">AdSite</Link>
+              <Link to="/" className="navbar-brand">COMPANIES THAT DID NOT PAY FOR THE CONTRACT</Link>
             </div>
             <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
               <ul className="nav navbar-nav navbar-right">

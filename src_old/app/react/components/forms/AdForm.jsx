@@ -121,20 +121,20 @@ class AdForm extends Component {
     return (
       <form onSubmit={handleSubmit}>
         <Row>
-          <Col md={3}>Title</Col>
-          <Col md={9}>
+          <Col md={4}>Company name</Col>
+          <Col md={8}>
             <Field
               className="form-control"
-              name="title"
+              name="name"
               component="input"
               type="text"
 
             />
           </Col>
         </Row>
-        <Row>
-          <Col md={3}>Category</Col>
-          <Col md={9}>
+        {/* <Row>
+          <Col md={4}>Category</Col>
+          <Col md={8}>
             <Field
               className="form-control"
               name="category"
@@ -146,21 +146,21 @@ class AdForm extends Component {
               <option value="cottage">Cottage</option>
             </Field>
           </Col>
-        </Row>
+        </Row> */}
         <Row>
-          <Col md={3}>Pricing</Col>
-          <Col md={9}>
+          <Col md={4}>Unpaid amount</Col>
+          <Col md={8}>
             <Field
               className="form-control"
-              name="price"
+              name="amount"
               component="input"
               type="text"
             />
           </Col>
         </Row>
-        <Row>
-          <Col md={3}>Location</Col>
-          <Col md={9}>
+        {/* <Row>
+          <Col md={4}>Location</Col>
+          <Col md={8}>
             <Field
               className="form-control"
               name="address"
@@ -168,10 +168,10 @@ class AdForm extends Component {
               type="text"
             />
           </Col>
-        </Row>
-        <Row>
-          <Col md={3}>Contact</Col>
-          <Col md={9}>
+        </Row> */}
+        {/* <Row>
+          <Col md={4}>Contact</Col>
+          <Col md={8}>
             <Field
               className="form-control"
               name="phone"
@@ -179,10 +179,10 @@ class AdForm extends Component {
               type="text"
             />
           </Col>
-        </Row>
+        </Row> */}
         <Row>
-          <Col md={3}>Description</Col>
-          <Col md={9}>
+          <Col md={4}>Description</Col>
+          <Col md={8}>
             <Field
               className="form-control"
               name="desc"
@@ -192,8 +192,8 @@ class AdForm extends Component {
           </Col>
         </Row>
         <Row>
-          <Col md={3}>Pictures</Col>
-          <Col md={9}>
+          <Col md={4}>Images</Col>
+          <Col md={8}>
             <Field
               name="images"
               component={FileInput}
