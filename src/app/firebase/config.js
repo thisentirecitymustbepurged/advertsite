@@ -2,11 +2,11 @@
 // THANK YOU FOR COOPERATION
 module.exports = {
   FIREBASE_CONFIG: {
-    apiKey: "AIzaSyBgD4q3YujiPOOt4sPAfBHzBtG6xENp-TE",
-    authDomain: "adwebsite-928a9.firebaseapp.com",
-    databaseURL: "https://adwebsite-928a9.firebaseio.com",
-    projectId: "adwebsite-928a9",
-    storageBucket: "adwebsite-928a9.appspot.com",
-    messagingSenderId: "72060758788"
+    apiKey: "AIzaSyCEclVS0OwpSB3rkA_qtu8yC1SnqJ6SKYc",
+    authDomain: "unpaid-contracts-557e0.firebaseapp.com",
+    databaseURL: "https://unpaid-contracts-557e0.firebaseio.com",
+    projectId: "unpaid-contracts-557e0",
+    storageBucket: "gs://unpaid-contracts-557e0.appspot.com",
+    messagingSenderId: "122212802219"
   },
 };
