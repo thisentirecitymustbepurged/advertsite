@@ -9,7 +9,7 @@ const {
   PORT,
   HOST
 } = process.env;
-const SRC = path.resolve(__dirname, 'srcx');
+const SRC = path.resolve(__dirname, 'src');
 const OUTPUT = path.resolve(__dirname, 'www');
 const __DEV__ = NODE_ENV === 'dev';
 // const __TEST__ = NODE_ENV === 'test';
