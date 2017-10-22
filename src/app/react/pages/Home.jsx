@@ -95,7 +95,7 @@ class Home extends Component {
         && index < activePage * itemsPerPage;
     });
     if (Object.keys(visibleAds).length !== 0) {
-      return visibleAds.map(({ images, key, name, amount }) => {
+      return visibleAds.map(({ images, key, agency_name, amount }) => {
         const imgUrl = images
           ? images[Object.keys(images)[0]]
           : 'https://via.placeholder.com/500x500';
@@ -108,7 +108,7 @@ class Home extends Component {
             key={key} sm={12} md={4} className="item_cont">
             <Link to={`ad/${key}`}>
               <div style={style} className="item_img_cont"></div>
-              <div>{`${name}, ${amount}`}</div>
+              <div>{`${agency_name}, ${amount}`}</div>
             </Link>
           </Col>
         );

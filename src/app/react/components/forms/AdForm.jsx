@@ -118,38 +118,81 @@ class AdForm extends Component {
 
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
+    const {
+      agency_name,
+      agency_address,
+      agency_phone,
+      agency_other,
+      agent_name,
+      contractor_name,
+      contractor_phone,
+      contractor_email,
+      contractor_linkedin,
+      contractor_other,
+      reason,
+      amount,
+    } = {};
     return (
       <form onSubmit={handleSubmit}>
         <Row>
-          <Col md={4}>Company name</Col>
-          <Col md={8}>
+          <Col md={5}>Agency name</Col>
+          <Col md={7}>
             <Field
               className="form-control"
-              name="name"
+              name="agency_name"
               component="input"
               type="text"
 
             />
           </Col>
         </Row>
-        {/* <Row>
-          <Col md={4}>Category</Col>
-          <Col md={8}>
+        <Row>
+          <Col md={5}>Agency address</Col>
+          <Col md={7}>
             <Field
               className="form-control"
-              name="category"
-              component="select"
-            >
-              <option value=""></option>
-              <option value="flat">Flat</option>
-              <option value="house">House</option>
-              <option value="cottage">Cottage</option>
-            </Field>
+              name="agency_address"
+              component="input"
+              type="text"
+            />
           </Col>
-        </Row> */}
+        </Row>
         <Row>
-          <Col md={4}>Unpaid amount</Col>
-          <Col md={8}>
+          <Col md={5}>Agent name</Col>
+          <Col md={7}>
+            <Field
+              className="form-control"
+              name="agent_name"
+              component="input"
+              type="text"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={5}>Agency phone</Col>
+          <Col md={7}>
+            <Field
+              className="form-control"
+              name="agency_phone"
+              component="input"
+              type="text"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={5}>Reason for not paying</Col>
+          <Col md={7}>
+            <Field
+              className="form-control"
+              name="reason"
+              component="textarea"
+              type="text"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={5}>Unpaid amount</Col>
+          <Col md={7}>
             <Field
               className="form-control"
               name="amount"
@@ -158,42 +201,64 @@ class AdForm extends Component {
             />
           </Col>
         </Row>
-        {/* <Row>
-          <Col md={4}>Location</Col>
-          <Col md={8}>
-            <Field
-              className="form-control"
-              name="address"
-              component="input"
-              type="text"
-            />
-          </Col>
-        </Row> */}
-        {/* <Row>
-          <Col md={4}>Contact</Col>
-          <Col md={8}>
-            <Field
-              className="form-control"
-              name="phone"
-              component="input"
-              type="text"
-            />
-          </Col>
-        </Row> */}
         <Row>
-          <Col md={4}>Description</Col>
-          <Col md={8}>
+          <Col md={5}>Agency additional information</Col>
+          <Col md={7}>
             <Field
               className="form-control"
-              name="desc"
+              name="agency_other"
               component="textarea"
               type="text"
             />
           </Col>
         </Row>
         <Row>
-          <Col md={4}>Images</Col>
-          <Col md={8}>
+          <Col md={5}>Contractor name</Col>
+          <Col md={7}>
+            <Field
+              className="form-control"
+              name="contractor_name"
+              component="input"
+              type="text"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={5}>Contractor Linkedin profile</Col>
+          <Col md={7}>
+            <Field
+              className="form-control"
+              name="contractor_linkedin"
+              component="input"
+              type="text"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={5}>Contractor email</Col>
+          <Col md={7}>
+            <Field
+              className="form-control"
+              name="contractor_email"
+              component="input"
+              type="text"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={5}>Contractor phone</Col>
+          <Col md={7}>
+            <Field
+              className="form-control"
+              name="contractor_phone"
+              component="input"
+              type="text"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col md={5}>Proving Documents</Col>
+          <Col md={7}>
             <Field
               name="images"
               component={FileInput}

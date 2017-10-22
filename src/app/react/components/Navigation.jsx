@@ -55,7 +55,7 @@ class Navigation extends Component {
                 <span className="icon-bar" />
                 <span className="icon-bar" />
               </button>
-              <Link to="/" className="navbar-brand">COMPANIES THAT DID NOT PAY FOR THE CONTRACT</Link>
+              <Link to="/" className="navbar-brand">IT AGENCIES TO AVOID</Link>
             </div>
             <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
               <ul className="nav navbar-nav navbar-right">

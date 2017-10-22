@@ -45,9 +45,18 @@ class Ad extends Component {
         isOwner
       },
       data: {
-        name,
+        agency_name,
+        agency_address,
+        agency_phone,
+        agency_other,
+        agent_name,
+        contractor_name,
+        contractor_phone,
+        contractor_email,
+        contractor_linkedin,
+        contractor_other,
+        reason,
         amount,
-        desc,
         images
       },
     } = this.props;
@@ -65,7 +74,7 @@ class Ad extends Component {
             this.state.showUpdateForm
               ? <Col sm={12} md={6} className="ad_form">
                 <h1>
-                  Update Ad
+                  Update Contract Details
                   <Button
                     className="toggle_update_form"
                     onClick={this.toggleUpdateForm.bind(this)}>
@@ -79,37 +88,72 @@ class Ad extends Component {
               </Col>
               :
               <Col className="ad_info_col" sm={12} md={6}>
-                <h1>
-                  {name}
-                  {
-                    isOwner &&
-                    <Button
-                      className="toggle_update_form"
-                      onClick={this.toggleUpdateForm.bind(this)}>
-                      Edit Ad
-                    </Button>
-                  }
-                </h1>
-                <Row>
-                  <Col md={4}>Unpaid amount</Col>
-                  <Col md={8}>{amount}</Col>
-                </Row>
-                <Row>
-                  <Col md={4}>Description</Col>
-                  <Col md={8}>{desc}</Col>
-                </Row>
-                {/* <Row>
-                  <Col md={4}>Pricing</Col>
-                  <Col md={8}>{price}</Col>
-                </Row>
-                <Row>
-                  <Col md={4}>Location</Col>
-                  <Col md={8}>{address}</Col>
-                </Row>
-                <Row>
-                  <Col md={4}>Contact</Col>
-                  <Col md={8}>{phone}</Col>
-                </Row> */}
+                <div className="details">
+                  <h1>
+                    Agency Details
+                    {
+                      isOwner &&
+                      <Button
+                        className="toggle_update_form"
+                        onClick={this.toggleUpdateForm.bind(this)}>
+                        Edit Contract Details
+                      </Button>
+                    }
+                  </h1>
+                  <Row>
+                    <Col md={5}>Name</Col>
+                    <Col md={7}>{agency_name}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Address</Col>
+                    <Col md={7}>{agency_address}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Agent</Col>
+                    <Col md={7}>{agent_name}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Phone</Col>
+                    <Col md={7}>{agency_phone}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Reason for not paying</Col>
+                    <Col md={7}>{reason}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Unpaid amount</Col>
+                    <Col md={7}>{amount}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Additional</Col>
+                    <Col md={7}>{agency_other}</Col>
+                  </Row>
+                </div>
+                <div className="details">
+                  <h1>
+                    Contractor Details
+                  </h1>
+                  <Row>
+                    <Col md={5}>Name</Col>
+                    <Col md={7}>{contractor_name}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Linkedin Profile</Col>
+                    <Col md={7}><a>{contractor_linkedin}</a></Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Email</Col>
+                    <Col md={7}>{contractor_email}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Phone</Col>
+                    <Col md={7}>{contractor_phone}</Col>
+                  </Row>
+                  <Row>
+                    <Col md={5}>Additional</Col>
+                    <Col md={7}>{contractor_other}</Col>
+                  </Row>
+                </div>
               </Col>
           }
           <Col sm={12} md={6} className="ad_image_col">

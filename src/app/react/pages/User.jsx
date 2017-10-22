@@ -69,7 +69,7 @@ class User extends Component {
         );
       });
     }
-    return <Col md={12}>You have no ads.</Col>;
+    return <Col md={12}></Col>;
   }
 
   render() {
@@ -77,7 +77,7 @@ class User extends Component {
       <Grid className="user_profile">
         <Row className="user_ads">
           <Col sm={12} md={6} className="ads_col">
-            <h1>Your Ads</h1>
+            <h1>Your Contracts</h1>
             <Row>
               {this.renderAds()}
             </Row>

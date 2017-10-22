@@ -53,6 +53,14 @@ h1 {
   padding: 0;
   .ad_info_col {
     margin-bottom: 50px;
+    .details {
+      padding-bottom: 20px;
+      .row {
+        &:last-child {
+          border-bottom: 0;
+        }
+      }
+    }
     .row {
       margin: 0;
       padding: 10px 0;
@@ -89,7 +97,6 @@ h1 {
     padding: 10px 0;
     [class^="col"] {
       padding: 0;
-      white-space: nowrap;
       button {
         float: right;
         font-size: 20px;
