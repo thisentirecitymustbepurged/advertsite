@@ -63,7 +63,7 @@ class User extends Component {
             <i role="button" className="fa fa-times" onClick={() => this.deleteAd(key)}></i>
             <Link to={`ad/${key}`}>
               <div style={style} className="item_img_cont"></div>
-              <div>{ads[key].name}, {ads[key].amount}</div>
+              <div>{ads[key].agency_name}, {ads[key].amount}</div>
             </Link>
           </Col>
         );
