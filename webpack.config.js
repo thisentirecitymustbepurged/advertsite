@@ -9,15 +9,16 @@ const {
   PORT,
   HOST
 } = process.env;
+
 const SRC = path.resolve(__dirname, 'src');
 const OUTPUT = path.resolve(__dirname, 'www');
-const __DEV__ = NODE_ENV === 'dev';
-// const __TEST__ = NODE_ENV === 'test';
-const __PROD__ = NODE_ENV === 'production';
+const DEV = NODE_ENV === 'dev';
+// const TEST = NODE_ENV === 'test';
+const PROD = NODE_ENV === 'production';
 
 module.exports = {
-  watch: __DEV__,
-  devtool: __DEV__ ? 'cheap-module-source-map' : false,
+  watch: DEV,
+  devtool: DEV ? 'cheap-module-source-map' : false,
   cache: true,
   entry: {
     main: ['babel-polyfill', `${SRC}/main`]
@@ -25,7 +26,7 @@ module.exports = {
   output: {
     path: OUTPUT,
     publicPath: '/',
-    filename: `assets/js/[name]${__DEV__ ? '' : '.[hash]'}.js`,
+    filename: `assets/js/[name]${DEV ? '' : '.[hash]'}.js`,
   },
   resolve: {
     alias: {
@@ -41,7 +42,7 @@ module.exports = {
     host: HOST || '127.0.0.1'
   },
   plugins: [
-    new ExtractTextPlugin(`assets/styles/styles${__DEV__ ? '' : '.[contenthash]'}.css`),
+    new ExtractTextPlugin(`assets/styles/styles${DEV ? '' : '.[contenthash]'}.css`),
     new CopyWebpackPlugin(
       [
         {
@@ -58,7 +59,7 @@ module.exports = {
       filename: 'index.html',
       inject: 'body'
     }),
-    ...(__PROD__
+    ...(PROD
       ? [
         new webpack.optimize.UglifyJsPlugin({
           compress: {
@@ -79,12 +80,39 @@ module.exports = {
         loaders: ['react-hot-loader/webpack', 'babel-loader']
       },
       {
-        test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
-        })
-      }
+        test: /\.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
+        use: [
+          'url-loader'
+        ]
+      },
+      ...(PROD
+        ? [
+          {
+            test: /\.css$/,
+            use: ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: ['css-loader']
+            })
+          },
+          {
+            test: /\.scss$/,
+            use: ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use: ['css-loader', 'sass-loader']
+            })
+          }
+        ]
+        : [
+          {
+            test: /\.css$/,
+            loaders: ['style-loader', 'css-loader']
+          },
+          {
+            test: /\.scss$/,
+            loaders: ['style-loader', 'css-loader', 'sass-loader']
+          }
+        ]
+      )
     ]
   }
 };

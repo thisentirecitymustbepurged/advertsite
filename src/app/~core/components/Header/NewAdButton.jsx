@@ -8,18 +8,10 @@ const {
   toggleSideMenu
 } = coreActions;
 
-const style = {
-  margin: '6px 16px 0 20px'
-};
-
 const NewAdButton = ({ clickHandler }) => (
-  <Button
-    style={style}
-    label="Create New Ad"
-    onClick={clickHandler}
-    raised
-    color="secondary"
-  />
+  <Button onClick={clickHandler} raised color="accent">
+    Create New Ad
+  </Button>
 );
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.custom {
+  &.header {
+    &__sideMenuToggleButton {
+      border-radius: 0;
+      border-right: 1px solid $gray;
+    }
+    // &__page-nav {
+    //   button {
+    //     span {
+    //       align-self: center;
+    //     }
+    //   }
+    // }
+  }
+}
