@@ -9,7 +9,7 @@ const {
 } = coreActions;
 
 const NewAdButton = ({ clickHandler }) => (
-  <Button onClick={clickHandler} raised color="accent">
+  <Button onClick={clickHandler} raised color="accent" className="newAdButton">
     Create New Ad
   </Button>
 );

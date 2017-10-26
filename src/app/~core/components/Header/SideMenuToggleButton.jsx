@@ -10,7 +10,7 @@ const {
 } = coreActions;
 
 const SideMenuToggleButton = ({ clickHandler }) => (
-  <IconButton color="contrast" onClick={clickHandler} className="custom header__sideMenuToggleButton">
+  <IconButton color="contrast" onClick={clickHandler} className="sideMenuToggleButton">
     <MenuIcon />
   </IconButton>
 );

@@ -1,23 +1,39 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
-
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web');
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	transition: all 0.2s ease-out;
+	font-family: 'Titillium Web';
 }
-
-.custom {
-  &.header {
-    &__sideMenuToggleButton {
-      border-radius: 0;
-      border-right: 1px solid $gray;
-    }
-    // &__page-nav {
-    //   button {
-    //     span {
-    //       align-self: center;
-    //     }
-    //   }
-    // }
-  }
+body {
+  background: linear-gradient(to right, #000000, #434343);
+}
+.custom.headerWrapper {
+  background: linear-gradient(to right, #000000, #434343);
+}
+.custom.header {
+	justify-content: space-between;
+	.sideMenuToggleButton {
+		&:hover {
+			color: #BE3E2C;
+		}
+	}
+	.mainNav {
+		button {
+			border-right: 1px solid #434343;
+			&:last-child {
+				border: none;
+			}
+			&:hover {
+				color: #BE3E2C;
+				background: none;
+			}
+		}
+	}
+	.newAdButton {
+    background: linear-gradient(to right, #292929, #434343);
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.8);
+	}
 }

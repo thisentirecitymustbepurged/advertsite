@@ -16,11 +16,10 @@ const style = {
 };
 
 const MainNav = ({ clickHandler }) => (
-  <div className="custom header__page-nav">
+  <div className="mainNav">
     <Button color="contrast" onClick={clickHandler}>Home</Button>
-    <Button color="contrast" onClick={clickHandler}>Home</Button>
-    <Button color="contrast" onClick={clickHandler}>Home</Button>
-    <Button color="contrast" onClick={clickHandler}>Home</Button>
+    <Button color="contrast" onClick={clickHandler}>About</Button>
+    <Button color="contrast" onClick={clickHandler}>Contact</Button>
   </div>
 );
 
