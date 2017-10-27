@@ -1,9 +1,10 @@
 import React from 'react';
-import { Header } from '../components';
+import { Header, SideMenu } from '../components';
 
 const App = props => (
   <div className="app">
     <Header />
+    <SideMenu />
     { props.children }
   </div>
 );

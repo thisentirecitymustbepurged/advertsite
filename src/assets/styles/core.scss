@@ -1,21 +1,24 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+
 * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
-	transition: all 0.2s ease-out;
 	font-family: 'Titillium Web';
 }
 body {
-  background: linear-gradient(to right, #000000, #434343);
+	width: 100vw;
+	height: 100vh;
+  background: #212121;
 }
 .custom.headerWrapper {
-  background: linear-gradient(to right, #000000, #434343);
+  background: linear-gradient(to top, #222, #222);
 }
 .custom.header {
 	justify-content: space-between;
 	.sideMenuToggleButton {
+		transition: all 0.2s ease-out;
 		&:hover {
 			color: #BE3E2C;
 		}
@@ -23,6 +26,7 @@ body {
 	.mainNav {
 		button {
 			border-right: 1px solid #434343;
+			transition: all 0.2s ease-out;
 			&:last-child {
 				border: none;
 			}
@@ -33,7 +37,22 @@ body {
 		}
 	}
 	.newAdButton {
-    background: linear-gradient(to right, #292929, #434343);
-    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.8);
+    background: #303030;
+		text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.1);
+		transition: all 0.2s ease-out;
+		&:hover {
+			color: #BE3E2C;
+		}
+	}
+}
+.custom.sideMenu {
+	.header {
+		background: linear-gradient(to top, #222, #222);
+		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+	}
+	.MuiDrawer-paperAnchorLeft-72 {
+		box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+		width: 33%;
+		background: #222;
 	}
 }
