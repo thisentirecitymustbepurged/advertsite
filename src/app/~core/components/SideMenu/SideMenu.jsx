@@ -18,13 +18,12 @@ const SideMenu = ({ showSideMenu, clickHandler }) => (
   >
     <div className="header">
       <Avatar
-        alt="Adelle Charles"
         src="/static/images/uxceo-128.jpg"
         className="avatar"
       />
       <span className="username">Jogintas Simutis</span>
-      <Button onClick={clickHandler} raised className="logoutButton">
-        Create New Ad
+      <Button onClick={clickHandler} raised className="logoutButton button">
+        Log Out
       </Button>
     </div>
   </Drawer>

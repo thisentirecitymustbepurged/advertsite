@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
-
 * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 	font-family: 'Titillium Web';
 }
+
 body {
 	width: 100vw;
 	height: 100vh;
@@ -14,9 +14,11 @@ body {
 	color: #fff;
 	font-size: 14px;
 }
+
 .custom.headerWrapper {
-  background: $gray1;
+	background: $gray1;
 }
+
 .custom.header {
 	justify-content: space-between;
 	.sideMenuToggleButton {
@@ -39,7 +41,7 @@ body {
 		}
 	}
 	.newAdButton {
-    background: $gray3;
+		background: $gray3;
 		text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.1);
 		transition: all 0.2s ease-out;
 		&:hover {
@@ -47,6 +49,7 @@ body {
 		}
 	}
 }
+
 .custom.sideMenu {
 	.header {
 		display: flex;
@@ -63,6 +66,9 @@ body {
 			margin-left: auto;
 			background: $gray3;
 			color: #fff;
+			&:hover {
+				color: $red;
+			}
 		}
 	}
 	.MuiDrawer-paperAnchorLeft-72 {
