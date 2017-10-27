@@ -1,8 +1,9 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-import Toolbar from 'material-ui/Toolbar';
 import { connect } from 'react-redux';
 import Drawer from 'material-ui/Drawer';
+import Avatar from 'material-ui/Avatar';
+import Button from 'material-ui/Button';
 import { Creators as coreActions } from 'app/~core/actions';
 
 const {
@@ -15,7 +16,17 @@ const SideMenu = ({ showSideMenu, clickHandler }) => (
     open={showSideMenu}
     onRequestClose={clickHandler}
   >
-    <Toolbar className="header" />
+    <div className="header">
+      <Avatar
+        alt="Adelle Charles"
+        src="/static/images/uxceo-128.jpg"
+        className="avatar"
+      />
+      <span className="username">Jogintas Simutis</span>
+      <Button onClick={clickHandler} raised className="logoutButton">
+        Create New Ad
+      </Button>
+    </div>
   </Drawer>
 );
 
