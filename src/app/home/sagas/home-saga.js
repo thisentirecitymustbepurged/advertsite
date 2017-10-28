@@ -4,16 +4,17 @@ import { Types } from '../actions';
 export default api => {
   function* getAdsSaga({ params }) {
     try {
+      yield console.log('lloolol');
       const res = yield call(api.getAds, params);
-      yield put({ type: Types.FETCH_ADS_SUCCESS, res });
+      yield put({ type: Types.GET_ADS_SUCCESS, res });
     } catch (err) {
-      yield put({ type: Types.FETCH_ADS_FAILURE, err });
+      yield put({ type: Types.GET_ADS_FAILURE, err });
       throw new Error(err);
     }
   }
 
   function* startWatchers() {
-    yield takeLatest(Types.FETCH_AD_ATTEMPT, getAdsSaga);
+    yield takeLatest(Types.GET_ADS_ATTEMPT, getAdsSaga);
   }
 
   return startWatchers;

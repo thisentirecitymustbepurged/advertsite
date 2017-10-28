@@ -5,7 +5,9 @@ const App = props => (
   <div className="app">
     <Header />
     <SideMenu />
-    { props.children }
+    <main>
+      { props.children }
+    </main>
   </div>
 );
 

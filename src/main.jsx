@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import store from 'app/~core/config/store';
 import router from 'app/~core/config/router';
+import store from 'app/~core/config/store';
 import './assets/styles/styles.scss';
 
 const Root = () => (

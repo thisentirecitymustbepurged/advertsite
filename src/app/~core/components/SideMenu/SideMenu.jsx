@@ -2,9 +2,9 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Drawer from 'material-ui/Drawer';
-import Avatar from 'material-ui/Avatar';
-import Button from 'material-ui/Button';
 import { Creators as coreActions } from 'app/~core/actions';
+import SideHeader from './SideHeader';
+import UserNavigationMenu from './UserNavigationMenu';
 
 const {
   toggleSideMenu
@@ -16,16 +16,8 @@ const SideMenu = ({ showSideMenu, clickHandler }) => (
     open={showSideMenu}
     onRequestClose={clickHandler}
   >
-    <div className="header">
-      <Avatar
-        src="/static/images/uxceo-128.jpg"
-        className="avatar"
-      />
-      <span className="username">Jogintas Simutis</span>
-      <Button onClick={clickHandler} raised className="logoutButton button">
-        Log Out
-      </Button>
-    </div>
+    <SideHeader />
+    <UserNavigationMenu />
   </Drawer>
 );
 
