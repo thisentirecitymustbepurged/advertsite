@@ -1,6 +1,6 @@
 import Immutable from 'seamless-immutable';
 import { createReducer } from 'reduxsauce';
-import { types } from '../actions';
+import { Types } from '../actions';
 
 export const INITIAL_STATE = Immutable({
   ads: {},
@@ -27,7 +27,7 @@ const getAdsFailure = (state, { err }) =>
   });
 
 export default createReducer(INITIAL_STATE, {
-  [types.GET_ADS_ATTEMPT]: getAdsAttempt,
-  [types.GET_ADS_SUCCESS]: getAdsSuccess,
-  [types.GET_ADS_FAILURE]: getAdsFailure,
+  [Types.GET_ADS_ATTEMPT]: getAdsAttempt,
+  [Types.GET_ADS_SUCCESS]: getAdsSuccess,
+  [Types.GET_ADS_FAILURE]: getAdsFailure,
 });
