@@ -6,9 +6,9 @@ export default api => {
   function* fetchUserSaga() {
     try {
       const res = yield call(api.fetchUser);
-      yield put({ type: Types.LOGIN_USER_FAILURE, res });
+      yield put({ type: Types.FETCH_USER_FAILURE, res });
     } catch (err) {
-      yield put({ type: Types.LOGIN_USER_FAILURE, err });
+      yield put({ type: Types.FETCH_USER_FAILURE, err });
       throw new Error(err);
     }
   }
@@ -18,7 +18,7 @@ export default api => {
       const res = oauthProviderName
         ? yield call(api.loginWithOAuth, oauthProviderName)
         : yield call(api.loginWithEmail, email, password);
-      yield put({ type: Types.LOGOUT_USER_SUCCESS, res });
+      yield put({ type: Types.LOGIN_USER_SUCCESS, res });
     } catch (err) {
       yield put({ type: Types.LOGIN_USER_FAILURE, err });
       throw new Error(err);

@@ -1,11 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { combineReducers } from 'redux';
-import { reducers as homeReducer } from 'app/home';
-import coreReducer from './core-reducer';
+import { reducer as form } from 'redux-form';
+import { reducers as home } from 'app/home';
+import core from './core-reducer';
 
 const appReducer = combineReducers({
-  core: coreReducer,
-  home: homeReducer
+  core,
+  home,
+  form
 });
 
 export default function rootReducer(state, action) {

@@ -1,11 +1,16 @@
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
 import { routes as HomeRoutes } from 'app/home';
+import store from './store';
 import App from '../containers/App';
+import { Creators as coreActions } from '../actions';
+
+const { fetchUserAttempt } = coreActions;
+const fetchUser = store.dispatch.bind(null, fetchUserAttempt());
 
 export default (
   <Router history={browserHistory}>
-    <Route path="/" component={App}>
+    <Route path="/" onEnter={fetchUser} component={App}>
       { HomeRoutes }
     </Route>
   </Router>

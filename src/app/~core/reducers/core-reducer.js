@@ -3,6 +3,9 @@ import { createReducer } from 'reduxsauce';
 import { Types } from '../actions';
 
 export const INITIAL_STATE = Immutable({
+  user: {},
+  fetchingUser: false,
+  isLoggedIn: false,
   showSideMenu: false
 });
 
@@ -12,10 +15,10 @@ const fetchUserAttempt = (state) =>
     fetchingUser: true
   });
 
-const fetchUserSuccess = (state, { data }) => {
-  const result = data
+const fetchUserSuccess = (state, { user }) => {
+  const result = user
     ? state.merge({
-      data,
+      user,
       fetchingUser: false,
       isLoggedIn: true
     })

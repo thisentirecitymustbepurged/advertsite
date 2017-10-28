@@ -1,18 +1,10 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import SideMenuToggleButton from './SideMenuToggleButton';
-import NewAdButton from './NewAdButton';
-import MainNav from './MainNav';
+import { connect } from 'react-redux';
 
-const Header = () => (
-  <AppBar position="static" className="custom headerWrapper">
-    <Toolbar className="custom header">
-      <SideMenuToggleButton />
-      <MainNav />
-      <NewAdButton />
-    </Toolbar>
-  </AppBar>
+const Header = ({ isLoggedIn }) => (
+  <div className="header">Header</div>
 );
 
-export default Header;
+const mapStateToProps = ({ core: { user: { isLoggedIn } } }) => ({ isLoggedIn });
+
+export default connect(mapStateToProps)(Header);
