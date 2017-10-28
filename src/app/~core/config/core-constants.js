@@ -21,5 +21,12 @@ export default {
     EMAIL: '/email',
     IMAGES: '/images/',
     ADDRESS: '/address'
+  },
+
+  // QUERY PARAMS
+  OrderBy: {
+    KEY: 'KEY',
+    CHILD: 'CHILD',
+    VALUE: 'VALUE',
   }
 };

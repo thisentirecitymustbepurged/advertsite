@@ -37,7 +37,7 @@ export default {
   uploadAdImage: (image, imageName) => uploadFile(image, imageName),
 
   // home
-  getAds: params => get(ADS, params),
+  getAds: params => get(ADS, {}),
 
   // userprofile
   getUserAds: uid => get(USER_ADS + uid),

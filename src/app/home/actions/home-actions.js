@@ -2,6 +2,6 @@ import { createActions } from 'reduxsauce';
 
 export const { Types, Creators } = createActions({
   getAdsAttempt: [],
-  getAdsSuccess: ['data'],
+  getAdsSuccess: ['ads'],
   getAdsFailure: ['err'],
 });
